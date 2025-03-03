@@ -2,6 +2,10 @@
   "name": "myflix-client",
   "version": "1.0.0",
   "description": "",
+    "engines": {
+    "node": "v22.11.0",
+    "npm": "11.1.0"
+  },
   "homepage": "https://github.com/agawi88/myFlix-client#readme",
   "bugs": {
     "url": "https://github.com/agawi88/myFlix-client/issues"
@@ -14,7 +18,9 @@
   "author": "",
   "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.jsx",
+    "dev": "nodemon index.jsx"
   },
   "dependencies": {
     "parcel": "^2.13.3",
