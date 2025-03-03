@@ -2,7 +2,7 @@ import { useState } from "react";
 import { MovieCard } from "../MovieCard/MovieCard";
 import { MovieView } from "../MovieView/MovieView";
 
-export const MainView = () => {
+const MainView = () => {
   const [movies, setMovies] = useState([
     {
       id: 1,
@@ -88,3 +88,5 @@ export const MainView = () => {
     </div>
   );
 };
+
+export default MainView;
