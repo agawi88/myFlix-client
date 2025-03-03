@@ -12,7 +12,7 @@ export const MainView = () => {
       description:
         "A dramatic tale of love and war, set in the UK and France during World War II, based on Ian McEwan's novel.",
       image:
-        "https://en.wikipedia.org/wiki/File:Atonement_UK_poster.jpg#/media/File:Atonement_UK_poster.jpg",
+        "https://upload.wikimedia.org/wikipedia/en/e/e4/Atonement_UK_poster.jpg",
       director: "Joe Wright",
       genre: "Drama",
       featured: true,
@@ -25,7 +25,7 @@ export const MainView = () => {
       description:
         "A young boy and his working-class Belfast family experience the tumultuous late 1960s.",
       image:
-        "https://en.wikipedia.org/wiki/File:Belfast_poster.jpg#/media/File:Belfast_poster.jpg",
+        "https://upload.wikimedia.org/wikipedia/en/4/4a/Belfast_poster.jpg",
       director: "Kenneth Branagh",
       genre: "Drama",
       featured: true,
@@ -39,7 +39,7 @@ export const MainView = () => {
         "Helen embarks on a passionate affair with a man who has no idea what her secret identity is. Caught in the crosshairs when her lover falls victim to the dangerous London underworld, Helen's employers call in Sam to protect her.",
 
       image:
-        "https://en.wikipedia.org/wiki/File:Black_Doves.jpg#/media/File:Black_Doves.jpg",
+        "https://upload.wikimedia.org/wikipedia/en/c/c1/Black_Doves.jpg",
       director: "Lisa Gunning",
       genre: "Thriller",
       featured: false,
@@ -52,7 +52,7 @@ export const MainView = () => {
       description:
         "Bridget Jones is determined to improve herself while she looks for love in a year in which she keeps a personal diary.",
       image:
-        "https://en.wikipedia.org/wiki/File:BridgetJonesDiaryMoviePoster.jpg#/media/File:BridgetJonesDiaryMoviePoster.jpg",
+        "https://upload.wikimedia.org/wikipedia/en/1/17/BridgetJonesDiaryMoviePoster.jpg",
       director: "Sharon Maguire",
       genre: "Comedy",
       featured: true,
