@@ -19053,11 +19053,11 @@ const MovieView = ({ movie, onBackClick })=>{
                         columnNumber: 9
                     }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
-                        children: movie.featured
+                        children: movie.featured ? "Yes" : "No"
                     }, void 0, false, {
                         fileName: "src/components/MovieView/MovieView.jsx",
                         lineNumber: 33,
-                        columnNumber: 9
+                        columnNumber: 7
                     }, undefined)
                 ]
             }, void 0, true, {
