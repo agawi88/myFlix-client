@@ -8,7 +8,7 @@ const MainView = () => {
 const [selectedMovie, setSelectedMovie] = useState(null);
 
     useEffect(() => {
-    fetch("https://british-movies-23cb3bbeb9f8.herokuapp.com/movies")
+    fetch("https://openlibrary.org/search.json?q=star+wars")
       .then((response) => response.json())
       .then((data) => {
         const moviesFromApi = data.docs.map((doc) => {
@@ -21,7 +21,8 @@ const [selectedMovie, setSelectedMovie] = useState(null);
             director: doc.director_name?.[0],
             genre: doc.genre_name?.[0],
             featured: doc.featured,
-            image: ,
+           // image: `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg`,
+            image: "https://imageURL.british-movies-23cb3bbeb9f8.herokuapp.com/movies/b/id/${doc.ImageURL}-L.jpg",
           };
         });
 
