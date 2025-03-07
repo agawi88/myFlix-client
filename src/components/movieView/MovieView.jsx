@@ -37,6 +37,8 @@ export const MovieView = ({ movie, onBackClick }) => {
       <button onClick={onBackClick}>Back</button>
     </div>
   );
+  <hr />
+  <h2> Similar Movies</h2>
 };
 
 MovieView.PropTypes = {

@@ -20,8 +20,8 @@ const [selectedMovie, setSelectedMovie] = useState(null);
             releaseYear: doc.releaseYear,
             setting: doc.setting,
             description: doc.description,
-            director: doc.director_name?.[0],
-            genre: doc.genre_name?.[0],
+            genre: { doc.genre_name?.[0], doc.genre_description?.[0] },
+            director: doc.director_name?.[0], doc.director_bio?.[0], doc.director_dateOfBirth?.[0], doc.director_deathYear?.[0],
             //actors: [],
             featured: doc.featured,
            // image: `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg`,
@@ -58,10 +58,30 @@ const [selectedMovie, setSelectedMovie] = useState(null);
         />
       ))}
     </div>
-  );
+    );
+    
+    if (selectedMovie) {
+        let similarMovies = movies.filter();
+        return (
+            <>
+                <MovieView movie={selectedMovie} onBackClicked={() => { selectedMovie(null); }} />
+                <hr />
+                <h2>Similar Movies</h2>
+                {similarMovies.map()}
+            </>
+        );
+    }
 };
 
 export default MainView;
+
+/* const genreName = ["drama", "thriller", "biography", "adventure", "comedy", "fantasy"];
+
+document.getElementById("demo").innerHTML = genre.filter(checkGenreName);
+
+function checkGenreName(genreName) {
+  return movies.genreName;
+} */
 
 MainView.PropTypes = {
   movie: PropTypes.shape({
