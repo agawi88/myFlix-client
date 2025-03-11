@@ -1,10 +1,15 @@
+import React from "react";
+import { MovieCard } from "../MovieCard/MovieCard";
 import PropTypes from "prop-types";
 
-export const MovieView = ({ movie, onBackClick }) => {
+export const MovieView = ({ movie, movies, onBackClick, onMovieClick }) => {
+
+ const similarMovies = movies.filter((m) => m.genre === movie.genre && m._id !== movie._id);
+
   return (
     <div>
       <div>
-        <img src={movie.image} />
+        <img src={movie.image} alt={movie.title}  />
       </div>
       <div>
         <span>Title: </span>
@@ -32,16 +37,28 @@ export const MovieView = ({ movie, onBackClick }) => {
       </div>
       <div>
         <span>Featured: </span>
-      <span>{movie.featured ? "Yes" : "No"}</span>
+        <span>{movie.featured ? "Yes" : "No"}</span>
       </div>
       <button onClick={onBackClick}>Back</button>
+
+      <hr /> {/* Add a horizontal line for spacing */}
+
+      {/* Similar Movies Section */}
+      <h2>Similar Movies</h2>
+      <div className="similar-movies">
+        {similarMovies.map((similarMovie) => (
+          <MovieCard
+            key={similarMovie.id} // Use the unique ID for the key
+            movie={similarMovie}    // Pass the movie as a prop to MovieCard
+            onMovieClick={onMovieClick}  // Pass the onMovieClick function
+          />
+        ))}
+      </div>
     </div>
-  );
-  <hr />
-  <h2> Similar Movies</h2>
+  ); 
 };
 
-MovieView.PropTypes = {
+MovieView.propTypes = {
   movie: PropTypes.shape({
     title: PropTypes.string.isRequired,
     releaseYear: PropTypes.string.isRequired,
@@ -54,11 +71,13 @@ MovieView.PropTypes = {
     director: PropTypes.shape({
       name: PropTypes.string.isRequired,
       bio: PropTypes.string.isRequired,
-      dateOfBirth: PropTypes.date.isRequired,
-      deathYear: PropTypes.date,
+      dateOfBirth: PropTypes.string.isRequired,
+      deathYear: PropTypes.string,
     }),
     image: PropTypes.string.isRequired,
-    featured: PropTypes.boolean.isRequired,
+    featured: PropTypes.bool.isRequired,
   }).isRequired,
+  movies: PropTypes.arrayOf(PropTypes.object).isRequired,  // Ensure movies prop is an array
+  onBackClick: PropTypes.func.isRequired,
   onMovieClick: PropTypes.func.isRequired
 };
