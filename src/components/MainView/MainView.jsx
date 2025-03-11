@@ -1,17 +1,15 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { MovieCard } from "../MovieCard/MovieCard";
 import { MovieView } from "../MovieView/MovieView";
 import PropTypes from "prop-types";
 
 
 const MainView = () => {
-  const [movies, setMovies] = useState([  ]);
-
-const [selectedMovie, setSelectedMovie] = useState(null);
+  const [movies, setMovies] = useState([]);
+  const [selectedMovie, setSelectedMovie] = useState(null);
 
     useEffect(() => {
-    fetch("https://openlibrary.org/search.json?q=star+wars")
+    fetch("https://british-movies-23cb3bbeb9f8.herokuapp.com")
       .then((response) => response.json())
       .then((data) => {
         const moviesFromApi = data.docs.map((doc) => {
@@ -29,24 +27,26 @@ const [selectedMovie, setSelectedMovie] = useState(null);
                 name: doc.director_name?.[0],
                 bio: doc.director_bio?.[0],
                 dateOfBirth: doc.director_dateOfBirth?.[0],
-                deathYear: doc.director_deathYear?.[0],
+                deathYear: doc.director_deathYear?.[0]
               },
             //actors: [],
             featured: doc.featured,
-           // image: `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg`,
             image: `https://imageURL.british-movies-23cb3bbeb9f8.herokuapp.com/movies/b/id/${doc.ImageURL}-L.jpg`,
           };
         });
 
         setMovies(moviesFromApi);
       });
-  }, []);
+    }, []);
+
 
   if (selectedMovie) {
     return (
       <MovieView
         movie={selectedMovie}
+        movies={movies} // for a full list of movies
         onBackClick={() => setSelectedMovie(null)}
+        onMovieClick={(movie) => setSelectedMovie(movie)}
       />
     );
   }
@@ -68,18 +68,6 @@ const [selectedMovie, setSelectedMovie] = useState(null);
       ))}
     </div>
     );
-    
-    if (selectedMovie) {
-        let similarMovies = movies.filter();
-        return (
-            <>
-                <MovieView movie={selectedMovie} onBackClicked={() => { selectedMovie(null); }} />
-                <hr />
-                <h2>Similar Movies</h2>
-                {similarMovies.map()}
-            </>
-        );
-    }
 };
 
 export default MainView;
@@ -97,11 +85,11 @@ MainView.propTypes = {
     director: PropTypes.shape({
       name: PropTypes.string.isRequired,
       bio: PropTypes.string.isRequired,
-      dateOfBirth: PropTypes.date.isRequired,
-      deathYear: PropTypes.date,
+      dateOfBirth: PropTypes.string.isRequired,
+      deathYear: PropTypes.string,
     }),
     image: PropTypes.string.isRequired,
-    featured: PropTypes.boolean.isRequired,
+    featured: PropTypes.bool.isRequired,
   }).isRequired,
   onMovieClick: PropTypes.func.isRequired
 };
