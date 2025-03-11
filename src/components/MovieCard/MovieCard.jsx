@@ -29,7 +29,7 @@ MovieCard.propTypes = {
       deathYear: PropTypes.date,
     }),
     image: PropTypes.string.isRequired,
-    featured: PropTypes.boolean,
+    featured: PropTypes.bool,
   }).isRequired,
   onMovieClick: PropTypes.func.isRequired
 };

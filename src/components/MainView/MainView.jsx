@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useEffect } from "react";
 import { MovieCard } from "../MovieCard/MovieCard";
 import { MovieView } from "../MovieView/MovieView";
 import PropTypes from "prop-types";
@@ -20,12 +21,20 @@ const [selectedMovie, setSelectedMovie] = useState(null);
             releaseYear: doc.releaseYear,
             setting: doc.setting,
             description: doc.description,
-            genre: { doc.genre_name?.[0], doc.genre_description?.[0] },
-            director: doc.director_name?.[0], doc.director_bio?.[0], doc.director_dateOfBirth?.[0], doc.director_deathYear?.[0],
+            genre: {
+               name: doc.genre_name?.[0],
+               description: doc.genre_description?.[0]
+              },
+            director: {
+                name: doc.director_name?.[0],
+                bio: doc.director_bio?.[0],
+                dateOfBirth: doc.director_dateOfBirth?.[0],
+                deathYear: doc.director_deathYear?.[0],
+              },
             //actors: [],
             featured: doc.featured,
            // image: `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg`,
-            image: "https://imageURL.british-movies-23cb3bbeb9f8.herokuapp.com/movies/b/id/${doc.ImageURL}-L.jpg",
+            image: `https://imageURL.british-movies-23cb3bbeb9f8.herokuapp.com/movies/b/id/${doc.ImageURL}-L.jpg`,
           };
         });
 
@@ -75,15 +84,7 @@ const [selectedMovie, setSelectedMovie] = useState(null);
 
 export default MainView;
 
-/* const genreName = ["drama", "thriller", "biography", "adventure", "comedy", "fantasy"];
-
-document.getElementById("demo").innerHTML = genre.filter(checkGenreName);
-
-function checkGenreName(genreName) {
-  return movies.genreName;
-} */
-
-MainView.PropTypes = {
+MainView.propTypes = {
   movie: PropTypes.shape({
     title: PropTypes.string.isRequired,
     releaseYear: PropTypes.string.isRequired,
