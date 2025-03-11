@@ -2951,7 +2951,7 @@ var _client = require("react-dom/client");
 var _mainView = require("./components/MainView/MainView");
 var _mainViewDefault = parcelHelpers.interopDefault(_mainView);
 // Import statement to indicate that you need to bundle `./index.scss`
-//import "./index.scss";
+// import "./index.scss";
 // Main component (will eventually use all the others)
 const MyFlixApplication = ()=>{
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _mainViewDefault.default), {}, void 0, false, {
