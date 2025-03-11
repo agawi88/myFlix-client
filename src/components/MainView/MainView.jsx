@@ -1,65 +1,46 @@
 import { useState } from "react";
+import { useEffect } from "react";
 import { MovieCard } from "../MovieCard/MovieCard";
 import { MovieView } from "../MovieView/MovieView";
+import PropTypes from "prop-types";
+
 
 const MainView = () => {
-  const [movies, setMovies] = useState([
-    {
-      id: 1,
-      title: "Atonement",
-      releaseYear: "2007",
-      setting: "United Kingdom, France",
-      description:
-        "A dramatic tale of love and war, set in the UK and France during World War II, based on Ian McEwan's novel.",
-      image:
-        "https://upload.wikimedia.org/wikipedia/en/e/e4/Atonement_UK_poster.jpg",
-      director: "Joe Wright",
-      genre: "Drama",
-      featured: true,
-    },
-    {
-      id: 2,
-      title: "Belfast",
-      releaseYear: "2021",
-      setting: "Northern Ireland, Belfast",
-      description:
-        "A young boy and his working-class Belfast family experience the tumultuous late 1960s.",
-      image:
-        "https://upload.wikimedia.org/wikipedia/en/4/4a/Belfast_poster.jpg",
-      director: "Kenneth Branagh",
-      genre: "Drama",
-      featured: true,
-    },
-    {
-      id: 3,
-      title: "Black Doves",
-      releaseYear: "2024",
-      setting: "England, London",
-      description:
-        "Helen embarks on a passionate affair with a man who has no idea what her secret identity is. Caught in the crosshairs when her lover falls victim to the dangerous London underworld, Helen's employers call in Sam to protect her.",
+  const [movies, setMovies] = useState([  ]);
 
-      image:
-        "https://upload.wikimedia.org/wikipedia/en/c/c1/Black_Doves.jpg",
-      director: "Lisa Gunning",
-      genre: "Thriller",
-      featured: false,
-    },
-    {
-      id: 4,
-      title: "Bridget Jones/' Diary",
-      releaseYear: "2001",
-      setting: "England, London",
-      description:
-        "Bridget Jones is determined to improve herself while she looks for love in a year in which she keeps a personal diary.",
-      image:
-        "https://upload.wikimedia.org/wikipedia/en/1/17/BridgetJonesDiaryMoviePoster.jpg",
-      director: "Sharon Maguire",
-      genre: "Comedy",
-      featured: true,
-    },
-  ]);
+const [selectedMovie, setSelectedMovie] = useState(null);
 
-  const [selectedMovie, setSelectedMovie] = useState(null);
+    useEffect(() => {
+    fetch("https://openlibrary.org/search.json?q=star+wars")
+      .then((response) => response.json())
+      .then((data) => {
+        const moviesFromApi = data.docs.map((doc) => {
+          return {
+            id: doc.key,
+            title: doc.title,
+            releaseYear: doc.releaseYear,
+            setting: doc.setting,
+            description: doc.description,
+            genre: {
+               name: doc.genre_name?.[0],
+               description: doc.genre_description?.[0]
+              },
+            director: {
+                name: doc.director_name?.[0],
+                bio: doc.director_bio?.[0],
+                dateOfBirth: doc.director_dateOfBirth?.[0],
+                deathYear: doc.director_deathYear?.[0],
+              },
+            //actors: [],
+            featured: doc.featured,
+           // image: `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg`,
+            image: `https://imageURL.british-movies-23cb3bbeb9f8.herokuapp.com/movies/b/id/${doc.ImageURL}-L.jpg`,
+          };
+        });
+
+        setMovies(moviesFromApi);
+      });
+  }, []);
 
   if (selectedMovie) {
     return (
@@ -86,7 +67,41 @@ const MainView = () => {
         />
       ))}
     </div>
-  );
+    );
+    
+    if (selectedMovie) {
+        let similarMovies = movies.filter();
+        return (
+            <>
+                <MovieView movie={selectedMovie} onBackClicked={() => { selectedMovie(null); }} />
+                <hr />
+                <h2>Similar Movies</h2>
+                {similarMovies.map()}
+            </>
+        );
+    }
 };
 
 export default MainView;
+
+MainView.propTypes = {
+  movie: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    releaseYear: PropTypes.string.isRequired,
+    setting: PropTypes.string,
+    description: PropTypes.string.isRequired,
+    genre: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+    }),
+    director: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      bio: PropTypes.string.isRequired,
+      dateOfBirth: PropTypes.date.isRequired,
+      deathYear: PropTypes.date,
+    }),
+    image: PropTypes.string.isRequired,
+    featured: PropTypes.boolean.isRequired,
+  }).isRequired,
+  onMovieClick: PropTypes.func.isRequired
+};
