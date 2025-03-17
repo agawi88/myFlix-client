@@ -23,29 +23,29 @@ export const MainView = () => {
       .then((movies) => {
         setMovies(movies);
 
-        const moviesFromApi = data.docs.map((doc) => {
+        const moviesFromApi = movies.map((doc) => {
           return {
-            id: doc.key,
-            title: doc.title,
-            releaseYear: doc.releaseYear,
-            setting: doc.setting,
-            description: doc.description,
-            genre: {
-              name: doc.genre_name?.[0],
-              description: doc.genre_description?.[0]
+            id: doc._id,
+            title: doc.Title,
+            releaseYear: doc.ReleaseYear,
+            setting: doc.Setting,
+            description: doc.Description,
+            genre: { 
+              name: doc.Genre.Name,
+              description: doc.Genre.Description,
             },
             director: {
-              name: doc.director_name?.[0],
-              bio: doc.director_bio?.[0],
-              dateOfBirth: doc.director_dateOfBirth?.[0],
-              deathYear: doc.director_deathYear?.[0]
+              name: doc.Director.Name,
+              bio: doc.Director.Bio,
+              dateOfBirth: doc.Director.DateOfBirth,
+              deathYear: doc.Director.DeathYear
             },
             //actors: [],
-            featured: doc.featured,
-            image: `https://imageURL.british-movies-23cb3bbeb9f8.herokuapp.com/movies/b/id/${doc.ImageURL}-L.jpg`,
+            featured: doc.Featured,
+            image: doc.ImageURL,
           };
         });
-
+        console.log(moviesFromApi);
         setMovies(moviesFromApi);
       });
   }, [token]);
@@ -76,7 +76,7 @@ export const MainView = () => {
         movie={selectedMovie}
         movies={movies} // for a full list of movies
         onBackClick={() => setSelectedMovie(null)}
-        onMovieClick={(movie) => setSelectedMovie(movie)}
+        onMovieClick={() => setSelectedMovie(selectedMovie)}
         />
         </>
     );
@@ -114,8 +114,8 @@ export const MainView = () => {
         <MovieCard
           key={movie.id}
           movie={movie}
-          onMovieClick={(newSelectedMovie) => {
-            setSelectedMovie(newSelectedMovie);
+          onMovieClick={() => {
+            setSelectedMovie(movie);
           }}
         />
       ))}
