@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 export const MovieView = ({ movie, movies, onBackClick, onMovieClick }) => {
 
  const similarMovies = movies.filter((m) => m.genre === movie.genre && m._id !== movie._id);
-
+  console.log(movie);
   return (
     <div>
       <div>
@@ -29,11 +29,15 @@ export const MovieView = ({ movie, movies, onBackClick, onMovieClick }) => {
       </div>
       <div>
         <span>Director: </span>
-        <span>{movie.director}</span>
+        <span>{movie.director.name}</span>
+        <span>{movie.director.bio}</span>
+        <span>{movie.director.dateOfBirth}</span>
+        <span>{movie.director.deathYear}</span>
       </div>
       <div>
         <span>Genre: </span>
-        <span>{movie.genre}</span>
+        <span>{movie.genre.name}</span>
+        <span>{movie.genre.description}</span>
       </div>
       <div>
         <span>Featured: </span>
