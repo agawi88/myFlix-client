@@ -4,6 +4,7 @@ import { useState } from "react";
 export const LoginView = ({ onLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  
     
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -23,10 +24,10 @@ export const LoginView = ({ onLoggedIn }) => {
           .then((response) => response.json())
           .then((data) => {
               console.log("Login response: ", data);
-              if (data.user) {
-                  localStorage.setItem("user", JSON.stringify(data.user));
-                  localStorage.setItem("token", data.token);
-                  onLoggedIn(data.user, data.token);
+            if (data.user) {
+                localStorage.setItem("user", JSON.stringify(data.user));
+                localStorage.setItem("token", data.token);
+                onLoggedIn(data.user, data.token);
               } else {
                   alert("No such user");
               }
@@ -58,6 +59,7 @@ export const LoginView = ({ onLoggedIn }) => {
           required
           minlength="8"
           maxlength="15"
+          autocomplete="current-password"
         />
       </label>
       <button type="submit">Submit</button>
