@@ -18602,7 +18602,7 @@ const MainView = ()=>{
     (0, _react.useEffect)(()=>{
         console.log(user, token);
         if (!user || !token) return;
-        fetch("https://british-movies-23cb3bbeb9f8.herokuapp.com/movies", {
+        fetch("https://british-movies-api-626d415aa570.herokuapp.com/movies", {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -20104,7 +20104,7 @@ const LoginView = ({ onLoggedIn })=>{
             Username: username,
             Password: password
         };
-        fetch("https://british-movies-23cb3bbeb9f8.herokuapp.com/login", {
+        fetch("https://british-movies-api-626d415aa570.herokuapp.com/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -20160,7 +20160,16 @@ const LoginView = ({ onLoggedIn })=>{
                         fileName: "src/components/LoginView/LoginView.jsx",
                         lineNumber: 55,
                         columnNumber: 9
-                    }, undefined)
+                    }, undefined),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
+                        type: "checkbox",
+                        onclick: "myFunction()"
+                    }, void 0, false, {
+                        fileName: "src/components/LoginView/LoginView.jsx",
+                        lineNumber: 64,
+                        columnNumber: 9
+                    }, undefined),
+                    "Show Password"
                 ]
             }, void 0, true, {
                 fileName: "src/components/LoginView/LoginView.jsx",
@@ -20172,7 +20181,7 @@ const LoginView = ({ onLoggedIn })=>{
                 children: "Submit"
             }, void 0, false, {
                 fileName: "src/components/LoginView/LoginView.jsx",
-                lineNumber: 65,
+                lineNumber: 68,
                 columnNumber: 7
             }, undefined)
         ]
@@ -20220,7 +20229,7 @@ const SignupView = ()=>{
             Email: email,
             DateOfBirth: dateOfBirth
         };
-        fetch("https://british-movies-23cb3bbeb9f8.herokuapp.com/users", {
+        fetch("https://british-movies-api-626d415aa570.herokuapp.com/users", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
