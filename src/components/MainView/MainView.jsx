@@ -2,19 +2,26 @@ import { useState, useEffect } from "react";
 import { MovieCard } from "../MovieCard/MovieCard";
 import { MovieView } from "../MovieView/MovieView";
 import { LoginView } from "../LoginView/LoginView";
+import { SignupView } from "../SignupView/SignupView";
 import PropTypes from "prop-types";
 
 
 export const MainView = () => {
-  const [movies, setMovies] = useState([]);
-  const [selectedMovie, setSelectedMovie] = useState(null);
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const storedToken = localStorage.getItem("token");
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(storedToken? storedToken : null);
+
+  const [user, setUser] = useState(storedUser || null);
+  const [token, setToken] = useState(storedToken || null);
+  const [movies, setMovies] = useState([]);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [showSignup, setShowSignup] = useState(false);
+
+  //const [user, setUser] = useState(null);
+  /*const [user, setUser] = useState(storedUser ? storedUser : null);
+  const [token, setToken] = useState(storedToken? storedToken : null); */
 
   useEffect(() => {
-    if (!token) return;
+    if (!user || !token) return;
 
     fetch("https://british-movies-23cb3bbeb9f8.herokuapp.com/movies", {
       headers: { Authorization: `Bearer ${token}` },
@@ -48,26 +55,41 @@ export const MainView = () => {
         console.log(moviesFromApi);
         setMovies(moviesFromApi);
       });
-  }, [token]);
+  }, [user, token]);
   
   if (!user) {
+    
     return (
-      <LoginView onLoggedIn={(user, token) => {
+      <div>    
+    {showSignup ? (
+      <SignupView />
+    ) : (
+      <LoginView
+      onLoggedIn={(user, token) => {
       setUser(user);
       setToken(token);
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
       }}
       />
-    );
+    )
   }
+  <button onClick={() => setShowSignup(!showSignup)}>
+    {showSignup ? "Back to Login" : "Sign Up"}
+  </button>
+ </div>
+)}
 
   if (selectedMovie) {
     return (
        <>
         <button
           onClick={() => {
-            setUser(null);
-            setToken(null);
-            localStorage.clear();
+          setUser(null);
+          setToken(null);
+          localStorage.removeItem("user");
+          localStorage.removeItem("token");
+          setShowSignup(false); // Reset to login screen
           }}
         >
           Logout
@@ -87,9 +109,11 @@ export const MainView = () => {
       <>
         <button
           onClick={() => {
-            setUser(null);
-            setToken(null);
-            localStorage.clear();
+          setUser(null);
+          setToken(null);
+          localStorage.removeItem("user");
+          localStorage.removeItem("token");
+          setShowSignup(false); // Reset to login screen
           }}
         >
           Logout
@@ -105,7 +129,9 @@ export const MainView = () => {
         onClick={() => {
           setUser(null);
           setToken(null);
-          localStorage.clear();
+          localStorage.removeItem("user");
+          localStorage.removeItem("token");
+          setShowSignup(false); // Reset to login screen
         }}
       >
         Logout
@@ -118,6 +144,7 @@ export const MainView = () => {
             setSelectedMovie(movie);
           }}
         />
+        
       ))}
     </div>
     );
