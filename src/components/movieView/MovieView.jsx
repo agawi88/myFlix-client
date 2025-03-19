@@ -1,10 +1,7 @@
 import React from "react";
-import { MovieCard } from "../MovieCard/MovieCard";
 import PropTypes from "prop-types";
 
-export const MovieView = ({ movie, movies, onBackClick, onMovieClick }) => {
-
-// const similarMovies = movies.filter((m) => m.genre === movie.genre && m._id !== movie._id);
+export const MovieView = ({ movie, onBackClick }) => {
   console.log(movie);
   return (
     <div>
@@ -44,22 +41,6 @@ export const MovieView = ({ movie, movies, onBackClick, onMovieClick }) => {
         <span>{movie.featured ? "Yes" : "No"}</span>
       </div>
       <button onClick={onBackClick}>Back</button>
-
-      <hr /> {/* Add a horizontal line for spacing */}
-
-      {/* Similar Movies Section */}
-      <h2>Similar Movies</h2>
-      {/*<div className="similar-movies">
-        {similarMovies.map((similarMovie) => (
-          <MovieCard
-            key={similarMovie.id} // Use the unique ID for the key
-            movie={similarMovie}    // Pass the movie as a prop to MovieCard
-            onMovieClick={() => {
-            setSelectedMovie(movie);
-          }}  // Pass the onMovieClick function
-          />
-        ))}
-      </div>*/}
     </div>
   ); 
 };
