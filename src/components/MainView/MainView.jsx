@@ -117,12 +117,24 @@ export const MainView = () => {
         {similarMoviesByDirector.map((movie) => (
           <MovieCard
             key={movie.id}
-            movie={movie}    // Pass the movie as a prop to MovieCard
+            movie={movie}
             onMovieClick={() => {
             setSelectedMovie(movie);
-          }}  // Pass the onMovieClick function
+          }}
           />
         ))}
+        {/* For future embellishing, once actors will be added, also Similar Movies by Actors:
+         <hr />
+        <h3>By Director</h3>
+        {similarMoviesByDirector.map((movie) => (
+          <MovieCard
+            key={movie.id}
+            movie={movie}
+            onMovieClick={() => {
+            setSelectedMovie(movie);
+          }}
+          />
+        ))}}  */}      
       </>
     );
   }
