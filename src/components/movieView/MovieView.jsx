@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 export const MovieView = ({ movie, movies, onBackClick, onMovieClick }) => {
 
- const similarMovies = movies.filter((m) => m.genre === movie.genre && m._id !== movie._id);
+// const similarMovies = movies.filter((m) => m.genre === movie.genre && m._id !== movie._id);
   console.log(movie);
   return (
     <div>
@@ -49,15 +49,17 @@ export const MovieView = ({ movie, movies, onBackClick, onMovieClick }) => {
 
       {/* Similar Movies Section */}
       <h2>Similar Movies</h2>
-      <div className="similar-movies">
+      {/*<div className="similar-movies">
         {similarMovies.map((similarMovie) => (
           <MovieCard
             key={similarMovie.id} // Use the unique ID for the key
             movie={similarMovie}    // Pass the movie as a prop to MovieCard
-            onMovieClick={onMovieClick}  // Pass the onMovieClick function
+            onMovieClick={() => {
+            setSelectedMovie(movie);
+          }}  // Pass the onMovieClick function
           />
         ))}
-      </div>
+      </div>*/}
     </div>
   ); 
 };
