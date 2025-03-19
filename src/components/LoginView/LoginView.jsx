@@ -14,7 +14,7 @@ export const LoginView = ({ onLoggedIn }) => {
       Password: password
     };
 
-      fetch("https://british-movies-23cb3bbeb9f8.herokuapp.com/login", {
+      fetch("https://british-movies-api-626d415aa570.herokuapp.com/login", {
           method: "POST",
           headers: {
               "Content-Type": "application/json"
@@ -61,6 +61,9 @@ export const LoginView = ({ onLoggedIn }) => {
           maxlength="15"
           autocomplete="current-password"
         />
+        <input
+          type="checkbox"
+          onclick="myFunction()"/>Show Password
       </label>
       <button type="submit">Submit</button>
     </form>
