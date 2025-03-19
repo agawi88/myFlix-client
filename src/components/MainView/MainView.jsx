@@ -10,17 +10,14 @@ export const MainView = () => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const storedToken = localStorage.getItem("token");
 
-  const [user, setUser] = useState(storedUser || null);
-  const [token, setToken] = useState(storedToken || null);
+  const [user, setUser] = useState(storedUser? storedUser : null);
+  const [token, setToken] = useState(storedToken? storedToken : null);
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [showSignup, setShowSignup] = useState(false);
 
-  //const [user, setUser] = useState(null);
-  /*const [user, setUser] = useState(storedUser ? storedUser : null);
-  const [token, setToken] = useState(storedToken? storedToken : null); */
-
   useEffect(() => {
+    console.log(user, token);
     if (!user || !token) return;
 
     fetch("https://british-movies-23cb3bbeb9f8.herokuapp.com/movies", {
@@ -68,8 +65,8 @@ export const MainView = () => {
       onLoggedIn={(user, token) => {
       setUser(user);
       setToken(token);
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
+      localStorage.setItem("user", JSON.stringify(user)); 
+      localStorage.setItem("token", token);
       }}
       />
     )
@@ -81,7 +78,8 @@ export const MainView = () => {
 )}
 
   if (selectedMovie) {
-    let similarMovies = movies.filter((movie) => movie.genre.name === selectedMovie.genre.name && movie.id !== selectedMovie.id);
+  let similarMoviesByGenre = movies.filter((movie) => movie.genre.name === selectedMovie.genre.name && movie.id !== selectedMovie.id);
+  let similarMoviesByDirector = movies.filter((movie) => movie.director.name === selectedMovie.director.name && movie.id !== selectedMovie.id);
 
     return (
        <>
@@ -89,8 +87,8 @@ export const MainView = () => {
           onClick={() => {
           setUser(null);
           setToken(null);
-          localStorage.removeItem("user");
-          localStorage.removeItem("token");
+          localStorage.setItem("user", JSON.stringify(user)); 
+          localStorage.setItem("token", token);
           setShowSignup(false); // Reset to login screen
           }}
         >
@@ -104,7 +102,19 @@ export const MainView = () => {
         />
         <hr />
         <h2> Similar Movies </h2>
-        {similarMovies.map((movie) => (
+        <h3>By Genre</h3>
+        {similarMoviesByGenre.map((movie) => (
+          <MovieCard
+            key={movie.id}
+            movie={movie}    // Pass the movie as a prop to MovieCard
+            onMovieClick={() => {
+            setSelectedMovie(movie);
+          }}  // Pass the onMovieClick function
+          />
+        ))}
+        <hr />
+        <h3>By Director</h3>
+        {similarMoviesByDirector.map((movie) => (
           <MovieCard
             key={movie.id}
             movie={movie}    // Pass the movie as a prop to MovieCard
@@ -124,8 +134,8 @@ export const MainView = () => {
           onClick={() => {
           setUser(null);
           setToken(null);
-          localStorage.removeItem("user");
-          localStorage.removeItem("token");
+          localStorage.setItem("user", JSON.stringify(user)); 
+          localStorage.setItem("token", token);
           setShowSignup(false); // Reset to login screen
           }}
         >
@@ -142,8 +152,8 @@ export const MainView = () => {
         onClick={() => {
           setUser(null);
           setToken(null);
-          localStorage.removeItem("user");
-          localStorage.removeItem("token");
+          localStorage.setItem("user", JSON.stringify(user)); 
+          localStorage.setItem("token", token);
           setShowSignup(false); // Reset to login screen
         }}
       >
