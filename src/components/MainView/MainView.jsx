@@ -106,8 +106,8 @@ export const MainView = () => {
         <h2> Similar Movies </h2>
         {similarMovies.map((movie) => (
           <MovieCard
-            key={similarMovie.id} // Use the unique ID for the key
-            movie={similarMovie}    // Pass the movie as a prop to MovieCard
+            key={movie.id}
+            movie={movie}    // Pass the movie as a prop to MovieCard
             onMovieClick={() => {
             setSelectedMovie(movie);
           }}  // Pass the onMovieClick function
