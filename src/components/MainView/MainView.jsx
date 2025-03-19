@@ -123,6 +123,7 @@ export const MainView = () => {
           }}
           />
         ))}
+       
         {/* For future embellishing, once actors will be added, also Similar Movies by Actors:
          <hr />
         <h3>By Director</h3>
