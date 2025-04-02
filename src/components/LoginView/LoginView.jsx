@@ -1,5 +1,9 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { Button, Form } from "react-bootstrap";
+import { PasswordInput } from "../PasswordInput";
+import "./LoginView.scss"
+
 
 export const LoginView = ({ onLoggedIn }) => {
   const [username, setUsername] = useState("");
@@ -14,7 +18,7 @@ export const LoginView = ({ onLoggedIn }) => {
       Password: password
     };
 
-      fetch("https://british-movies-api-626d415aa570.herokuapp.com/login", {
+      fetch("https://gb-movies-api-cab43a70da98.herokuapp.com/login", {
           method: "POST",
           headers: {
               "Content-Type": "application/json"
@@ -38,10 +42,11 @@ export const LoginView = ({ onLoggedIn }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Username:
-        <input
+    <Form onSubmit={handleSubmit}>
+      <Form.Group controlId="formUsername">
+      <Form.Label>
+        Username: </Form.Label>
+        <Form.Control
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -49,10 +54,9 @@ export const LoginView = ({ onLoggedIn }) => {
           minlength="5"
           maxlength="12"
         />
-      </label>
-      <label>
-        Password:
-        <input
+        {/*<Form.Label>
+        Password: </Form.Label>
+        <Form.Control
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -60,12 +64,10 @@ export const LoginView = ({ onLoggedIn }) => {
           minlength="8"
           maxlength="15"
           autocomplete="current-password"
-        />
-        <input
-          type="checkbox"
-          onclick="myFunction()"/>Show Password
-      </label>
-      <button type="submit">Submit</button>
-    </form>
+          /> */}
+      </Form.Group>
+      <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} />
+      <Button type="submit">Submit</Button>
+    </Form>
   );
 };
