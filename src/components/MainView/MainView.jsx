@@ -5,6 +5,8 @@ import { LoginView } from "../LoginView/LoginView";
 import { SignupView } from "../SignupView/SignupView";
 import PropTypes from "prop-types";
 
+import { Container, Row, Col, Button, Form } from "react-bootstrap";
+import Masonry from "masonry-layout";
 
 export const MainView = () => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -20,7 +22,7 @@ export const MainView = () => {
     console.log(user, token);
     if (!user || !token) return;
 
-    fetch("https://british-movies-api-626d415aa570.herokuapp.com/movies", {
+    fetch("https://gb-movies-api-cab43a70da98.herokuapp.com/movies", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((response) => response.json())
@@ -53,37 +55,11 @@ export const MainView = () => {
         setMovies(moviesFromApi);
       });
   }, [user, token]);
-  
-  if (!user) {
-    
-    return (
-      <div>    
-    {showSignup ? (
-      <SignupView />
-    ) : (
-      <LoginView
-      onLoggedIn={(user, token) => {
-      setUser(user);
-      setToken(token);
-      localStorage.setItem("user", JSON.stringify(user)); 
-      localStorage.setItem("token", token);
-      }}
-      />
-    )
-  }
-  <button onClick={() => setShowSignup(!showSignup)}>
-    {showSignup ? "Back to Login" : "Sign Up"}
-  </button>
- </div>
-)}
 
-  if (selectedMovie) {
-  let similarMoviesByGenre = movies.filter((movie) => movie.genre.name === selectedMovie.genre.name && movie.id !== selectedMovie.id);
-  let similarMoviesByDirector = movies.filter((movie) => movie.director.name === selectedMovie.director.name && movie.id !== selectedMovie.id);
-
-    return (
-       <>
-        <button
+  return (
+    <Container>
+    <Row>  <Col>
+                 <Button
           onClick={() => {
           setUser(null);
           setToken(null);
@@ -93,7 +69,37 @@ export const MainView = () => {
           }}
         >
           Logout
-        </button>
+        </Button>
+      </Col>
+      </Row>
+    <Row className="justify-content-md-center">
+    {!user ? (
+      <Col md={5}>
+      <h2>Please login here to view the selecction of British movies:</h2>
+      <LoginView
+      onLoggedIn={(user, token) => {
+      setUser(user);
+      setToken(token);
+      localStorage.setItem("user", JSON.stringify(user)); 
+      localStorage.setItem("token", token);
+      }}
+          />
+      <hr />
+      <h2>or sign up here if you don't have an account yet:</h2>
+      <SignupView />
+      </Col> 
+      ) : selectedMovie ? (
+          (() => {
+        // Move logic outside JSX
+        let similarMoviesByGenre = movies.filter(
+          (movie) => movie.genre.name === selectedMovie.genre.name && movie.id !== selectedMovie.id
+        );
+        let similarMoviesByDirector = movies.filter(
+          (movie) => movie.director.name === selectedMovie.director.name && movie.id !== selectedMovie.id
+        );
+
+        return (
+          <Col md={8} style={{ border: "1px solid green"}} >
       <MovieView
         movie={selectedMovie}
         movies={movies} // for a full list of movies
@@ -126,8 +132,8 @@ export const MainView = () => {
        
         {/* For future embellishing, once actors will be added, also Similar Movies by Actors:
          <hr />
-        <h3>By Director</h3>
-        {similarMoviesByDirector.map((movie) => (
+        <h3>By Actors</h3>
+        {similarMoviesByActors.map((movie) => (
           <MovieCard
             key={movie.id}
             movie={movie}
@@ -136,54 +142,28 @@ export const MainView = () => {
           }}
           />
         ))}}  */}      
-      </>
-    );
-  }
-
-  if (movies.length === 0) {
-    return (
-      <>
-        <button
-          onClick={() => {
-          setUser(null);
-          setToken(null);
-          localStorage.setItem("user", JSON.stringify(user)); 
-          localStorage.setItem("token", token);
-          setShowSignup(false); // Reset to login screen
-          }}
-        >
-          Logout
-        </button>
+          </Col>
+       );
+      })()
+  ) : movies.length === 0 ? (
         <div>The list is empty!</div>
-      </>
-    );
-  }
-
-  return (
-    <div>
-       <button
-        onClick={() => {
-          setUser(null);
-          setToken(null);
-          localStorage.setItem("user", JSON.stringify(user)); 
-          localStorage.setItem("token", token);
-          setShowSignup(false); // Reset to login screen
-        }}
-      >
-        Logout
-      </button>
-      {movies.map((movie) => (
-        <MovieCard
-          key={movie.id}
-          movie={movie}
-          onMovieClick={() => {
-            setSelectedMovie(movie);
-          }}
-        />
-        
+        ) : (
+        <>
+          {movies.map((movie) => (
+            <Col className="mb-5" md={3}>
+              <MovieCard
+              key={movie.id}
+              movie={movie}
+              onMovieClick={() => {setSelectedMovie(movie);
+                }}
+              />
+            </Col>
       ))}
-    </div>
-    );
+    </>
+        )}
+    </Row>
+  </Container>
+  );
 };
 
 MainView.propTypes = {
