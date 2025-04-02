@@ -1,5 +1,9 @@
 import React from "react";
 import { useState } from "react";
+import { Button, Form } from "react-bootstrap";
+import { PasswordInput } from "../PasswordInput";
+import "./SignupView.scss";
+
 
 export const SignupView = () => {
     const [username, setUsername] = useState("");
@@ -16,7 +20,7 @@ export const SignupView = () => {
             Email: email,
             DateOfBirth: dateOfBirth,
         };
-        fetch("https://british-movies-api-626d415aa570.herokuapp.com/users", {
+        fetch("https://gb-movies-api-cab43a70da98.herokuapp.com/users", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
@@ -36,10 +40,11 @@ export const SignupView = () => {
   };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>
-                Username:
-                <input
+        <Form onSubmit={handleSubmit}>
+          <Form.Group controlId="formUsername">
+            <Form.Label>
+                Username: </Form.Label>
+                <Form.Control
                 type="text" 
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -47,41 +52,29 @@ export const SignupView = () => {
                 minlength="5"
                 maxlength="12"
                 />
-            </label>
-            <label>
-                Password (8 characters minimum):
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minlength="8"
-                maxlength="15"
-        />
-            </label>
-            <label> 
-                Email:
-              <input
+            <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} />
+            <Form.Label> 
+                Email: </Form.Label>
+              <Form.Control
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" size="30"
                 placeholder="sophie@example.com"
-        />
-            </label>
-            <label>
-                Date of Birth:
-              <input
+              />
+            <Form.Label>
+                Date of Birth: </Form.Label>
+              <Form.Control
                 type="date"
                 value={dateOfBirth}
                 onChange={(e) => setDateOfBirth(e.target.value)}
                 required
                 placeholder="01-01-2000"
-        />
-            </label>
-            <button type="submit">Submit</button>
-        </form>
+              />
+            </Form.Group>
+          <Button type="submit">Submit</Button>
+        </Form>
     );
 
 };
