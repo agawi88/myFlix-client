@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import Masonry from "masonry-layout";
 import { MovieCard } from "../MovieCard/MovieCard";
 import { MovieView } from "../MovieView/MovieView";
 import { LoginView } from "../LoginView/LoginView";
@@ -6,7 +7,7 @@ import { SignupView } from "../SignupView/SignupView";
 import PropTypes from "prop-types";
 
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
-import Masonry from "masonry-layout";
+
 
 export const MainView = () => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -17,6 +18,8 @@ export const MainView = () => {
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [showSignup, setShowSignup] = useState(false);
+
+   const masonryContainerRef = useRef(null);
 
   useEffect(() => {
     console.log(user, token);
@@ -56,10 +59,21 @@ export const MainView = () => {
       });
   }, [user, token]);
 
+    useEffect(() => {
+    if (masonryContainerRef.current) {
+      new Masonry(masonryContainerRef.current, {
+        itemSelector: ".masonry-item",
+        percentPosition: true,
+        gutter: 10, // Optional spacing between items
+      });
+    }
+  }, [movies]); // Run Masonry after movies are loaded
+
   return (
     <Container>
-    <Row>  <Col>
-                 <Button
+      <Row >
+        <Col className="d-grid gap-2 d-md-flex justify-content-md-end">
+                 <Button class="btn btn-primary me-md-2" type="button"
           onClick={() => {
           setUser(null);
           setToken(null);
@@ -72,7 +86,7 @@ export const MainView = () => {
         </Button>
       </Col>
       </Row>
-    <Row className="justify-content-md-center">
+      <Row className="justify-content-md-center">
     {!user ? (
       <Col md={5}>
       <h2>Please login here to view the selecction of British movies:</h2>
@@ -147,22 +161,25 @@ export const MainView = () => {
       })()
   ) : movies.length === 0 ? (
         <div>The list is empty!</div>
-        ) : (
-        <>
-          {movies.map((movie) => (
-            <Col className="mb-5" md={3}>
+          ) : (
+      <Row>
+        <Col>
+          <div ref={masonryContainerRef} className="masonry-container">
+            {movies.map((movie) => (
+            <div className="masonry-item">
               <MovieCard
               key={movie.id}
               movie={movie}
-              onMovieClick={() => {setSelectedMovie(movie);
-                }}
+              onMovieClick={() => setSelectedMovie(movie)}
               />
-            </Col>
-      ))}
-    </>
-        )}
+            </div>
+            ))}
+            </div>
+          </Col>
+        </Row>
+      )}
     </Row>
-  </Container>
+  </Container >
   );
 };
 
