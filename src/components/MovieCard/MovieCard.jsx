@@ -4,9 +4,9 @@ import "./MovieCard.scss";
 
 export const MovieCard = ({ movie, onMovieClick }) => {
   return (
-    <Card className="h-100">
+    <Card className="MovieCard" style={{ width: '18rem' }}>
     <Card.Body>
-      <Card.Img variant="top" src={movie.image} />
+      <Card.Img variant="top" src={movie.image} alt="Cover photo of the selected movie" />
       <Card.Title> {movie.title} </Card.Title>
         <Button onClick={() => onMovieClick(movie)} variant="link"> Open </Button>
     </Card.Body>
