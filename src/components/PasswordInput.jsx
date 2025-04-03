@@ -7,8 +7,9 @@ export const PasswordInput = ({ value, onChange }) => {
 
   return (
     <Form.Group>
-      <Form.Label>Password (8 characters minimum):</Form.Label>
-      <InputGroup>
+      <Form.Label>
+        Password (8 characters minimum):</Form.Label>
+        <InputGroup>
         <Form.Control
           type={showPassword ? "text" : "password"}
           value={value}
@@ -17,7 +18,7 @@ export const PasswordInput = ({ value, onChange }) => {
           minLength="8"
           maxLength="15"
           autoComplete="current-password"
-        />
+            />
         <Button
           variant="outline-secondary"
           onClick={() => setShowPassword(!showPassword)}
@@ -25,6 +26,6 @@ export const PasswordInput = ({ value, onChange }) => {
           {showPassword ? <EyeSlash /> : <Eye />}
         </Button>
       </InputGroup>
-    </Form.Group>
+      </Form.Group>
   );
 };
