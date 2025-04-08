@@ -1,9 +1,12 @@
 import PropTypes from "prop-types";
-import { Button, Card } from "react-bootstrap";
+import { Button, Card, Container, Row, Col } from "react-bootstrap";
 import "./MovieCard.scss";
 
 export const MovieCard = ({ movie, onMovieClick }) => {
   return (
+    <Container fluid>
+    <Row xs md lg="auto">
+        <Col>
     <Card className="MovieCard" style={{ width: '18rem' }}>
     <Card.Body>
       <Card.Img variant="top" src={movie.image} alt="Cover photo of the selected movie" />
@@ -11,6 +14,9 @@ export const MovieCard = ({ movie, onMovieClick }) => {
         <Button onClick={() => onMovieClick(movie)} variant="link"> Open </Button>
     </Card.Body>
     </Card>
+      </Col>
+      </Row>
+      </Container>
   );
 };
 
