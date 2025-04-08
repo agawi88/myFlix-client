@@ -8,7 +8,7 @@ import Container from "react-bootstrap/Container";
 const MyFlixApplication = () => {
     return (
         <Container style={{ border: "1px solid red" }}>
-            <MainView />;
+            <MainView />
         </Container>
     );
 };
