@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Button, Form, Row, Col, InputGroup, Card } from "react-bootstrap";
+import { Button, Form, Row, Col, Card } from "react-bootstrap";
 import { PasswordInput } from "../PasswordInput";
 import "./LoginView.scss"
 
@@ -42,13 +42,14 @@ export const LoginView = ({ onLoggedIn }) => {
   };
 
   return (
-    <Card>
-      <Card.Header className="text-center bg-primary text-white">
-          <h4><b>Log In</b></h4>
+    <Card className="shadow-lg rounded-4 my-3">
+      <Card.Header className="text-center bg-primary opacity: 2 text-white rounded-4 my-0">
+          <h3><b>LOG IN</b></h3>
       </Card.Header>
       <Card.Body>
-      <Card.Title><h2>Please log in here to view the selecction of British movies:</h2></Card.Title>
-   <Form onSubmit={handleSubmit} /*style={{ border: "2px solid CadetBlue" }}*/>
+        <Card.Title><h4>Please log in here to view the selecction of British movies:
+        </h4></Card.Title>
+   <Form onSubmit={handleSubmit}>
       <Row>
       <Form.Group controlId="formUsername">
       <Form.Label column="lg">
