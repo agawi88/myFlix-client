@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Button, Form, Row, Col, InputGroup } from "react-bootstrap";
+import { Button, Form, Row, Col, InputGroup, Card } from "react-bootstrap";
 import { PasswordInput } from "../PasswordInput";
 import "./LoginView.scss"
 
@@ -42,13 +42,19 @@ export const LoginView = ({ onLoggedIn }) => {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Card>
+      <Card.Header className="text-center bg-primary text-white">
+          <h4><b>Log In</b></h4>
+      </Card.Header>
+      <Card.Body>
+      <Card.Title><h2>Please log in here to view the selecction of British movies:</h2></Card.Title>
+   <Form onSubmit={handleSubmit} /*style={{ border: "2px solid CadetBlue" }}*/>
       <Row>
       <Form.Group controlId="formUsername">
-      <Form.Label column="lg" lg={2}>
+      <Form.Label column="lg">
             Username:
       </Form.Label>
-        <Col xs="auto">
+        <Col lg="auto">
         <Form.Control
           type="text"
           value={username}
@@ -56,44 +62,43 @@ export const LoginView = ({ onLoggedIn }) => {
           required
           minlength="5"
           maxlength="12"
-              className="mb-2"
-              placeholder="John Doe"         
+          className="mb-2 bg-light text-dark"
+          placeholder="Enter your name"        
             />
           </Col>
         </Form.Group>
       </Row>
-      <Row>
-        <Form.Group>
-        <Form.Label column="lg" lg={2}>
-        <Col xs="auto">
+      <Row className="align-items-center">
+      <Form.Group controlId="formPassword">
+        <Col lg="auto">
+        <Form.Label>
+          Password (8 characters minimum):
+          </Form.Label>
+          </Col>
+        <Col lg="auto">
           <PasswordInput
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mb-2"
-          />
+            className="mb-2 bg-light text-dark"
+            />
           </Col>
-          </Form.Label>
-        <Form.Label>
-         <Col xs="auto">
-          <Form.Check
+          <Col>
+                    <Form.Check
             type="checkbox"
             id="autoSizingCheck"
             className="mb-2"
             label="Remember me"
-          />
-          </Col>
-          </Form.Label>
+        />
+        </Col>
         </Form.Group>
         </Row>
-        <Row>
-          <Form.Group>
-        <Form.Label>
-        <Col xs="auto">
-          <Button type="submit" className="mb-2">Submit</Button>
-        </Col>
-        </Form.Label>
-        </Form.Group>
-      </Row>
-    </Form>
+        </Form>
+      </Card.Body>
+              <Card.Footer>
+              <Row>
+          <Button type="submit" className="mb-2" lg="auto">Submit</Button>
+          </Row>
+          </Card.Footer>
+      </Card>
   );
 };
