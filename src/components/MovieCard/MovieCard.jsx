@@ -4,19 +4,15 @@ import "./MovieCard.scss";
 
 export const MovieCard = ({ movie, onMovieClick }) => {
   return (
-    <Container fluid>
-    <Row xs md lg="auto">
-        <Col>
-    <Card className="MovieCard" style={{ width: '18rem' }}>
-    <Card.Body>
-      <Card.Img variant="top" src={movie.image} alt="Cover photo of the selected movie" />
-      <Card.Title> {movie.title} </Card.Title>
-        <Button onClick={() => onMovieClick(movie)} variant="link"> Open </Button>
-    </Card.Body>
-    </Card>
-      </Col>
-      </Row>
-      </Container>
+    <div className="MovieCard">
+       <Card className="h-100">
+        <Card.Body className="d-flex flex-column justify-content-between">
+          <Card.Img variant="top" src={movie.image} style={{ height: "70%", objectFit: "cover" }}/>
+          <Card.Title className="text-center"><h4> {movie.title} </h4></Card.Title>
+          <Button onClick={() => onMovieClick(movie)} class="btn btn-primary" type="button"> Open </Button>
+        </Card.Body>
+      </Card>
+    </div>
   );
 };
 
