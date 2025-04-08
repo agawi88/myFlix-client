@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { Form, InputGroup, Button } from "react-bootstrap";
-import { Eye, EyeSlash } from "react-bootstrap-icons";
+import { Form, InputGroup, Button, Row, Col} from "react-bootstrap";
+//import { Eye, EyeSlash } from "react-bootstrap-icons";
+import Eye from "react-bootstrap-icons/dist/icons/eye";
+import EyeSlash from "react-bootstrap-icons/dist/icons/eye-slash";
+
 
 export const PasswordInput = ({ value, onChange }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
+    <Row>
     <Form.Group>
-      <Form.Label>
-        Password (8 characters minimum):</Form.Label>
         <InputGroup>
         <Form.Control
           type={showPassword ? "text" : "password"}
@@ -18,6 +20,8 @@ export const PasswordInput = ({ value, onChange }) => {
           minLength="8"
           maxLength="15"
           autoComplete="current-password"
+          className="bg-light text-dark"
+          placeholder="Enter your password" 
             />
         <Button
           variant="outline-secondary"
@@ -27,5 +31,6 @@ export const PasswordInput = ({ value, onChange }) => {
         </Button>
       </InputGroup>
       </Form.Group>
+      </Row>
   );
 };
