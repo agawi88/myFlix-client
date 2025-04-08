@@ -5,7 +5,7 @@ import { LoginView } from "../LoginView/LoginView";
 import { SignupView } from "../SignupView/SignupView";
 import PropTypes from "prop-types";
 
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col, Button, Form, Navbar } from "react-bootstrap";
 
 
 export const MainView = () => {
@@ -59,8 +59,25 @@ export const MainView = () => {
   return (
     <Container>
       {user && (selectedMovie || movies.length > 0) && (
+
+<Navbar className="Navbar justify-content-between">
+      <Form className="d-flex">
+        <Row>
+          <Col xs="auto">
+            <Form.Control
+              type="text"
+              placeholder="Search"
+              className="mr-sm-2 SearchBar"
+            />
+          </Col>
+          <Col xs="auto">
+            <Button type="submit" className="RegularButton">Submit</Button>
+          </Col>
+        </Row>
+      </Form>
+          <Form className="d-flex">
         <Col className="d-grid gap-2 d-md-flex justify-content-md-end">
-                 <Button class="btn btn-primary me-md-2" type="button"
+                 <Button className="btn RegularButton me-md-2" type="button"
           onClick={() => {
           setUser(null);
           setToken(null);
@@ -72,12 +89,14 @@ export const MainView = () => {
           Logout
         </Button>
       </Col>
-    )}
+      </Form>
+    </Navbar>
+      )}
+       
       <Row className="justify-content-md-center">
     {!user ? (
-          <Col md={5} mb-3 p-2>
-            <Row className="FormCss">
-{/* <h2>Please <b>LOG IN</b> here to view the selecction of British movies:</h2> */}
+          <Col md={5} mb-1 p-2>
+            <Row>
       <LoginView
       onLoggedIn={(user, token) => {
       setUser(user);
@@ -86,12 +105,10 @@ export const MainView = () => {
       localStorage.setItem("token", token);
       }}
               />
-              </Row>
-            <hr />
+            </Row>
             <Row>
-      {/* <h2>or <b>SIGN UP</b> here if you don't have an account yet:</h2> */}
               <SignupView />
-              </Row>
+            </Row>
       </Col> 
       ) : selectedMovie ? (
           (() => {
@@ -153,21 +170,17 @@ export const MainView = () => {
   ) : movies.length === 0 ? (
         <div>The list is empty!</div>
           ) : (
-      <Row>
-        <Col>
-          <div>
-            {movies.map((movie) => (
-            <div>
+      <Row className="g-4" mb={3}>
+          {movies.map((movie) => (
+            <Col key={movie._id} xs={12} sm={6} md={4} lg={3} >
               <MovieCard
-              key={movie.id}
+           // key={movie.id}
               movie={movie}
               onMovieClick={() => setSelectedMovie(movie)}
               />
-            </div>
-            ))}
-            </div>
-          </Col>
-        </Row>
+            </Col>
+          ))}
+      </Row>
       )}
     </Row>
   </Container >
