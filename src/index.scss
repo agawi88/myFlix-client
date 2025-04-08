@@ -1,5 +1,6 @@
 $primary: CadetBlue;
-$body-bg: Azure;
+$body-bg: #c1dfdf;
+$card-bg: Azure;
 
 @import '~bootstrap/scss/bootstrap.scss';
 
@@ -7,4 +8,20 @@ $color: steelblue;
 
 .my-flix {
     color: $color;
+}
+.Card {
+    color: $card-bg;
+}
+
+.Navbar {
+    color: $body-bg;
+    opacity: 0.7;
+    border-bottom: solid 2px gray;
+}
+
+.SearchBar {
+    background-color: $card-bg;
+}
+.RegularButton {
+    background-color: $primary;
 }
