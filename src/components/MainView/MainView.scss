@@ -3,7 +3,18 @@
     float: inline-end; 
 }
 
+.FormCss {
+    border: 2px solid cadetblue;
+    border-radius: 5%;
+    padding: 20px 30px;
+}
 
+.MovieCard {
+   height: 400px;
+    /* Set a fixed height */
+    display: flex;
+    flex-direction: column;
+}
  //.masonry-container {
       /* display: flex;  
        flex-wrap: wrap; 
@@ -15,7 +26,7 @@
        //grid-auto-rows: masonry;
         /* Enable masonry behavior */
         //gap: 10px;
-        /* Add spacing between items }*/
+        /* Add spacing between items }
 
 .masonry-item {
 display: inline-block;
@@ -23,11 +34,6 @@ width: 100%;
 margin-bottom: 16px;
 break-inside: avoid; 
 gap: 10px;
-}
+}*/
 
-.MovieCard {
-   height: 400px;
-    /* Set a fixed height */
-    display: flex;
-    flex-direction: column;
-}
+
