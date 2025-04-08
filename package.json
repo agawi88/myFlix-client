@@ -25,7 +25,6 @@
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
-    "masonry-layout": "^4.2.2",
     "parcel": "^2.13.3",
     "prop-types": "^15.8.1",
     "react": "^19.0.0",
