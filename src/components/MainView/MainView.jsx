@@ -1,12 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import Masonry from "masonry-layout";
 import { MovieCard } from "../MovieCard/MovieCard";
 import { MovieView } from "../MovieView/MovieView";
 import { LoginView } from "../LoginView/LoginView";
 import { SignupView } from "../SignupView/SignupView";
 import PropTypes from "prop-types";
 
-import { Container, Row, Col, Button, Form } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 
 
 export const MainView = () => {
@@ -18,8 +17,6 @@ export const MainView = () => {
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [showSignup, setShowSignup] = useState(false);
-
-   const masonryContainerRef = useRef(null);
 
   useEffect(() => {
     console.log(user, token);
@@ -59,19 +56,9 @@ export const MainView = () => {
       });
   }, [user, token]);
 
-    useEffect(() => {
-    if (masonryContainerRef.current) {
-      new Masonry(masonryContainerRef.current, {
-        itemSelector: ".masonry-item",
-        percentPosition: true,
-        gutter: 10, // Optional spacing between items
-      });
-    }
-  }, [movies]); // Run Masonry after movies are loaded
-
   return (
     <Container>
-      <Row >
+      {user && (selectedMovie || movies.length > 0) && (
         <Col className="d-grid gap-2 d-md-flex justify-content-md-end">
                  <Button class="btn btn-primary me-md-2" type="button"
           onClick={() => {
@@ -79,17 +66,18 @@ export const MainView = () => {
           setToken(null);
           localStorage.setItem("user", JSON.stringify(user)); 
           localStorage.setItem("token", token);
-          setShowSignup(false); // Reset to login screen
+          //setShowSignup(false); // Reset to login screen
           }}
         >
           Logout
         </Button>
       </Col>
-      </Row>
+    )}
       <Row className="justify-content-md-center">
     {!user ? (
-      <Col md={5}>
-      <h2>Please login here to view the selecction of British movies:</h2>
+          <Col md={5} mb-3 p-2>
+            <Row className="FormCss">
+{/* <h2>Please <b>LOG IN</b> here to view the selecction of British movies:</h2> */}
       <LoginView
       onLoggedIn={(user, token) => {
       setUser(user);
@@ -97,10 +85,13 @@ export const MainView = () => {
       localStorage.setItem("user", JSON.stringify(user)); 
       localStorage.setItem("token", token);
       }}
-          />
-      <hr />
-      <h2>or sign up here if you don't have an account yet:</h2>
-      <SignupView />
+              />
+              </Row>
+            <hr />
+            <Row>
+      {/* <h2>or <b>SIGN UP</b> here if you don't have an account yet:</h2> */}
+              <SignupView />
+              </Row>
       </Col> 
       ) : selectedMovie ? (
           (() => {
@@ -164,9 +155,9 @@ export const MainView = () => {
           ) : (
       <Row>
         <Col>
-          <div ref={masonryContainerRef} className="masonry-container">
+          <div>
             {movies.map((movie) => (
-            <div className="masonry-item">
+            <div>
               <MovieCard
               key={movie.id}
               movie={movie}
