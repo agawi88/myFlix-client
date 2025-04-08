@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Row, Col } from "react-bootstrap";
 import { PasswordInput } from "../PasswordInput";
 import "./SignupView.scss";
 
@@ -41,7 +41,9 @@ export const SignupView = () => {
 
     return (
         <Form onSubmit={handleSubmit}>
+        <Row>
           <Form.Group controlId="formUsername">
+            <Col lg="auto">
             <Form.Label>
                 Username: </Form.Label>
                 <Form.Control
@@ -51,9 +53,40 @@ export const SignupView = () => {
                 required
                 minlength="5"
                 maxlength="12"
-                />
-            <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} />
-            <Form.Label> 
+                className="mb-2 bg-light text-dark"
+                placeholder="Enter your name" 
+              />
+              </Col>
+            </Form.Group>
+      </Row>
+      <Row className="align-items-center">
+      <Form.Group controlId="formPassword">
+        <Col lg="auto">
+        <Form.Label>
+          Password (8 characters minimum):
+          </Form.Label>
+          </Col>
+        <Col lg="auto">
+          <PasswordInput
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="mb-2"
+            />
+          </Col>
+          <Col>
+                    <Form.Check
+            type="checkbox"
+            id="autoSizingCheck"
+            className="mb-2"
+            label="Remember me"
+        />
+        </Col>
+        </Form.Group>
+        </Row>            
+        <Row>
+          <Form.Group>
+            <Col lg="auto">
+        <Form.Label> 
                 Email: </Form.Label>
               <Form.Control
                 type="email"
@@ -62,7 +95,14 @@ export const SignupView = () => {
                 required
                 pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" size="30"
                 placeholder="sophie@example.com"
+                className="mb-2 bg-light text-dark"
               />
+              </Col>
+            </Form.Group>
+          </Row>
+        <Row>
+          <Form.Group>
+            <Col lg="auto">
             <Form.Label>
                 Date of Birth: </Form.Label>
               <Form.Control
@@ -71,9 +111,14 @@ export const SignupView = () => {
                 onChange={(e) => setDateOfBirth(e.target.value)}
                 required
                 placeholder="01-01-2000"
+                className="mb-2 bg-light text-dark"
               />
+              </Col>
             </Form.Group>
-          <Button type="submit">Submit</Button>
+          </Row>
+        <Row>
+        <Button type="submit" className="mb-2" lg="auto">Submit</Button>
+        </Row>
         </Form>
     );
 
