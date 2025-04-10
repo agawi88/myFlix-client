@@ -27,7 +27,7 @@ export const MainView = () => {
   const [favoriteMovies, setFavoriteMovies] = useState([]);
   const [favoriteMovieIds, setFavoriteMovieIds] = useState([]);
 
-  const isFavorite = favoriteMovieIds.includes(selectedMovie?.id);
+  const isFavorite = user.favoriteMovies.includes(selectedMovie?.id);
   // const [showSignup, setShowSignup] = useState(false);
 
   useEffect(() => {
@@ -87,11 +87,27 @@ export const MainView = () => {
   }
 
   let toggleFavorite = (movieId) => {
-    setFavoriteMovieIds((prev) =>
-      prev.includes(movieId)
-        ? prev.filter((id) => id !== movieId)
-        : [...prev, movieId]
-    );
+    const isFav = user.FavoriteMovies.includes(movieId);
+    const method = isFav ? "DELETE" : "POST";
+
+    fetch("https://gb-movies-api-cab43a70da98.herokuapp.com/movies/${movieId}", {
+      method,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to update favorites");
+        }
+        return res.json();
+      })
+      .then((updatedUser) => {
+        setUser(updatedUser);
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+      })
+      .catch((err) => console.error(err));
   };
 
   return (
@@ -151,6 +167,7 @@ export const MainView = () => {
 {/* // MAIN and OTHER VIEWs */}
       {!user ? (
         <Col md={5} mb-1 p-2>
+  {/* LOGIN and SIGNUP view, for the moment put together */}
           <Row>
             <LoginView
               onLoggedIn={(user, token) => {
