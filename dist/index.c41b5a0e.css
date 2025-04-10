@@ -5,12 +5,15 @@
   box-shadow: 0 2px 5px #102d44e7;
 }
 
-.back-button {
-  color: #f5f5f5;
-  background-color: #1e90ff;
-  border: none;
-  border-radius: 4px;
-  padding: 4px 12px;
+.smallCard .card {
+  width: 50%;
+  height: 50%;
+  font-size: .85rem;
+}
+
+.smallCard .card img {
+  object-fit: cover;
+  height: 120px;
 }
 
 :root, [data-bs-theme="light"] {
