@@ -6,4 +6,18 @@ To start the project run the following command in the Terminal: <b> npm run dev 
 
 It can be accessed via http://localhost:1234/
 
+Future projects:
+
+1. For future embellishing, once actors will be added, also Similar Movies by Actors:
+   <hr />
+   <h3>By Actors</h3>
+   {similarMoviesByActors.map((movie) => (
+   <MovieCard
+   key={movie.id}
+   movie={movie}
+   onMovieClick={() => {
+   setSelectedMovie(movie);
+   }}
+   />
+   ))}
 T.B.C
