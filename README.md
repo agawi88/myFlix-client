@@ -8,7 +8,9 @@ It can be accessed via http://localhost:1234/
 
 Future projects:
 
-1. For future embellishing, once actors will be added, also Similar Movies by Actors:
+<ol>
+<li>
+For future embellishing, once actors will be added, also Similar Movies by Actors:
    <hr />
    <h3>By Actors</h3>
    {similarMoviesByActors.map((movie) => (
@@ -17,7 +19,15 @@ Future projects:
    movie={movie}
    onMovieClick={() => {
    setSelectedMovie(movie);
-   }}
-   />
+   }
    ))}
+   />
+   </li>
+   <li>
+   The CardGroup for similar movies in each cathegory might be changed to a carousel in the future.
+   </li>
+   <li>
+   Adjust the Login and Signup view to the current standards.
+   </li>
+   <ol>
 T.B.C
