@@ -29,5 +29,8 @@ For future embellishing, once actors will be added, also Similar Movies by Actor
    <li>
    Adjust the Login and Signup view to the current standards.
    </li>
+      <li>
+   Adding a svg graphic to an empty list of favorites and maybe to an empty list of movies to make it more visual.
+   </li>
    <ol>
 T.B.C
