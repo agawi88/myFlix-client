@@ -3,7 +3,6 @@ import { MainView } from "./components/MainView/MainView";
 import "./index.scss";
 import Container from "react-bootstrap/Container";
 
-
 // Main component (will eventually use all the others)
 const MyFlixApplication = () => {
     return (
