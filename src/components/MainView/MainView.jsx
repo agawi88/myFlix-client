@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { MovieCard } from "../MovieCard/MovieCard";
 import { MovieView } from "../MovieView/MovieView";
 import { LoginView } from "../LoginView/LoginView";
@@ -27,7 +27,6 @@ export const MainView = () => {
   const [favoriteMovies, setFavoriteMovies] = useState([]);
   const [favoriteMovieIds, setFavoriteMovieIds] = useState([]);
 
-  const isFavorite = user.favoriteMovies.includes(selectedMovie?.id);
   // const [showSignup, setShowSignup] = useState(false);
 
   useEffect(() => {
@@ -85,30 +84,6 @@ export const MainView = () => {
         movie.id !== selectedMovie.id
     );
   }
-
-  let toggleFavorite = (movieId) => {
-    const isFav = user.FavoriteMovies.includes(movieId);
-    const method = isFav ? "DELETE" : "POST";
-
-    fetch("https://gb-movies-api-cab43a70da98.herokuapp.com/movies/${movieId}", {
-      method,
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to update favorites");
-        }
-        return res.json();
-      })
-      .then((updatedUser) => {
-        setUser(updatedUser);
-        localStorage.setItem("user", JSON.stringify(updatedUser));
-      })
-      .catch((err) => console.error(err));
-  };
 
   return (
     <Container>
@@ -260,24 +235,62 @@ export const MainView = () => {
   );
 };
 
-MainView.propTypes = {
-  movie: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    releaseYear: PropTypes.string.isRequired,
-    setting: PropTypes.string,
-    description: PropTypes.string.isRequired,
-    genre: PropTypes.shape({
-      name: PropTypes.string.isRequired,
+//   console.log("User:", user);
+//   console.log("FavoriteMovies:", user?.FavoriteMovies);
+//   console.log("Selected Movie:", selectedMovie?.id);
+// const isFavorite = selectedMovie?.id && favoriteMovieIds(selectedMovie.id);
+
+//   let toggleFavorite = (movieId) => {
+    
+//   const isFav = user?.FavoriteMovies?.includes(movieId);
+//   const method = isFav ? "DELETE" : "POST";
+// }
+//   useEffect(() => {
+
+//     if (!user || !token) return;
+
+//     const fetchFavorites = async () => {
+//       try {
+//         const response = await fetch(
+//           `https://gb-movies-api-cab43a70da98.herokuapp.com/users/:Username/${user.Username}/movies`,
+//           { headers: { Authorization: `Bearer ${token}` },
+//             }
+//         );
+
+//         if (!response.ok) {
+//           throw new Error("Failed to fetch favorites");
+//         }
+
+//         const favoriteMoviesData = await response.json();
+//         setFavoriteMovies(favoriteMoviesData);
+//         setFavoriteMovieIds(favoriteMoviesData.map((m) => m._id));
+//       } catch (err) {
+//         console.error("Failed to fetch favorite movies", err);
+//       }
+//     };
+
+//     fetchFavorites();
+//   }, [user, token]);
+
+
+  MainView.propTypes = {
+    movie: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      releaseYear: PropTypes.string.isRequired,
+      setting: PropTypes.string,
       description: PropTypes.string.isRequired,
-    }),
-    director: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      bio: PropTypes.string.isRequired,
-      dateOfBirth: PropTypes.string.isRequired,
-      deathYear: PropTypes.string,
-    }),
-    image: PropTypes.string.isRequired,
-    featured: PropTypes.bool.isRequired,
-  }).isRequired,
-  onMovieClick: PropTypes.func.isRequired
-};
+      genre: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        description: PropTypes.string.isRequired,
+      }),
+      director: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        bio: PropTypes.string.isRequired,
+        dateOfBirth: PropTypes.string.isRequired,
+        deathYear: PropTypes.string,
+      }),
+      image: PropTypes.string.isRequired,
+      featured: PropTypes.bool.isRequired,
+    }).isRequired,
+    onMovieClick: PropTypes.func.isRequired
+  };
