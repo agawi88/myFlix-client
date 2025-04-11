@@ -5,8 +5,7 @@ import { LoginView } from "../LoginView/LoginView";
 import { SignupView } from "../SignupView/SignupView";
 import { SimilarMoviesByGenre } from "../SimilarMovies/SimilarMoviesByGenre";
 import { SimilarMoviesByDirector } from "../SimilarMovies/SimilarMoviesByDirector";
-import { FavoritesView } from "../FavoriteMovies/FavoritesView";
-
+import { ProfileView } from "../UsersProfileView/ProfileView";
 
 import PropTypes from "prop-types";
 
@@ -19,8 +18,8 @@ export const MainView = () => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const storedToken = localStorage.getItem("token");
 
-  const [user, setUser] = useState(storedUser? storedUser : null);
-  const [token, setToken] = useState(storedToken? storedToken : null);
+  const [user, setUser] = useState(storedUser ? storedUser : null);
+  const [token, setToken] = useState(storedToken ? storedToken : null);
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [currentView, setCurrentView] = useState("main");
@@ -28,6 +27,38 @@ export const MainView = () => {
   const [favoriteMovieIds, setFavoriteMovieIds] = useState([]);
 
   // const [showSignup, setShowSignup] = useState(false);
+
+  const similarMoviesByGenre = [];
+  const similarMoviesByDirector = [];
+
+  const isFavorite = user?.FavoriteMovies?.includes(selectedMovie?.id);
+
+
+  const toggleFavorite = (movieId) => {
+    if (!user || !token) return;
+    
+    const isFav = user.FavoriteMovies.includes(movieId);
+
+    const url = `https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}/movies/${movieId}`;
+    const method = isFav ? "DELETE" : "POST";
+
+    fetch(url, {
+      method: method,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      }
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to update favorites");
+        return res.json();
+      })
+      .then((updatedUser) => {
+        setUser(updatedUser);
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+      })
+      .catch((error) => console.error("Toggle favorite error:", error));
+  };
 
   useEffect(() => {
     console.log(user, token);
@@ -47,7 +78,7 @@ export const MainView = () => {
             releaseYear: doc.ReleaseYear,
             setting: doc.Setting,
             description: doc.Description,
-            genre: { 
+            genre: {
               name: doc.Genre.Name,
               description: doc.Genre.Description,
             },
@@ -64,11 +95,39 @@ export const MainView = () => {
         });
         console.log(moviesFromApi);
         setMovies(moviesFromApi);
+      })
+      .catch((error) => {
+        console.error("Error loading movies:", error);
       });
   }, [user, token]);
 
-  let similarMoviesByGenre = [];
-  let similarMoviesByDirector = [];
+
+    useEffect(() => {
+    console.log(user, token);
+    if (!user || !token) return;
+      fetch("https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setUser(data);
+        setFavoriteMovieIds(data.FavoriteMovies || []);
+
+        const userFromApi = user.map((doc) => {
+          return {
+            id: doc._id,
+            username: doc.Username,
+            password: doc.Password,
+            email: doc.Email,
+            dateOfBirth: doc.DateOfBirth,
+            favoriteMovies: { 
+              movieId:doc.FavoriteMovies.MovieId},
+          };
+        });
+        console.log(moviesFromApi);
+        setUser(userFromApi);
+      });
+  }, [user, token]);
 
   if (selectedMovie) {
     
@@ -108,13 +167,12 @@ export const MainView = () => {
             <Row>
             <ButtonGroup>
               <Col xs="auto">
-                <Button onClick={() =>
-                setCurrentView("favorites")}>
-                Favorites
+                <Button type="submit" className="RegularButton">
+                Profile
                 </Button>
                 </Col>
                 <Col xs="auto">
-                  {currentView === "favorites" && (
+                  {currentView === "profile" && (
                     <Button onClick={() =>
                       setCurrentView("main")} className="mb-3">
                       Back to Home
@@ -158,10 +216,11 @@ export const MainView = () => {
           </Row>
         </Col>
 // FAVORITES VIEW
-      ) : currentView === "favorites" ? (
+      ) : currentView === "profile" ? (
           <>
-            <FavoritesView
-              favoriteMovies={favoriteMovies}
+            <ProfileView
+              user={user}
+              movies={movies}
               onMovieClick={(movie) => {
                 setSelectedMovie(movie);
                 setCurrentView("main");
@@ -234,44 +293,6 @@ export const MainView = () => {
     </Container >
   );
 };
-
-//   console.log("User:", user);
-//   console.log("FavoriteMovies:", user?.FavoriteMovies);
-//   console.log("Selected Movie:", selectedMovie?.id);
-// const isFavorite = selectedMovie?.id && favoriteMovieIds(selectedMovie.id);
-
-//   let toggleFavorite = (movieId) => {
-    
-//   const isFav = user?.FavoriteMovies?.includes(movieId);
-//   const method = isFav ? "DELETE" : "POST";
-// }
-//   useEffect(() => {
-
-//     if (!user || !token) return;
-
-//     const fetchFavorites = async () => {
-//       try {
-//         const response = await fetch(
-//           `https://gb-movies-api-cab43a70da98.herokuapp.com/users/:Username/${user.Username}/movies`,
-//           { headers: { Authorization: `Bearer ${token}` },
-//             }
-//         );
-
-//         if (!response.ok) {
-//           throw new Error("Failed to fetch favorites");
-//         }
-
-//         const favoriteMoviesData = await response.json();
-//         setFavoriteMovies(favoriteMoviesData);
-//         setFavoriteMovieIds(favoriteMoviesData.map((m) => m._id));
-//       } catch (err) {
-//         console.error("Failed to fetch favorite movies", err);
-//       }
-//     };
-
-//     fetchFavorites();
-//   }, [user, token]);
-
 
   MainView.propTypes = {
     movie: PropTypes.shape({
