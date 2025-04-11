@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import "./MovieView.scss";
 // import { Button,  } from "react-bootstrap";
 
-export const MovieView = ({ movie }) => {
+export const MovieView = ({ movie, onMovieClick, onBackClick }) => {
   console.log(movie);
   return (
     <div>
