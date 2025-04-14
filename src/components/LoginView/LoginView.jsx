@@ -8,6 +8,7 @@ import "./LoginView.scss"
 export const LoginView = ({ onLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   
     
   const handleSubmit = (event) => {
@@ -36,12 +37,13 @@ export const LoginView = ({ onLoggedIn }) => {
                   alert("No such user");
               }
           })
-          .catch((e) => {
-              alert("Something went wrong");
+          .catch((error) => {
+              setError("Something went wrong");
           });
   };
 
   return (
+  <Form onSubmit={handleSubmit}>
     <Card className="shadow-lg rounded-4 my-3">
       <Card.Header className="text-center bg-primary opacity: 2 text-white rounded-4 my-0">
           <h3><b>LOG IN</b></h3>
@@ -49,7 +51,6 @@ export const LoginView = ({ onLoggedIn }) => {
       <Card.Body>
         <Card.Title><h4>Please log in here to view the selecction of British movies:
         </h4></Card.Title>
-   <Form onSubmit={handleSubmit}>
       <Row>
       <Form.Group controlId="formUsername">
       <Form.Label column="lg">
@@ -61,8 +62,8 @@ export const LoginView = ({ onLoggedIn }) => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
-          minlength="5"
-          maxlength="12"
+          minLength="5"
+          maxLength="12"
           className="mb-2 bg-light text-dark"
           placeholder="Enter your name"        
             />
@@ -93,13 +94,13 @@ export const LoginView = ({ onLoggedIn }) => {
         </Col>
         </Form.Group>
         </Row>
-        </Form>
       </Card.Body>
               <Card.Footer>
               <Row>
           <Button type="submit" className="mb-2" lg="auto">Log in</Button>
           </Row>
           </Card.Footer>
-      </Card>
+    </Card>
+  </Form>
   );
 };
