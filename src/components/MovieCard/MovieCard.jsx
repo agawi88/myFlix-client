@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { Button, Card, Container, Row, Col } from "react-bootstrap";
+import  { Link } from "react-router-dom";
 import "./MovieCard.scss";
 
 export const MovieCard = ({ movie, onMovieClick }) => {
@@ -9,7 +10,8 @@ export const MovieCard = ({ movie, onMovieClick }) => {
         <Card.Body className="d-flex flex-column justify-content-between">
           <Card.Img variant="top" src={movie.image} style={{ height: "70%", objectFit: "cover" }}/>
           <Card.Title className="text-center"><h4> {movie.title} </h4></Card.Title>
-          <Button onClick={() => onMovieClick(movie)} class="btn btn-primary" type="button"> Open </Button>
+          <Link to={`/movies/${encodeURIComponent(movie.id)}`}></Link>
+          <Button onClick={() => onMovieClick(movie)} className="btn btn-primary" type="button"> Open </Button>
         </Card.Body>
       </Card>
     </div>
@@ -35,5 +37,5 @@ MovieCard.propTypes = {
     image: PropTypes.string.isRequired,
     featured: PropTypes.bool,
   }).isRequired,
-  onMovieClick: PropTypes.func.isRequired
+  //onMovieClick: PropTypes.func.isRequired
 };
