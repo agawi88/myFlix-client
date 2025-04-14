@@ -9,7 +9,7 @@ import { ProfileView } from "../UsersProfileView/ProfileView";
 
 import { Container, Row, Col, Button, ButtonGroup, Form, Navbar, Modal } from "react-bootstrap";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { BrowserRounter,Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter,Route, Routes, Navigate } from "react-router-dom";
 
 import PropTypes from "prop-types";
 
@@ -139,7 +139,7 @@ export const MainView = () => {
   };
 
   return (
-    <BrowserRounter>
+    <BrowserRouter>
     <Container>
       {user && (selectedMovie || movies.length > 0) && (
 //  NVBAR
@@ -288,7 +288,7 @@ export const MainView = () => {
         </Row>
       )}       
       </Container >
-    </BrowserRounter>
+    </BrowserRouter>
   );
 };
 
