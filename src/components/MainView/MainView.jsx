@@ -7,11 +7,11 @@ import { SimilarMoviesByGenre } from "../SimilarMovies/SimilarMoviesByGenre";
 import { SimilarMoviesByDirector } from "../SimilarMovies/SimilarMoviesByDirector";
 import { ProfileView } from "../UsersProfileView/ProfileView";
 
-import PropTypes from "prop-types";
-
 import { Container, Row, Col, Button, ButtonGroup, Form, Navbar, Modal } from "react-bootstrap";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { BrowserRounter,Route, Routes, Navigate } from "react-router-dom";
 
+import PropTypes from "prop-types";
 
 
 export const MainView = () => {
@@ -25,40 +25,10 @@ export const MainView = () => {
   const [currentView, setCurrentView] = useState("main");
   const [favoriteMovies, setFavoriteMovies] = useState([]);
   const [favoriteMovieIds, setFavoriteMovieIds] = useState([]);
+// const [showSignup, setShowSignup] = useState(false);
 
-  // const [showSignup, setShowSignup] = useState(false);
-
-  const similarMoviesByGenre = [];
-  const similarMoviesByDirector = [];
-
-  const isFavorite = user?.FavoriteMovies?.includes(selectedMovie?.id);
-
-
-  const toggleFavorite = (movieId) => {
-    if (!user || !token) return;
-    
-    const isFav = user.FavoriteMovies.includes(movieId);
-
-    const url = `https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}/movies/${movieId}`;
-    const method = isFav ? "DELETE" : "POST";
-
-    fetch(url, {
-      method: method,
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      }
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to update favorites");
-        return res.json();
-      })
-      .then((updatedUser) => {
-        setUser(updatedUser);
-        localStorage.setItem("user", JSON.stringify(updatedUser));
-      })
-      .catch((error) => console.error("Toggle favorite error:", error));
-  };
+  let similarMoviesByGenre = [];
+  let similarMoviesByDirector = [];
 
   useEffect(() => {
     console.log(user, token);
@@ -101,31 +71,29 @@ export const MainView = () => {
       });
   }, [user, token]);
 
-
     useEffect(() => {
     console.log(user, token);
     if (!user || !token) return;
-      fetch("https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}", {
-      headers: { Authorization: `Bearer ${token}` },
+      fetch('https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}', {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
     })
       .then((response) => response.json())
       .then((data) => {
-        setUser(data);
-        setFavoriteMovieIds(data.FavoriteMovies || []);
+        // setUser(data);
+        //setFavoriteMovieIds(data.FavoriteMovies || []);
 
-        const userFromApi = user.map((doc) => {
-          return {
-            id: doc._id,
-            username: doc.Username,
-            password: doc.Password,
-            email: doc.Email,
-            dateOfBirth: doc.DateOfBirth,
-            favoriteMovies: { 
-              movieId:doc.FavoriteMovies.MovieId},
-          };
-        });
-        console.log(moviesFromApi);
+        const userFromApi = {
+            id: data.user._id,
+            username: data.user.Username,
+            password: data.user.Password,
+            email: data.user.Email,
+            dateOfBirth: data.user.DateOfBirth,
+            favoriteMovies: data.user.FavoriteMovies || []
+        };
+        console.log(userFromApi);
         setUser(userFromApi);
+        setFavoriteMovieIds(userFromApi.favoriteMovies)
       });
   }, [user, token]);
 
@@ -143,8 +111,35 @@ export const MainView = () => {
         movie.id !== selectedMovie.id
     );
   }
+  const isFavorite = favoriteMovieIds.includes(selectedMovie?.id);
+
+    const toggleFavorite = (movieId) => {
+    if (!user || !token) return;
+    
+    const isFav = user.FavoriteMovies.includes(movieId);
+
+    const method = isFav ? "DELETE" : "POST";
+
+    fetch(`https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}/movies/${movieId}`, {
+      method: method,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      }
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to update favorites");
+        return res.json();
+      })
+      .then((updatedUser) => {
+        setUser(updatedUser);
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+      })
+      .catch((error) => console.error("Toggle favorite error:", error));
+  };
 
   return (
+    <BrowserRounter>
     <Container>
       {user && (selectedMovie || movies.length > 0) && (
 //  NVBAR
@@ -183,9 +178,11 @@ export const MainView = () => {
                 <Button className="btn RegularButton me-md-2" type="button"
                 onClick={() => {
                 setUser(null);
-                setToken(null);
-                localStorage.setItem("user", JSON.stringify(user)); 
-                localStorage.setItem("token", token);
+                  setToken(null);
+                  localStorage.removeItem("user");
+                  localStorage.removeItem("token");
+                // localStorage.setItem("user", JSON.stringify(user)); 
+                // localStorage.setItem("token", token);
               // setShowSignup(false); // Reset to login screen
               }}
                 >
@@ -281,7 +278,7 @@ export const MainView = () => {
 // MOVIE CARDS IN MAIN VIEW bzw LIST OF MOVIES
         <Row className="g-4" xs={1} sm={2} md={3} lg={4} mb={3}>
           {movies.map((movie) => (
-            <Col key={movie._id} xs={12} sm={6} md={4} lg={3} >
+            <Col key={movie.id} xs={12} sm={6} md={4} lg={3} >
               <MovieCard
                 movie={movie}
                 onMovieClick={() => setSelectedMovie(movie)}
@@ -290,7 +287,8 @@ export const MainView = () => {
           ))}
         </Row>
       )}       
-    </Container >
+      </Container >
+    </BrowserRounter>
   );
 };
 
