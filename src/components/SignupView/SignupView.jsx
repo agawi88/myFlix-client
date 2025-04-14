@@ -40,6 +40,7 @@ export const SignupView = () => {
   };
 
   return (
+  <Form onSubmit={handleSubmit} className="align-items-center">
       <Card className="shadow-lg rounded-4 my-4">
       <Card.Header className="text-center bg-primary opacity-8 text-white rounded-4 my-0" column="lg">
           <h3><b>REGISTER</b></h3>
@@ -47,19 +48,19 @@ export const SignupView = () => {
       <Card.Body>
         <Card.Title><h4>Please log in here to view the selecction of British movies:
         </h4></Card.Title>
-        <Form onSubmit={handleSubmit}>
         <Row>
           <Form.Group controlId="formUsername">
             <Col lg="auto">
             <Form.Label>
-                Username: </Form.Label>
-                <Form.Control
+                  Username:
+            </Form.Label>
+            <Form.Control
                 type="text" 
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-                minlength="5"
-                maxlength="12"
+                minLength="5"
+                maxLength="12"
                 className="mb-2 bg-light text-dark"
                 placeholder="Enter your name" 
               />
@@ -123,14 +124,13 @@ export const SignupView = () => {
               </Col>
             </Form.Group>
           </Row>
-        </Form>
       </Card.Body>
       <Card.Footer>
         <Row>
-          <Button type="submit" className="mb-2" lg="auto">Register</Button>
+          <Button type="submit" className="mb-2" lg="auto">Sign Up</Button>
         </Row>
        </Card.Footer>
       </Card>
+  </Form>
     );
-
 };
