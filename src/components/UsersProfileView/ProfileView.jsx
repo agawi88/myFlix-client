@@ -1,10 +1,52 @@
 import React from "react";
 import PropTypes from "prop-types";
-// import { Button,  } from "react-bootstrap";
 
-export const ProfileView = ({ user, movies, onMovieClick }) => {
+export const ProfileView = ({ user, movies, onMovieClick, onLoggedIn }) => {
   const favoriteMovies = movies.filter((movie) =>
-    user.FavoriteMovies.includes(movie._id));
+    user.FavoriteMovies.includes(movie.id));
+
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");    
+      
+    const handleProfile = (event) => {
+      event.preventDefault();
+  
+      const data = {
+        Username: username,
+        Password: password
+      };
+  
+        fetch('https://gb-movies-api-cab43a70da98.herokuapp.com/users/${Username}', {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Login response: ", data);
+              if (data.user) {
+                  const userFromApi = {
+      id: data.user._id,
+      username: data.user.Username,
+      password: data.user.Password,
+      email: data.user.Email,
+      dateOfBirth: data.user.DateOfBirth,
+      favoriteMovies: data.user.FavoriteMovies
+    };
+
+                  localStorage.setItem("user", JSON.stringify(userFromApi));
+                  localStorage.setItem("token", data.token);
+                  onLoggedIn(userFromApi, data.token);
+                } else {
+                    alert("No such user");
+                }
+            })
+            .catch((error) => {
+                setError("Something went wrong");
+            });
+    };
   
   console.log(user);
   return (
