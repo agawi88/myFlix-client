@@ -26329,7 +26329,7 @@ const LoginView = ({ onLoggedIn })=>{
                         type: "submit",
                         className: "mb-2",
                         lg: "auto",
-                        children: "Submit"
+                        children: "Log in"
                     }, void 0, false, {
                         fileName: "src/components/LoginView/LoginView.jsx",
                         lineNumber: 100,
@@ -26645,7 +26645,7 @@ const SignupView = ()=>{
                 column: "lg",
                 children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h3", {
                     children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("b", {
-                        children: "LOG IN"
+                        children: "REGISTER"
                     }, void 0, false, {
                         fileName: "src/components/SignupView/SignupView.jsx",
                         lineNumber: 45,
@@ -26884,7 +26884,7 @@ const SignupView = ()=>{
                         type: "submit",
                         className: "mb-2",
                         lg: "auto",
-                        children: "Submit"
+                        children: "Register"
                     }, void 0, false, {
                         fileName: "src/components/SignupView/SignupView.jsx",
                         lineNumber: 130,

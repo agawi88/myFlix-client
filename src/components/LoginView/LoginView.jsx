@@ -97,7 +97,7 @@ export const LoginView = ({ onLoggedIn }) => {
       </Card.Body>
               <Card.Footer>
               <Row>
-          <Button type="submit" className="mb-2" lg="auto">Submit</Button>
+          <Button type="submit" className="mb-2" lg="auto">Log in</Button>
           </Row>
           </Card.Footer>
       </Card>

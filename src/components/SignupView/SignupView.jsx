@@ -42,7 +42,7 @@ export const SignupView = () => {
   return (
       <Card className="shadow-lg rounded-4 my-4">
       <Card.Header className="text-center bg-primary opacity-8 text-white rounded-4 my-0" column="lg">
-          <h3><b>LOG IN</b></h3>
+          <h3><b>REGISTER</b></h3>
       </Card.Header>
       <Card.Body>
         <Card.Title><h4>Please log in here to view the selecction of British movies:
@@ -127,7 +127,7 @@ export const SignupView = () => {
       </Card.Body>
       <Card.Footer>
         <Row>
-          <Button type="submit" className="mb-2" lg="auto">Submit</Button>
+          <Button type="submit" className="mb-2" lg="auto">Register</Button>
         </Row>
        </Card.Footer>
       </Card>
