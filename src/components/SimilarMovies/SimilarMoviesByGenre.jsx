@@ -10,7 +10,7 @@ export const SimilarMoviesByGenre = ({ movies, onMovieClick }) => {
             <CardGroup>
                 <Row className="g-3">
                     {movies.map((movie) => (
-                    <Col Col xs={12} sm={6} md={4} lg={3} key={movie.id}>
+                    <Col xs={12} sm={6} md={4} lg={3} key={movie.id}>
                     <MovieCard
                         movie={movie} 
                                 onMovieClick={() => onMovieClick(movie)}
