@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./MovieView.scss";
-// import { Button,  } from "react-bootstrap";
 
 export const MovieView = ({ movie, onMovieClick, onBackClick }) => {
   console.log(movie);
@@ -42,11 +41,6 @@ export const MovieView = ({ movie, onMovieClick, onBackClick }) => {
         <span>Featured: </span>
         <span>{movie.featured ? "Yes" : "No"}</span>
       </div>
-  {/*         <Button onClick={onBackClick}
-            className="backButton" 
-            style={{ cursor: "pointer" }}>
-        Back
-        </Button> */}
     </div>
   ); 
 };
