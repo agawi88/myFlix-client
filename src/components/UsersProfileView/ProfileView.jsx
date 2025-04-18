@@ -1,52 +1,76 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export const ProfileView = ({ user, movies, onMovieClick, onLoggedIn }) => {
-  const favoriteMovies = movies.filter((movie) =>
-    user.FavoriteMovies.includes(movie.id));
+export const ProfileView = ({ user, userFromApi, movies, onBackClick, onMovieClick }) => {
 
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");    
+    // const [username, setUsername] = useState("");
+    // const [password, setPassword] = useState("");    
       
-    const handleProfile = (event) => {
-      event.preventDefault();
+    // const handleSubmit = (event) => {
+    //   event.preventDefault();
   
-      const data = {
-        Username: username,
-        Password: password
-      };
+    //   const data = {
+    //     Username: username,
+    //     Password: password
+    //   };
   
-        fetch('https://gb-movies-api-cab43a70da98.herokuapp.com/users/${Username}', {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log("Login response: ", data);
-              if (data.user) {
-                  const userFromApi = {
-      id: data.user._id,
-      username: data.user.Username,
-      password: data.user.Password,
-      email: data.user.Email,
-      dateOfBirth: data.user.DateOfBirth,
-      favoriteMovies: data.user.FavoriteMovies
-    };
+    //     fetch(`https://gb-movies-api-cab43a70da98.herokuapp.com/users/${Username}`, {
+    //         method: "GET",
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         },
+    //         body: JSON.stringify(data),
+    //     })
+    //         .then((response) => response.json())
+    //         .then((data) => {
+    //             console.log("Login response: ", data);
+    //           if (data.user) {
+    //               const userFromApi = {
+    //   id: data._id,
+    //   username: data.Username,
+    //   password: data.Password,
+    //   email: data.Email,
+    //   dateOfBirth: data.DateOfBirth,
+    //   favoriteMovies: data.FavoriteMovies
+    // };
 
-                  localStorage.setItem("user", JSON.stringify(userFromApi));
-                  localStorage.setItem("token", data.token);
-                  onLoggedIn(userFromApi, data.token);
-                } else {
-                    alert("No such user");
-                }
-            })
-            .catch((error) => {
-                setError("Something went wrong");
-            });
-    };
+    //               localStorage.setItem("user", JSON.stringify(userFromApi));
+    //               localStorage.setItem("token", data.token);
+    //               onLoggedIn(userFromApi, data.token);
+    //             } else {
+    //                 alert("No such user");
+    //             }
+    //         })
+    //         .catch((error) => {
+    //             setError("Something went wrong");
+    //         });
+    // };
+    
+    useEffect(() => {
+    console.log(user, token);
+    if (!user || !token) return;
+      fetch(`https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+
+        console.log(user.username);
+        console.log(data);
+        const userFromApi = {
+            id: data._id,
+            username: data.Username,
+            password: data.Password,
+            email: data.Email,
+            dateOfBirth: data.DateOfBirth,
+            favoriteMovies: data.FavoriteMovies || []
+        };
+        console.log(userFromApi);
+        // setUser(userFromApi);
+        setFavoriteMovieIds(userFromApi.favoriteMovies)
+      });
+  }, [userInfo, token]);
   
   console.log(user);
   return (
@@ -69,7 +93,7 @@ export const ProfileView = ({ user, movies, onMovieClick, onLoggedIn }) => {
         <span>{user.dateOfBirth}</span>
       </div>
       <h4 className="mt-3">Favorite Movies</h4>
-      {favoriteMovies.length > 0 ? (
+      {/* {favoriteMovies.length > 0 ? (
         favoriteMovies.map((movie) => (
           <div
             key={movie.id}
@@ -81,7 +105,7 @@ export const ProfileView = ({ user, movies, onMovieClick, onLoggedIn }) => {
         ))
       ) : (
         <div>No favorites selected.</div>
-      )}
+      )} */}
     </div>
     //   {/* <div>
     //     <span>Favorite Movies: </span>
