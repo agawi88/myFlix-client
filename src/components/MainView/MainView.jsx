@@ -9,20 +9,21 @@ import { ProfileView } from "../UsersProfileView/ProfileView";
 
 import { Container, Row, Col, Button, ButtonGroup, Form, Navbar, Modal } from "react-bootstrap";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { BrowserRouter,Route, Routes, Navigate } from "react-router-dom";
+//import { BrowserRouter,Route, Routes, Navigate } from "react-router-dom";
 
 import PropTypes from "prop-types";
 
 
-export const MainView = () => {
+export const MainView = (onBackClick, onClick) => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const storedToken = localStorage.getItem("token");
 
+  const [userInfo, setUserInfo] = useState(null);
   const [user, setUser] = useState(storedUser ? storedUser : null);
   const [token, setToken] = useState(storedToken ? storedToken : null);
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
-  const [currentView, setCurrentView] = useState("main");
+  // const [currentView, setCurrentView] = useState("profile");
   const [favoriteMovies, setFavoriteMovies] = useState([]);
   const [favoriteMovieIds, setFavoriteMovieIds] = useState([]);
 // const [showSignup, setShowSignup] = useState(false);
@@ -71,31 +72,6 @@ export const MainView = () => {
       });
   }, [user, token]);
 
-    useEffect(() => {
-    console.log(user, token);
-    if (!user || !token) return;
-      fetch('https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}', {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // setUser(data);
-        //setFavoriteMovieIds(data.FavoriteMovies || []);
-
-        const userFromApi = {
-            id: data.user._id,
-            username: data.user.Username,
-            password: data.user.Password,
-            email: data.user.Email,
-            dateOfBirth: data.user.DateOfBirth,
-            favoriteMovies: data.user.FavoriteMovies || []
-        };
-        console.log(userFromApi);
-        setUser(userFromApi);
-        setFavoriteMovieIds(userFromApi.favoriteMovies)
-      });
-  }, [user, token]);
 
   if (selectedMovie) {
     
@@ -139,7 +115,6 @@ export const MainView = () => {
   };
 
   return (
-    <BrowserRouter>
     <Container>
       {user && (selectedMovie || movies.length > 0) && (
 //  NVBAR
@@ -162,17 +137,17 @@ export const MainView = () => {
             <Row>
             <ButtonGroup>
               <Col xs="auto">
-                <Button type="submit" className="RegularButton">
+                  <Button
+                    type="submit"
+                    className="RegularButton mb-3"
+                  onClick={() => onClick(userFromApi)}>
                 Profile
                 </Button>
                 </Col>
                 <Col xs="auto">
-                  {currentView === "profile" && (
-                    <Button onClick={() =>
-                      setCurrentView("main")} className="mb-3">
+                    <Button onBackClick={onBackClick} className="mb-3">
                       Back to Home
                     </Button>
-                  )}
                 </Col>
               <Col xs="auto">
                 <Button className="btn RegularButton me-md-2" type="button"
@@ -196,6 +171,7 @@ export const MainView = () => {
       )}
 {/* // MAIN and OTHER VIEWs */}
       {!user ? (
+        <div>
         <Col md={5} mb-1 p-2>
   {/* LOGIN and SIGNUP view, for the moment put together */}
           <Row>
@@ -213,17 +189,18 @@ export const MainView = () => {
           </Row>
         </Col>
 // FAVORITES VIEW
-      ) : currentView === "profile" ? (
-          <>
+          <Row>
+            <Col>
             <ProfileView
               user={user}
               movies={movies}
-              onMovieClick={(movie) => {
-                setSelectedMovie(movie);
-                setCurrentView("main");
+              onClick={(userFromApi) => {
+                setUserInfo(userInfo);
               }}
-            />
-          </>   
+              />
+              </Col>
+          </Row> 
+          </div>
         ) : selectedMovie ? (
 // MovieView MODAL bzw. SELECTED MOVIE
         <Modal
@@ -288,7 +265,6 @@ export const MainView = () => {
         </Row>
       )}       
       </Container >
-    </BrowserRouter>
   );
 };
 
