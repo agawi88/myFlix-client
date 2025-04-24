@@ -1,63 +1,30 @@
 import React from "react";
+import { useState, useEffect } from "react";
+import { DeleteAccountButton } from "./DeleteAccountButton";
+
 import PropTypes from "prop-types";
+import { data } from "react-router";
 
-export const ProfileView = ({ user, userFromApi, movies, onBackClick, onMovieClick }) => {
-
-    // const [username, setUsername] = useState("");
-    // const [password, setPassword] = useState("");    
-      
-    // const handleSubmit = (event) => {
-    //   event.preventDefault();
+export const ProfileView = ({ user, movies, onMovieClick, onClick}) => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+  const token = localStorage.getItem("token"); 
   
-    //   const data = {
-    //     Username: username,
-    //     Password: password
-    //   };
-  
-    //     fetch(`https://gb-movies-api-cab43a70da98.herokuapp.com/users/${Username}`, {
-    //         method: "GET",
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         },
-    //         body: JSON.stringify(data),
-    //     })
-    //         .then((response) => response.json())
-    //         .then((data) => {
-    //             console.log("Login response: ", data);
-    //           if (data.user) {
-    //               const userFromApi = {
-    //   id: data._id,
-    //   username: data.Username,
-    //   password: data.Password,
-    //   email: data.Email,
-    //   dateOfBirth: data.DateOfBirth,
-    //   favoriteMovies: data.FavoriteMovies
-    // };
-
-    //               localStorage.setItem("user", JSON.stringify(userFromApi));
-    //               localStorage.setItem("token", data.token);
-    //               onLoggedIn(userFromApi, data.token);
-    //             } else {
-    //                 alert("No such user");
-    //             }
-    //         })
-    //         .catch((error) => {
-    //             setError("Something went wrong");
-    //         });
-    // };
+  const [profileUser, setProfileUser] = useState(null);
     
     useEffect(() => {
-    console.log(user, token);
-    if (!user || !token) return;
+     if (!user || !user.Username) return;
       fetch(`https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}`, {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
     })
-      .then((response) => response.json())
-      .then((data) => {
+        .then((response) => {
+          if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+          }
+          return response.json();
+      })
+        .then((data) => {
 
-        console.log(user.username);
-        console.log(data);
         const userFromApi = {
             id: data._id,
             username: data.Username,
@@ -66,63 +33,62 @@ export const ProfileView = ({ user, userFromApi, movies, onBackClick, onMovieCli
             dateOfBirth: data.DateOfBirth,
             favoriteMovies: data.FavoriteMovies || []
         };
-        console.log(userFromApi);
-        // setUser(userFromApi);
-        setFavoriteMovieIds(userFromApi.favoriteMovies)
+          setProfileUser(userFromApi);
+          console.log("Fetched profile user:", userFromApi);
+           })
+            .catch((error) => {
+             console.error("Error fetching user data:", error);
       });
-  }, [userInfo, token]);
+    }, [user]);
   
-  console.log(user);
+    if (!user) return <div>User not found. Please log in again.</div>;
+    if (!profileUser) return <div>Loading profile...</div>;
+  
   return (
     <div>
       <h3>Your Profile</h3>
       <div>
         <span>Username: </span>
-        <span>{user.username}</span>
+        <span>{profileUser.username}</span>
       </div>
       <div>
         <span>Password: </span>
-        <span>{user.password}</span>
+        <span>{profileUser.password}</span>
       </div>
       <div>
         <span>Email: </span>
-        <span>{user.mail}</span>
+        <span>{profileUser.email}</span>
       </div>
       <div>
         <span>Date of Birth: </span>
-        <span>{user.dateOfBirth}</span>
+        <span>{profileUser.dateOfBirth}</span>
       </div>
       <h4 className="mt-3">Favorite Movies</h4>
-      {/* {favoriteMovies.length > 0 ? (
-        favoriteMovies.map((movie) => (
-          <div
-            key={movie.id}
-            style={{ cursor: "pointer", mb: "5px" }}
-            onClick={() => onMovieClick(movie)}
-          >
-           {movie.title}
-          </div>
-        ))
+      {user.favoriteMovies && user.favoriteMovies.length > 0 ? (
+        user.favoriteMovies.map((movieId) => {
+          const movie = movies.find((m) => m._id === movieId);
+          return movie ? (
+            <div
+              key={movie.id}
+              style={{ cursor: "pointer", mb: "5px" }}
+              onClick={() => onMovieClick(movie)}
+            >
+              {movie.title}
+            </div>
+          ) : null;
+        })
+          .catch((error) => {
+            console.error("Error fetching user data:", error);
+          })
       ) : (
         <div>No favorites selected.</div>
-      )} */}
+      )}
+      <DeleteAccountButton user={profileUser} token={token} />
     </div>
-    //   {/* <div>
-    //     <span>Favorite Movies: </span>
-    //     <span>{user.username.favoriteMovies.movieId}</span>
-    //   </div>
-    // </div> */}
   ); 
 };
 
 ProfileView.propTypes = {
-    user: PropTypes.shape({
-        username: PropTypes.string.isRequired,
-        password: PropTypes.string.isRequired,
-        email: PropTypes.string,
-        dateOfBirth: PropTypes.string.isRequired,
-        favoriteMovies: PropTypes.arrayOf(PropTypes.string).isRequired, // array of movie ID strings
-    }).isRequired,
   users: PropTypes.arrayOf(PropTypes.object).isRequired,
   movies: PropTypes.arrayOf(PropTypes.object).isRequired,  // Ensure movies prop is an array
   onMovieClick: PropTypes.func.isRequired
