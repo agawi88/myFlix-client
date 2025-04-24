@@ -1,11 +1,44 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Modal, Button } from "react-bootstrap";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { SimilarMoviesByGenre } from "../SimilarMovies/SimilarMoviesByGenre";
+import { SimilarMoviesByDirector } from "../SimilarMovies/SimilarMoviesByDirector";
+
 import "./MovieView.scss";
 
-export const MovieView = ({ movie, onMovieClick, onBackClick }) => {
-  console.log(movie);
+export const MovieView = ({ movie, setMovie, show, isFavorite, toggleFavorite, onHide, movies, similarMoviesByDirector, similarMoviesByGenre, onMovieClick }) => {
+  
+  if (!movie) return null;
+  console.log({ toggleFavorite });
   return (
-    <div>
+
+<Modal
+          show={!!movie}
+          onHide={() => setMovie(null)}
+          size="xl"
+          centered
+          scrollable
+          dialogClassName="modal-90w">
+          <Modal.Header>
+                <Modal.Title>{movie.title}
+                  <Button
+                    variant="link"
+                    onClick={() => toggleFavorite(movie.id)}
+                    className="ms-3 p-0"
+                    style={{ color: isFavorite ? "red" : "gray", fontSize: "1.5rem"}}
+                  >
+                    {isFavorite ? <FaHeart /> : <FaRegHeart />} 
+                  </Button>
+              </Modal.Title>
+              <Button
+                onClick={onHide}
+                className="backButton ms-auto" 
+                style={{cursor: "pointer"}}
+              >Back</Button>
+          </Modal.Header>
+      <Modal.Body>
+            <div>
       <div>
         <img src={movie.image} alt={movie.title}  />
       </div>
@@ -42,29 +75,31 @@ export const MovieView = ({ movie, onMovieClick, onBackClick }) => {
         <span>{movie.featured ? "Yes" : "No"}</span>
       </div>
     </div>
+{/* SIMILAR MOVIES BY: GENRE, DIRECTOR; later on also by ACTORS AND MY FAVOURITES           */}
+            <hr />
+            <h2> Similar Movies </h2>
+            <SimilarMoviesByGenre
+              movies={similarMoviesByGenre}
+              onMovieClick={onMovieClick}
+            />
+            <hr />
+            <SimilarMoviesByDirector
+              movies={similarMoviesByDirector}
+              onMovieClick={onMovieClick}
+            />
+          </Modal.Body>
+            </Modal>
   ); 
 };
 
 MovieView.propTypes = {
-  movie: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    releaseYear: PropTypes.string.isRequired,
-    setting: PropTypes.string,
-    description: PropTypes.string.isRequired,
-    genre: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      description: PropTypes.string.isRequired,
-    }),
-    director: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      bio: PropTypes.string.isRequired,
-      dateOfBirth: PropTypes.string.isRequired,
-      deathYear: PropTypes.string,
-    }),
-    image: PropTypes.string.isRequired,
-    featured: PropTypes.bool.isRequired,
-  }).isRequired,
+  show: PropTypes.bool.isRequired,
+  movie: PropTypes.object,
+  isFavorite: PropTypes.bool.isRequired,
+  toggleFavorite: PropTypes.func.isRequired,
+  onHide: PropTypes.func.isRequired,
   movies: PropTypes.arrayOf(PropTypes.object).isRequired,  // Ensure movies prop is an array
-  onBackClick: PropTypes.func.isRequired,
-  onMovieClick: PropTypes.func.isRequired
+  onMovieClick: PropTypes.func.isRequired,
+  similarMoviesByGenre: PropTypes.array.isRequired,
+  similarMoviesByDirector: PropTypes.array.isRequired
 };
