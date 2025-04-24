@@ -3,31 +3,30 @@ import { MovieCard } from "../MovieCard/MovieCard";
 import { MovieView } from "../MovieView/MovieView";
 import { LoginView } from "../LoginView/LoginView";
 import { SignupView } from "../SignupView/SignupView";
-import { SimilarMoviesByGenre } from "../SimilarMovies/SimilarMoviesByGenre";
-import { SimilarMoviesByDirector } from "../SimilarMovies/SimilarMoviesByDirector";
 import { ProfileView } from "../UsersProfileView/ProfileView";
+import { NavbarView } from "../NavbarView/NavbarView";
 
-import { Container, Row, Col, Button, ButtonGroup, Form, Navbar, Modal } from "react-bootstrap";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+
+import { Container, Row, Col} from "react-bootstrap";
 //import { BrowserRouter,Route, Routes, Navigate } from "react-router-dom";
 
 import PropTypes from "prop-types";
 
 
-export const MainView = (onBackClick, onClick) => {
+export const MainView = ({ onBackClick, onClick }) => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const storedToken = localStorage.getItem("token");
 
-  const [userInfo, setUserInfo] = useState(null);
   const [user, setUser] = useState(storedUser ? storedUser : null);
   const [token, setToken] = useState(storedToken ? storedToken : null);
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
-  // const [currentView, setCurrentView] = useState("profile");
-  const [favoriteMovies, setFavoriteMovies] = useState([]);
-  const [favoriteMovieIds, setFavoriteMovieIds] = useState([]);
+  // const [favoriteMovies, setFavoriteMovies] = useState([]);
+  // const [favoriteMovieIds, setFavoriteMovieIds] = useState([]);
 // const [showSignup, setShowSignup] = useState(false);
-
+  const [showProfile, setShowProfile] = useState(() => {
+    return JSON.parse(localStorage.getItem("showProfile")) || false; 
+  });
   let similarMoviesByGenre = [];
   let similarMoviesByDirector = [];
 
@@ -36,6 +35,7 @@ export const MainView = (onBackClick, onClick) => {
     if (!user || !token) return;
 
     fetch("https://gb-movies-api-cab43a70da98.herokuapp.com/movies", {
+      method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((response) => response.json())
@@ -87,14 +87,14 @@ export const MainView = (onBackClick, onClick) => {
         movie.id !== selectedMovie.id
     );
   }
-  const isFavorite = favoriteMovieIds.includes(selectedMovie?.id);
+  const isFavorite = selectedMovie && user?.FavoriteMovies?.includes(selectedMovie.id);
 
     const toggleFavorite = (movieId) => {
     if (!user || !token) return;
     
     const isFav = user.FavoriteMovies.includes(movieId);
 
-    const method = isFav ? "DELETE" : "POST";
+    const method = isFav ? "PUT" : "POST";
 
     fetch(`https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}/movies/${movieId}`, {
       method: method,
@@ -117,57 +117,24 @@ export const MainView = (onBackClick, onClick) => {
   return (
     <Container>
       {user && (selectedMovie || movies.length > 0) && (
-//  NVBAR
-    <Navbar sticky="top" className="Navbar justify-content-between">
-      <Form className="d-flex">
-        <Row>
-          <Col xs="auto">
-            <Form.Control
-              type="text"
-              placeholder="Search"
-              className="mr-sm-2 SearchBar"
-            />
-          </Col>
-          <Col xs="auto">
-            <Button type="submit" className="RegularButton">Submit</Button>
-          </Col>
-        </Row>
-          </Form>
-        <Form className="d-flex justify-content-md-end">
-            <Row>
-            <ButtonGroup>
-              <Col xs="auto">
-                  <Button
-                    type="submit"
-                    className="RegularButton mb-3"
-                  onClick={() => onClick(userFromApi)}>
-                Profile
-                </Button>
-                </Col>
-                <Col xs="auto">
-                    <Button onBackClick={onBackClick} className="mb-3">
-                      Back to Home
-                    </Button>
-                </Col>
-              <Col xs="auto">
-                <Button className="btn RegularButton me-md-2" type="button"
-                onClick={() => {
-                setUser(null);
-                  setToken(null);
-                  localStorage.removeItem("user");
-                  localStorage.removeItem("token");
-                // localStorage.setItem("user", JSON.stringify(user)); 
-                // localStorage.setItem("token", token);
-              // setShowSignup(false); // Reset to login screen
-              }}
-                >
-                Logout
-              </Button>
-                </Col>
-              </ButtonGroup>
-          </Row> 
-    </Form>
-  </Navbar>
+  //  NVBAR
+        <NavbarView
+          onLogout={() => {
+            setUser(null);
+            setToken(null);
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+          }}
+          onShowProfile={() => {
+            setShowProfile(true);
+            localStorage.setItem("showProfile", true);
+          }}
+          onBackClick={() => {
+            setShowProfile(false);
+            setSelectedMovie(null);
+            localStorage.setItem("showProfile", false);
+          }}
+        />    
       )}
 {/* // MAIN and OTHER VIEWs */}
       {!user ? (
@@ -187,67 +154,36 @@ export const MainView = (onBackClick, onClick) => {
           <Row>
             <SignupView />
           </Row>
-        </Col>
-// FAVORITES VIEW
+          </Col>
+        </div>
+          // FAVORITES VIEW
+        ) : showProfile ? (
           <Row>
             <Col>
             <ProfileView
               user={user}
               movies={movies}
-              onClick={(userFromApi) => {
-                setUserInfo(userInfo);
+              onClick={(updatedUser) => {
+                setUser(updatedUser);
+                localStorage.setItem("user", JSON.stringify(updatedUser));
               }}
               />
               </Col>
           </Row> 
-          </div>
         ) : selectedMovie ? (
 // MovieView MODAL bzw. SELECTED MOVIE
-        <Modal
-          show={!!selectedMovie}
-          onHide={() => setSelectedMovie(null)}
-          size="xl"
-          centered
-          scrollable
-          dialogClassName="modal-90w">
-          <Modal.Header>
-                <Modal.Title>{selectedMovie.title}
-                  <Button
-                    variant="link"
-                    onClick={() => toggleFavorite(selectedMovie.id)}
-                    className="ms-3 p-0"
-                    style={{ color: isFavorite ? "red" : "gray", fontSize: "1.5rem"}}
-                  >
-                    {isFavorite ? <FaHeart /> : <FaRegHeart />} 
-                  </Button>
-              </Modal.Title>
-              <Button //onClick={onBackClick}
-                onClick={() => setSelectedMovie(null)}
-                className="backButton ms-auto" 
-                style={{cursor: "pointer"}}
-              >Back</Button>
-          </Modal.Header>
-          <Modal.Body>
             <MovieView
+              show={!!selectedMovie}
               movie={selectedMovie}
               movies={movies} // for a full list of movies
-              onBackClick={() => setSelectedMovie(null)}
-              onMovieClick={() => setSelectedMovie(selectedMovie)}
-                />
-{/* // SIMILAR MOVIES BY: GENRE, DIRECTOR; later on also by ACTORS AND MY FAVOURITES           */}
-            <hr />
-            <h2> Similar Movies </h2>
-            <SimilarMoviesByGenre
-              movies={similarMoviesByGenre}
+              isFavorite={isFavorite}
+              toggleFavorite={toggleFavorite}
+              onHide={() => setSelectedMovie(null)}
+            onBackClick={() => setSelectedMovie(null)}
               onMovieClick={(movie) => setSelectedMovie(movie)}
+              similarMoviesByDirector={similarMoviesByDirector}
+              similarMoviesByGenre={similarMoviesByGenre}
             />
-            <hr />
-            <SimilarMoviesByDirector
-              movies={similarMoviesByDirector}
-              onMovieClick={(movie) => setSelectedMovie(movie)}
-            />
-          </Modal.Body>
-            </Modal>
 // EMPTY MOVIES LIST
       ) : movies.length === 0 ? (
         <div>The list is empty!</div>
@@ -287,5 +223,4 @@ export const MainView = (onBackClick, onClick) => {
       image: PropTypes.string.isRequired,
       featured: PropTypes.bool.isRequired,
     }).isRequired,
-    onMovieClick: PropTypes.func.isRequired
   };
