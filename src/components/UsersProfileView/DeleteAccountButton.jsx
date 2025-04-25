@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import PropTypes from "prop-types";
 
 export const DeleteAccountButton = ({user, token}) => {
     const [showModal, setShowModal] = useState(false);
@@ -10,7 +11,7 @@ export const DeleteAccountButton = ({user, token}) => {
 
     const confirmDelete = () => {
         fetch(`https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}`, {
-            method: 'DELETE',
+            method: "DELETE",
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -42,12 +43,20 @@ export const DeleteAccountButton = ({user, token}) => {
                 <Modal.Header closeButton>
                     <Modal.Title>Confirm Delete</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Are you sure you want to delete your account/username? This cannot be undone.</Modal.Body>
+                <Modal.Body>
+                    <h4>Are you sure you want to delete your account/username? <br></br><b>This cannot be undone!</b></h4>
+                </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>Cancel</Button>
-                    <Button variant="danger" onClick={confirmDelete}>Cancel</Button>
+                    <Button variant="danger" onClick={confirmDelete}>Delete</Button>
                 </Modal.Footer>
             </Modal>
         </>
     );
+};
+DeleteAccountButton.propTypes = {
+    user: PropTypes.shape({
+        Username: PropTypes.string.isRequired,
+    }).isRequired,
+    token: PropTypes.string.isRequired
 };
