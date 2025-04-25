@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { DeleteAccountButton } from "./DeleteAccountButton";
-
+import { UpdateDataButton } from "./UpdateDataButton";
 import PropTypes from "prop-types";
 import { data } from "react-router";
 
@@ -64,8 +64,8 @@ export const ProfileView = ({ user, movies, onMovieClick, onClick}) => {
         <span>{profileUser.dateOfBirth}</span>
       </div>
       <h4 className="mt-3">Favorite Movies</h4>
-      {user.favoriteMovies && user.favoriteMovies.length > 0 ? (
-        user.favoriteMovies.map((movieId) => {
+      {profileUser.favoriteMovies && profileUser.favoriteMovies.length > 0 ? (
+        profileUser.favoriteMovies.map((movieId) => {
           const movie = movies.find((m) => m._id === movieId);
           return movie ? (
             <div
@@ -77,20 +77,20 @@ export const ProfileView = ({ user, movies, onMovieClick, onClick}) => {
             </div>
           ) : null;
         })
-          .catch((error) => {
-            console.error("Error fetching user data:", error);
-          })
       ) : (
         <div>No favorites selected.</div>
       )}
       <DeleteAccountButton user={profileUser} token={token} />
+      <UpdateDataButton user={user} token={token} />
+
     </div>
   ); 
 };
 
 ProfileView.propTypes = {
-  users: PropTypes.arrayOf(PropTypes.object).isRequired,
+  user: PropTypes.object.isRequired,
   movies: PropTypes.arrayOf(PropTypes.object).isRequired,  // Ensure movies prop is an array
-  onMovieClick: PropTypes.func.isRequired
+  onMovieClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired
 };
 
