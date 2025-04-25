@@ -2,12 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Modal, Button } from "react-bootstrap";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { SimilarMoviesByGenre } from "../SimilarMovies/SimilarMoviesByGenre";
-import { SimilarMoviesByDirector } from "../SimilarMovies/SimilarMoviesByDirector";
+import { SimilarMoviesBySections } from "../SimilarMovies/SimilarMoviesBySections";
 
 import "./MovieView.scss";
 
-export const MovieView = ({ movie, setMovie, show, isFavorite, toggleFavorite, onHide, movies, similarMoviesByDirector, similarMoviesByGenre, onMovieClick }) => {
+export const MovieView = ({ movie, show, isFavorite, toggleFavorite, onHide, movies, similarMoviesByDirector, similarMoviesByGenre, onMovieClick }) => {
   
   if (!movie) return null;
   console.log({ toggleFavorite });
@@ -78,12 +77,14 @@ export const MovieView = ({ movie, setMovie, show, isFavorite, toggleFavorite, o
 {/* SIMILAR MOVIES BY: GENRE, DIRECTOR; later on also by ACTORS AND MY FAVOURITES           */}
             <hr />
             <h2> Similar Movies </h2>
-            <SimilarMoviesByGenre
+        <SimilarMoviesBySections
+              title="By Genre"
               movies={similarMoviesByGenre}
               onMovieClick={onMovieClick}
             />
             <hr />
-            <SimilarMoviesByDirector
+        <SimilarMoviesBySections
+              title="By Director"
               movies={similarMoviesByDirector}
               onMovieClick={onMovieClick}
             />
@@ -94,12 +95,30 @@ export const MovieView = ({ movie, setMovie, show, isFavorite, toggleFavorite, o
 
 MovieView.propTypes = {
   show: PropTypes.bool.isRequired,
-  movie: PropTypes.object,
   isFavorite: PropTypes.bool.isRequired,
   toggleFavorite: PropTypes.func.isRequired,
   onHide: PropTypes.func.isRequired,
   movies: PropTypes.arrayOf(PropTypes.object).isRequired,  // Ensure movies prop is an array
   onMovieClick: PropTypes.func.isRequired,
   similarMoviesByGenre: PropTypes.array.isRequired,
-  similarMoviesByDirector: PropTypes.array.isRequired
+  similarMoviesByDirector: PropTypes.array.isRequired,
+  movie: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    releaseYear: PropTypes.string.isRequired,
+    setting: PropTypes.string,
+    description: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    featured: PropTypes.bool.isRequired,
+    director: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      bio: PropTypes.string.isRequired,
+      dateOfBirth: PropTypes.string.isRequired,
+      deathYear: PropTypes.string,
+    }).isRequired,
+    genre: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
