@@ -13,7 +13,7 @@ import { Container, Row, Col} from "react-bootstrap";
 import PropTypes from "prop-types";
 
 
-export const MainView = ({ onBackClick, onClick }) => {
+export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLogout, onHide }) => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const storedToken = localStorage.getItem("token");
 
@@ -27,8 +27,8 @@ export const MainView = ({ onBackClick, onClick }) => {
   const [showProfile, setShowProfile] = useState(() => {
     return JSON.parse(localStorage.getItem("showProfile")) || false; 
   });
-  let similarMoviesByGenre = [];
-  let similarMoviesByDirector = [];
+  // let similarMoviesByGenre = [];
+  // let similarMoviesByDirector = [];
 
   useEffect(() => {
     console.log(user, token);
@@ -72,7 +72,6 @@ export const MainView = ({ onBackClick, onClick }) => {
       });
   }, [user, token]);
 
-
   if (selectedMovie) {
     
     similarMoviesByGenre = movies.filter(
@@ -89,14 +88,14 @@ export const MainView = ({ onBackClick, onClick }) => {
   }
   const isFavorite = selectedMovie && user?.FavoriteMovies?.includes(selectedMovie.id);
 
-    const toggleFavorite = (movieId) => {
+    const toggleFavorite = (MovieId) => {
     if (!user || !token) return;
     
-    const isFav = user.FavoriteMovies.includes(movieId);
+    const isFav = user.FavoriteMovies.includes(MovieId);
 
-    const method = isFav ? "PUT" : "POST";
+    const method = isFav ? "POST" : "PUT";
 
-    fetch(`https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}/movies/${movieId}`, {
+    fetch(`https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}/movies/${MovieId}`, {
       method: method,
       headers: {
         Authorization: `Bearer ${token}`,
@@ -139,7 +138,7 @@ export const MainView = ({ onBackClick, onClick }) => {
 {/* // MAIN and OTHER VIEWs */}
       {!user ? (
         <div>
-        <Col md={5} mb-1 p-2>
+        <Col md={5} className="mb-1 p-2" >
   {/* LOGIN and SIGNUP view, for the moment put together */}
           <Row>
             <LoginView
@@ -205,22 +204,28 @@ export const MainView = ({ onBackClick, onClick }) => {
 };
 
   MainView.propTypes = {
-    movie: PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      releaseYear: PropTypes.string.isRequired,
-      setting: PropTypes.string,
-      description: PropTypes.string.isRequired,
-      genre: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        description: PropTypes.string.isRequired,
-      }),
-      director: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        bio: PropTypes.string.isRequired,
-        dateOfBirth: PropTypes.string.isRequired,
-        deathYear: PropTypes.string,
-      }),
-      image: PropTypes.string.isRequired,
-      featured: PropTypes.bool.isRequired,
-    }).isRequired,
+    // movie: PropTypes.shape({
+    //   title: PropTypes.string.isRequired,
+    //   releaseYear: PropTypes.string.isRequired,
+    //   setting: PropTypes.string,
+    //   description: PropTypes.string.isRequired,
+    //   genre: PropTypes.shape({
+    //     name: PropTypes.string.isRequired,
+    //     description: PropTypes.string.isRequired,
+    //   }),
+    //   director: PropTypes.shape({
+    //     name: PropTypes.string.isRequired,
+    //     bio: PropTypes.string.isRequired,
+    //     dateOfBirth: PropTypes.string.isRequired,
+    //     deathYear: PropTypes.string,
+    //   }),
+    //   image: PropTypes.string.isRequired,
+    //   featured: PropTypes.bool.isRequired,
+    // }).isRequired,
+      onBackClick: PropTypes.func.isRequired,
+      onClick: PropTypes.func.isRequired,
+      onHide: PropTypes.func.isRequired,
+      onShowProfile: PropTypes.func.isRequired,
+      onLoggedIn: PropTypes.func.isRequired,
+      onLoggedOut: PropTypes.func.isRequired
   };
