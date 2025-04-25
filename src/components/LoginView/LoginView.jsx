@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Button, Form, Row, Col, Card } from "react-bootstrap";
 import { PasswordInput } from "../PasswordInput";
+import PropTypes from "prop-types";
 import "./LoginView.scss"
 
 
@@ -52,7 +53,7 @@ export const LoginView = ({ onLoggedIn }) => {
         <Card.Title><h4>Please log in here to view the selecction of British movies:
         </h4></Card.Title>
       <Row>
-      <Form.Group controlId="formUsername">
+      <Form.Group controlId="loginUsername">
       <Form.Label column="lg">
             Username:
       </Form.Label>
@@ -71,7 +72,7 @@ export const LoginView = ({ onLoggedIn }) => {
         </Form.Group>
       </Row>
       <Row className="align-items-center">
-      <Form.Group controlId="formPassword">
+      <Form.Group controlId="loginPassword">
         <Col lg="auto">
         <Form.Label>
           Password (8 characters minimum):
@@ -87,7 +88,7 @@ export const LoginView = ({ onLoggedIn }) => {
           <Col>
                     <Form.Check
             type="checkbox"
-            id="autoSizingCheck"
+            id="rememberMeLogin"
             className="mb-2"
             label="Remember me"
         />
@@ -103,4 +104,8 @@ export const LoginView = ({ onLoggedIn }) => {
     </Card>
   </Form>
   );
+};
+
+LoginView.propTypes = {
+  onLoggedIn: PropTypes.func.isRequired
 };

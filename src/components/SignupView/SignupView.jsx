@@ -49,7 +49,7 @@ export const SignupView = () => {
         <Card.Title><h4>Please log in here to view the selecction of British movies:
         </h4></Card.Title>
         <Row>
-          <Form.Group controlId="formUsername">
+          <Form.Group controlId="signupUsername">
             <Col lg="auto">
             <Form.Label>
                   Username:
@@ -68,7 +68,7 @@ export const SignupView = () => {
             </Form.Group>
       </Row>
       <Row className="align-items-center">
-      <Form.Group controlId="formPassword">
+      <Form.Group controlId="signupPassword">
         <Col lg="auto">
         <Form.Label>
           Password (8 characters minimum):
@@ -84,7 +84,7 @@ export const SignupView = () => {
           <Col>
                     <Form.Check
             type="checkbox"
-            id="autoSizingCheck"
+            id="rememberMeSignup"
             className="mb-2"
             label="Remember me"
         />
