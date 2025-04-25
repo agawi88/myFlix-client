@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Form, InputGroup, Button, Row} from "react-bootstrap";
 import Eye from "react-bootstrap-icons/dist/icons/eye";
 import EyeSlash from "react-bootstrap-icons/dist/icons/eye-slash";
+import PropTypes from "prop-types";
 
-
-export const PasswordInput = ({ value, onChange }) => {
+export const PasswordInput = ({ value, onChange, onClick }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -32,4 +32,8 @@ export const PasswordInput = ({ value, onChange }) => {
       </Form.Group>
       </Row>
   );
+};
+PasswordInput.propTypes = {
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired
 };
