@@ -1,10 +1,15 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Navbar, Form, Row, Col, Button, ButtonGroup } from "react-bootstrap";
 
 export const NavbarView = ({ onLogout, onShowProfile, onBackClick }) => {
     return (
         <Navbar sticky="top" className="Navbar justify-content-between">
-            <Form className="d-flex">
+            <Form className="d-flex"
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    onSearch(searchTerm);
+            }}>
                 <Row>
                     <Col xs="auto">
                         <Form.Control
@@ -35,14 +40,7 @@ export const NavbarView = ({ onLogout, onShowProfile, onBackClick }) => {
                         </Col>
                         <Col xs="auto">
                             <Button className="btn RegularButton me-md-2"
-                                onClick={() => {
-                                    onLogout
-                                    // setUser(null);
-                                    //   setToken(null);
-                                    //   localStorage.removeItem("user");
-                                    //   localStorage.removeItem("token");
-                                }}
-                            >
+                                onClick={onLogout}>
                                 Logout
                             </Button>
                         </Col>
@@ -52,3 +50,10 @@ export const NavbarView = ({ onLogout, onShowProfile, onBackClick }) => {
         </Navbar>
     );
 };
+
+  NavbarView.propTypes = {
+      onLogout: PropTypes.func.isRequired,
+      onShowProfile: PropTypes.func.isRequired,
+      onBackClick: PropTypes.func.isRequired,
+      onSearch: PropTypes.func.isRequired
+  };
