@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import { CardGroup, Row, Col } from "react-bootstrap";
 import { MovieCard } from "../MovieCard/MovieCard";
 
-export const SimilarMoviesByDirector = ({ movies, onMovieClick }) => {
+export const SimilarMoviesBySections = ({ movies, title, onMovieClick }) => {
     return (
         <>
-            <h3>By Director</h3>
+            <h3>{title}</h3>
             <CardGroup>
                 <Row className="g-3">
                     {movies.map((movie) => (
@@ -23,7 +23,8 @@ export const SimilarMoviesByDirector = ({ movies, onMovieClick }) => {
     );
 };
 
-SimilarMoviesByDirector.propTypes = {
-  movies: PropTypes.array.isRequired,
+SimilarMoviesBySections.propTypes = {
+    movies: PropTypes.array.isRequired,
+    title: PropTypes.string.isRequired,
   onMovieClick: PropTypes.func.isRequired,
 };
