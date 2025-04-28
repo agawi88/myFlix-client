@@ -5,6 +5,7 @@ import { LoginView } from "../LoginView/LoginView";
 import { SignupView } from "../SignupView/SignupView";
 import { ProfileView } from "../UsersProfileView/ProfileView";
 import { NavbarView } from "../NavbarView/NavbarView";
+import { FavoritesView } from "../UsersProfileView/FavoritesView";
 
 
 import { Container, Row, Col} from "react-bootstrap";
@@ -13,7 +14,7 @@ import { Container, Row, Col} from "react-bootstrap";
 import PropTypes from "prop-types";
 
 
-export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLogout, onHide }) => {
+export const MainView = ({ onBackClick, onClick, onShowProfile, onShowFavorites, onLoggedIn, onLogout, onHide, onMovieClick }) => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const storedToken = localStorage.getItem("token");
 
@@ -26,6 +27,9 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
 // const [showSignup, setShowSignup] = useState(false);
   const [showProfile, setShowProfile] = useState(() => {
     return JSON.parse(localStorage.getItem("showProfile")) || false; 
+  });
+    const [showFavorites, setShowFavorites] = useState(() => {
+    return JSON.parse(localStorage.getItem("showFavorites")) || false; 
   });
   // let similarMoviesByGenre = [];
   // let similarMoviesByDirector = [];
@@ -118,6 +122,9 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
       {user && (selectedMovie || movies.length > 0) && (
   //  NVBAR
         <NavbarView
+          onSearch={() => {
+            
+          }}
           onLogout={() => {
             setUser(null);
             setToken(null);
@@ -128,6 +135,10 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
             setShowProfile(true);
             localStorage.setItem("showProfile", true);
           }}
+          // onShowFavorites={() => {
+          //   setShowFavorites(true);
+          //   localStorage.setItem("showFavorites", true);
+          // }}
           onBackClick={() => {
             setShowProfile(false);
             setSelectedMovie(null);
@@ -156,6 +167,16 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
           </Col>
         </div>
           // FAVORITES VIEW
+        // ) : showFavorites ? (
+        //   <Row>
+        //     <Col>
+        //     <FavoritesView
+        //       user={user}
+        //       movies={movies}
+        //       onMovieClick={onMovieClick}
+        //       />
+        //       </Col>
+        //   </Row> 
         ) : showProfile ? (
           <Row>
             <Col>
@@ -174,11 +195,11 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
             <MovieView
               show={!!selectedMovie}
               movie={selectedMovie}
-              movies={movies} // for a full list of movies
+              movies={movies}
               isFavorite={isFavorite}
               toggleFavorite={toggleFavorite}
               onHide={() => setSelectedMovie(null)}
-            onBackClick={() => setSelectedMovie(null)}
+              onBackClick={() => setSelectedMovie(null)}
               onMovieClick={(movie) => setSelectedMovie(movie)}
               similarMoviesByDirector={similarMoviesByDirector}
               similarMoviesByGenre={similarMoviesByGenre}

@@ -2,10 +2,11 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { DeleteAccountButton } from "./DeleteAccountButton";
 import { UpdateDataButton } from "./UpdateDataButton";
+import { FavoritesView } from "./FavoritesView";
 import PropTypes from "prop-types";
 import { data } from "react-router";
 
-export const ProfileView = ({ user, movies, onMovieClick, onClick}) => {
+export const ProfileView = ({ user, movies, onMovieClick}) => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token"); 
   
@@ -63,25 +64,16 @@ export const ProfileView = ({ user, movies, onMovieClick, onClick}) => {
         <span>Date of Birth: </span>
         <span>{profileUser.dateOfBirth}</span>
       </div>
-      <h4 className="mt-3">Favorite Movies</h4>
-      {profileUser.favoriteMovies && profileUser.favoriteMovies.length > 0 ? (
-        profileUser.favoriteMovies.map((movieId) => {
-          const movie = movies.find((m) => m._id === movieId);
-          return movie ? (
-            <div
-              key={movie.id}
-              style={{ cursor: "pointer", mb: "5px" }}
-              onClick={() => onMovieClick(movie)}
-            >
-              {movie.title}
-            </div>
-          ) : null;
-        })
-      ) : (
-        <div>No favorites selected.</div>
-      )}
+      <hr />
       <DeleteAccountButton user={profileUser} token={token} />
       <UpdateDataButton user={user} token={token} />
+      <hr />
+      <h4 className="mt-3">Favorite Movies</h4>
+      <FavoritesView
+        favoriteMoviesIds={profileUser.favoriteMovies || []}
+        movies={movies}
+        onMovieClick={onMovieClick}
+      />
 
     </div>
   ); 
@@ -89,7 +81,7 @@ export const ProfileView = ({ user, movies, onMovieClick, onClick}) => {
 
 ProfileView.propTypes = {
   user: PropTypes.object.isRequired,
-  movies: PropTypes.arrayOf(PropTypes.object).isRequired,  // Ensure movies prop is an array
+  movies: PropTypes.arrayOf(PropTypes.object).isRequired,
   onMovieClick: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired
 };

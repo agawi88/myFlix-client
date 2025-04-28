@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Navbar, Form, Row, Col, Button, ButtonGroup } from "react-bootstrap";
 
-export const NavbarView = ({ onLogout, onShowProfile, onBackClick }) => {
+export const NavbarView = ({ onLogout, onShowProfile, onShowFavorites, onBackClick, onSearch }) => {
     return (
         <Navbar sticky="top" className="Navbar justify-content-between">
             <Form className="d-flex"
@@ -33,6 +33,13 @@ export const NavbarView = ({ onLogout, onShowProfile, onBackClick }) => {
                                 Profile
                             </Button>
                         </Col>
+                        {/* <Col xs="auto">
+                            <Button
+                                className="RegularButton mb-3"
+                                onClick={onShowFavorites}>
+                                Favorites
+                            </Button>
+                        </Col> */}
                         <Col xs="auto">
                             <Button onClick={onBackClick} className="mb-3">
                                 Back to Home
@@ -54,6 +61,7 @@ export const NavbarView = ({ onLogout, onShowProfile, onBackClick }) => {
   NavbarView.propTypes = {
       onLogout: PropTypes.func.isRequired,
       onShowProfile: PropTypes.func.isRequired,
+      onShowFavorites: PropTypes.arrayOf(PropTypes.object).isRequired,
       onBackClick: PropTypes.func.isRequired,
       onSearch: PropTypes.func.isRequired
   };

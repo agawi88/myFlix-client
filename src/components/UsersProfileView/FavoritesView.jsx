@@ -1,16 +1,28 @@
 import PropTypes from "prop-types";
-import React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import React from "react";
+import { Row, Col } from "react-bootstrap";
 import { MovieCard } from "../MovieCard/MovieCard";
 
-export const FavoritesView = ({ favoriteMovies, onMovieClick }) => {
-  if (!favoriteMovies.length) {
-    return <div><h3>This list is empty! Start adding some movies to Favorites to fill this list.</h3></div>;
+export const FavoritesView = ({ favoriteMoviesIds, movies, onMovieClick }) => {
+
+  const favoriteMovies = movies.filter((movie) =>
+    movie._id && favoriteMoviesIds.includes(movie._id.toString())
+  );
+ 
+  if (!favoriteMoviesIds || !Array.isArray(favoriteMoviesIds)) {
+    favoriteMoviesIds = []; 
+    
   }
+  if (favoriteMovies.length === 0) {
+    return (
+      <div><h3>This list is empty! Start adding some movies to Favorites to fill this list.</h3></div>
+    );
+  }
+  
   return (
-    <Row key={movie.id} xs={10} sm={8} md={6} lg={4}>
+    <Row>
       {favoriteMovies.map((movie) => (
-        <Col>
+        <Col key={movie._id} xs={10} sm={8} md={6} lg={4}>
           <MovieCard
             movie={movie}
             onMovieClick={onMovieClick}
@@ -22,23 +34,7 @@ export const FavoritesView = ({ favoriteMovies, onMovieClick }) => {
 };
 
 MovieCard.propTypes = {
-  movie: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    releaseYear: PropTypes.string,
-    setting: PropTypes.string,
-    description: PropTypes.string,
-    genre: PropTypes.shape({
-      name: PropTypes.string,
-      description: PropTypes.string,
-    }),
-    director: PropTypes.shape({
-      name: PropTypes.string,
-      bio: PropTypes.string,
-      dateOfBirth: PropTypes.string,
-      deathYear: PropTypes.string,
-    }),
-    image: PropTypes.string.isRequired,
-    featured: PropTypes.bool,
-  }).isRequired,
+ favoriteMoviesIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  movies: PropTypes.arrayOf(PropTypes.object).isRequired,
   onMovieClick: PropTypes.func.isRequired
 };
