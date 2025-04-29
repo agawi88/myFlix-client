@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Navbar, Form, Row, Col, Button, ButtonGroup } from "react-bootstrap";
 
-export const NavbarView = ({ onLogout, onShowProfile, onShowFavorites, onBackClick, onSearch }) => {
+export const NavbarView = ({ onLogout, onShowProfile, onBackClick, onSearch }) => {
     return (
         <Navbar sticky="top" className="Navbar justify-content-between">
             <Form className="d-flex"
@@ -61,7 +61,7 @@ export const NavbarView = ({ onLogout, onShowProfile, onShowFavorites, onBackCli
   NavbarView.propTypes = {
       onLogout: PropTypes.func.isRequired,
       onShowProfile: PropTypes.func.isRequired,
-      onShowFavorites: PropTypes.arrayOf(PropTypes.object).isRequired,
+    //   onShowFavorites: PropTypes.arrayOf(PropTypes.object).isRequired,
       onBackClick: PropTypes.func.isRequired,
       onSearch: PropTypes.func.isRequired
   };
