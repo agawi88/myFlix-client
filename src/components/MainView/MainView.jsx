@@ -5,7 +5,6 @@ import { LoginView } from "../LoginView/LoginView";
 import { SignupView } from "../SignupView/SignupView";
 import { ProfileView } from "../UsersProfileView/ProfileView";
 import { NavbarView } from "../NavbarView/NavbarView";
-// import { FavoritesView } from "../UsersProfileView/FavoritesView";
 
 
 import { Container, Row, Col} from "react-bootstrap";
@@ -28,12 +27,6 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
   const [showProfile, setShowProfile] = useState(() => {
     return JSON.parse(localStorage.getItem("showProfile")) || false; 
   });
-  //   const [showFavorites, setShowFavorites] = useState(() => {
-  //   return JSON.parse(localStorage.getItem("showFavorites")) || false; 
-  // });
-  // let similarMoviesByGenre = [];
-  // let similarMoviesByDirector = [];
-
   useEffect(() => {
     console.log(user, token);
     if (!user || !token) return;

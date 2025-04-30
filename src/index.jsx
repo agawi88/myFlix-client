@@ -1,6 +1,8 @@
 import { createRoot } from "react-dom/client";
 import { MainView } from "./components/MainView/MainView";
 import "./index.scss";
+import "react-bootstrap";
+import "bootstrap";
 import Container from "react-bootstrap/Container";
 
 // Main component (will eventually use all the others)

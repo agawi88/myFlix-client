@@ -1,12 +1,16 @@
-$primary: CadetBlue;
+// @import '../node_modules/bootstrap/scss/bootstrap.scss';
+
+$primary: #5f9ea0;
 $body-bg: #c1dfdf;
 $card-bg: Azure;
 $color: steelblue;
 
-@import '~bootstrap/scss/bootstrap.scss';
+// @import '~bootstrap/scss/bootstrap.scss';
+// @import 'bootstrap/scss/bootstrap';
+@import 'bootstrap/scss/bootstrap';
 
 .my-flix {
-    color: $color;
+    color: steelblue;
 }
 .Card {
     color: $card-bg;
