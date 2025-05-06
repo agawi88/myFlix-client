@@ -5,6 +5,7 @@ import { LoginView } from "../LoginView/LoginView";
 import { SignupView } from "../SignupView/SignupView";
 import { ProfileView } from "../UsersProfileView/ProfileView";
 import { NavbarView } from "../NavbarView/NavbarView";
+import { UpdateFormView } from "../UsersProfileView/UpdateFormView";
 
 
 import { Container, Row, Col} from "react-bootstrap";
@@ -21,9 +22,11 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
   const [token, setToken] = useState(storedToken ? storedToken : null);
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const [View, setView] = useState("profile");
   // const [favoriteMovies, setFavoriteMovies] = useState([]);
   // const [favoriteMovieIds, setFavoriteMovieIds] = useState([]);
-// const [showSignup, setShowSignup] = useState(false);
+  // const [showSignup, setShowSignup] = useState(false);
+  const [showUpdateForm, setShowUpdateForm] = useState(false);  
   const [showProfile, setShowProfile] = useState(() => {
     return JSON.parse(localStorage.getItem("showProfile")) || false; 
   });
@@ -126,6 +129,7 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
           }}
           onShowProfile={() => {
             setShowProfile(true);
+            setShowUpdateForm(false);
             localStorage.setItem("showProfile", true);
           }}
           // onShowFavorites={() => {
@@ -134,6 +138,7 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
           // }}
           onBackClick={() => {
             setShowProfile(false);
+            setShowUpdateForm(false);
             setSelectedMovie(null);
             localStorage.setItem("showProfile", false);
           }}
@@ -159,33 +164,45 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
           </Row>
           </Col>
         </div>
-          // FAVORITES VIEW
-        // ) : showFavorites ? (
-        //   <Row>
-        //     <Col>
-        //     <FavoritesView
-        //       user={user}
-        //       movies={movies}
-        //       onMovieClick={onMovieClick}
-        //       />
-        //       </Col>
-        //   </Row> 
-        ) : showProfile ? (
+        ) : showUpdateForm ? (
+          <Row>
+            <Col>
+                <UpdateFormView
+                  user={user}
+                  token={token}
+                onBackClick={() => {
+                  setShowUpdateForm(false);
+                  setShowProfile(true);
+                localStorage.setItem("showProfile", true);
+                }}
+                onClick={(updatedUser) => {
+                  setUser(updatedUser);
+                  localStorage.setItem("user", JSON.stringify(updatedUser));
+                  showUpdateForm(false);
+                  setShowProfile(true);
+                }}
+              />
+              </Col>
+          </Row>
+          ) : showProfile ? (
           <Row>
             <Col>
             <ProfileView
               user={user}
               movies={movies}
-              onClick={(updatedUser) => {
-                setUser(updatedUser);
-                localStorage.setItem("user", JSON.stringify(updatedUser));
-              }}
+              // onClick={(updatedUser) => {
+              //   setUser(updatedUser);
+              //   localStorage.setItem("user", JSON.stringify(updatedUser));
+              //   }}
+                onMovieClick={(movie) => setSelectedMovie(movie)}
+                onEditClick={() => setShowUpdateForm(true)}
               />
               </Col>
           </Row> 
         ) : selectedMovie ? (
 // MovieView MODAL bzw. SELECTED MOVIE
-            <MovieView
+          <Row>
+              <MovieView
               show={!!selectedMovie}
               movie={selectedMovie}
               movies={movies}
@@ -196,7 +213,8 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
               onMovieClick={(movie) => setSelectedMovie(movie)}
               similarMoviesByDirector={similarMoviesByDirector}
               similarMoviesByGenre={similarMoviesByGenre}
-            />
+                />
+          </Row>  
 // EMPTY MOVIES LIST
       ) : movies.length === 0 ? (
         <div>The list is empty!</div>

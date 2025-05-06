@@ -1,12 +1,13 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { DeleteAccountButton } from "./DeleteAccountButton";
-import { UpdateDataButton } from "./UpdateDataButton";
+// import { UpdateFormView} from "./UpdateFormView";
 import { FavoritesView } from "./FavoritesView";
 import PropTypes from "prop-types";
-import { data } from "react-router";
+import { Button } from "react-bootstrap";
+// import { data } from "react-router";
 
-export const ProfileView = ({ user, movies, onMovieClick}) => {
+export const ProfileView = ({ user, movies, onMovieClick, onClick, onEditClick}) => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token"); 
   
@@ -66,7 +67,11 @@ export const ProfileView = ({ user, movies, onMovieClick}) => {
       </div>
       <hr />
       <DeleteAccountButton user={profileUser} token={token} />
-      <UpdateDataButton user={user} token={token} />
+      
+        <Button variant="danger" onClick={onEditClick} >
+          Edit Data
+        </Button>
+
       <hr />
       <h4 className="mt-3">Favorite Movies</h4>
       <FavoritesView
@@ -83,6 +88,7 @@ ProfileView.propTypes = {
   user: PropTypes.object.isRequired,
   movies: PropTypes.arrayOf(PropTypes.object).isRequired,
   onMovieClick: PropTypes.func.isRequired,
-  onClick: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired,
+  onEditClick: PropTypes.func.isRequired
 };
 

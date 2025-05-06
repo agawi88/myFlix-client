@@ -5,9 +5,10 @@ import { Button, Form, Modal, Row, Col } from "react-bootstrap";
 import PropTypes from "prop-types";
 
 export const UpdateDataButton = ({user, token}) => {
-    const [showModal, setShowModal] = useState(false);
-    const handleEditClick = () => setShowModal(true);
+      const [showModal, setShowModal] = useState(false);
     const handleClose = () => setShowModal(false);
+    const handleShow = () => setShowModal(true);
+    
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
@@ -62,11 +63,11 @@ export const UpdateDataButton = ({user, token}) => {
     };
     return (
         <>
-        <Button variant="danger" onClick={handleEditClick}>
+        <Button variant="danger" onClick={handleShow}>
             Edit Data
         </Button>
 
-        <Modal show={showModal} onHide={handleClose} centered>
+        <Modal.Dialog show={showModal} onHide={handleClose} centered>
             <Modal.Header closeButton>
             <Modal.Title>Edit User Data:</Modal.Title>
             </Modal.Header>
@@ -116,7 +117,7 @@ export const UpdateDataButton = ({user, token}) => {
             </Form.Group>
                 </Row>            
                 <Row>
-            <Form.Group>
+            <Form.Group controlId="signupEmail">
                     <Col lg="auto">
                 <Form.Label> 
                     Email: 
@@ -142,7 +143,7 @@ export const UpdateDataButton = ({user, token}) => {
                     <Button variant="secondary" onClick={handleClose}>Cancel</Button>
                     <Button variant="danger" onClick={updateData}>Confirm</Button>
                 </Modal.Footer>
-            </Modal>
+            </Modal.Dialog>
         </>
     );
 };
