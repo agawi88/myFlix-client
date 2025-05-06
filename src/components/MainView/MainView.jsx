@@ -22,7 +22,7 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
   const [token, setToken] = useState(storedToken ? storedToken : null);
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
-  const [View, setView] = useState("profile");
+  // const [View, setView] = useState("profile");
   // const [favoriteMovies, setFavoriteMovies] = useState([]);
   // const [favoriteMovieIds, setFavoriteMovieIds] = useState([]);
   // const [showSignup, setShowSignup] = useState(false);
@@ -178,7 +178,7 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
                 onClick={(updatedUser) => {
                   setUser(updatedUser);
                   localStorage.setItem("user", JSON.stringify(updatedUser));
-                  showUpdateForm(false);
+                  setShowUpdateForm(false);
                   setShowProfile(true);
                 }}
               />
