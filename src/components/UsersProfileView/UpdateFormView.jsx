@@ -14,29 +14,15 @@ export const UpdateFormView = ({ user, token, onBackClick, onClick }) => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        const data = {
-            // Username: username,
-            // Password: password,
-            // Email: email,
-      }
-
-      if (username.trim().length > 0) {
-      data.Username = username;
-      }
-      
-      if (password.trim().length > 0) {
-      data.Password = password;
-      }
-
-      if (email.trim().length > 0) {
-      data.Email = email;
-      }
+      const data = {};
+      if (username.trim()) data.Username = username; 
+      if (password.trim()) data.Password = password;
+      if (email.trim()) data.Email = email;
 
       if (Object.keys(data).length === 0) {
         alert("Please fill in at least one filed to update.");
         return;
       }
-
       console.log("Sending update:", data);
 
         fetch(`https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}`, {
@@ -54,7 +40,9 @@ export const UpdateFormView = ({ user, token, onBackClick, onClick }) => {
                 return response.json();
             })
             .then((updatedUser) => {
-                onClick(updatedUser);
+              onClick(updatedUser);
+              setPassword("");
+              setEmail("");
                 alert("User info updated successfully!");
             })
                     .catch((err) => {
