@@ -6,6 +6,7 @@ import { SignupView } from "../SignupView/SignupView";
 import { ProfileView } from "../UsersProfileView/ProfileView";
 import { NavbarView } from "../NavbarView/NavbarView";
 import { UpdateFormView } from "../UsersProfileView/UpdateFormView";
+import { DeleteAccountView } from "../UsersProfileView/DeleteAccountView";
 
 
 import { Container, Row, Col} from "react-bootstrap";
@@ -25,13 +26,14 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
   // const [View, setView] = useState("profile");
   // const [favoriteMovies, setFavoriteMovies] = useState([]);
   // const [favoriteMovieIds, setFavoriteMovieIds] = useState([]);
-  // const [showSignup, setShowSignup] = useState(false);
-  const [showUpdateForm, setShowUpdateForm] = useState(false);  
+  const [showSignup, setShowSignup] = useState(false);
+  const [showDeleteView, setShowDeleteView] = useState(false);
+  const [showUpdateForm, setShowUpdateForm] = useState(false); 
   const [showProfile, setShowProfile] = useState(() => {
     return JSON.parse(localStorage.getItem("showProfile")) || false; 
   });
   useEffect(() => {
-    console.log(user, token);
+        console.log(user, token);
     if (!user || !token) return;
 
     fetch("https://gb-movies-api-cab43a70da98.herokuapp.com/movies", {
@@ -184,18 +186,37 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
               />
               </Col>
           </Row>
+                 ) : showDeleteView ? (
+          <Row>
+            <Col>
+                <DeleteAccountView
+                  user={storedUser}
+                  token={token}
+                onBackClick={() => {
+                  setShowDeleteView(false);
+                  setShowProfile(true);
+                localStorage.setItem("showProfile", true);
+                }}
+                //   onClick={(storedUser) => {
+                //   setUser(null);
+                //     setToken(null);
+                //     localStorage.clear();
+                //     setShowProfile(false);
+                //   setShowDeleteView(false);
+                //   setShowSignup(true);
+                // }}
+              />
+              </Col>
+          </Row>
           ) : showProfile ? (
           <Row>
             <Col>
             <ProfileView
               user={user}
               movies={movies}
-              // onClick={(updatedUser) => {
-              //   setUser(updatedUser);
-              //   localStorage.setItem("user", JSON.stringify(updatedUser));
-              //   }}
                 onMovieClick={(movie) => setSelectedMovie(movie)}
-                onEditClick={() => setShowUpdateForm(true)}
+                  onEditClick={() => setShowUpdateForm(true)}
+                  onDeleteClick={() => setShowDeleteView(true)}
               />
               </Col>
           </Row> 

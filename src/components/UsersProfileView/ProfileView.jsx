@@ -1,13 +1,12 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { DeleteAccountButton } from "./DeleteAccountButton";
-// import { UpdateFormView} from "./UpdateFormView";
+// import { DeleteAccountButton } from "./DeleteAccountButton";
 import { FavoritesView } from "./FavoritesView";
 import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
+import { Button, Row, Col } from "react-bootstrap";
 // import { data } from "react-router";
 
-export const ProfileView = ({ user, movies, onMovieClick, onClick, onEditClick}) => {
+export const ProfileView = ({ user, movies, onMovieClick, onClick, onEditClick, onDeleteClick}) => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token"); 
   
@@ -66,20 +65,29 @@ export const ProfileView = ({ user, movies, onMovieClick, onClick, onEditClick})
         <span>{profileUser.dateOfBirth}</span>
       </div>
       <hr />
-      <DeleteAccountButton user={profileUser} token={token} />
-      
-        <Button variant="danger" onClick={onEditClick} >
+      <div>
+        <Row>
+          <Col>
+            <Button variant="danger" onClick={onDeleteClick} user={profileUser} token={token} >
+              Delete Account
+            </Button>
+          </Col>
+          <Col>
+        <Button variant="secondary" onClick={onEditClick} >
           Edit Data
-        </Button>
-
-      <hr />
+            </Button>
+            </Col>
+          <hr />
+          <Col>
       <h4 className="mt-3">Favorite Movies</h4>
       <FavoritesView
         favoriteMoviesIds={profileUser.favoriteMovies || []}
         movies={movies}
         onMovieClick={onMovieClick}
-      />
-
+            />
+            </Col>
+      </Row>
+</div>
     </div>
   ); 
 };
@@ -89,6 +97,7 @@ ProfileView.propTypes = {
   movies: PropTypes.arrayOf(PropTypes.object).isRequired,
   onMovieClick: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
-  onEditClick: PropTypes.func.isRequired
+  onEditClick: PropTypes.func.isRequired,
+  onDeleteClick: PropTypes.func.isRequired,
 };
 

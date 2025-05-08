@@ -6,7 +6,7 @@ import { SimilarMoviesBySections } from "../SimilarMovies/SimilarMoviesBySection
 
 import "./MovieView.scss";
 
-export const MovieView = ({ movie, show, isFavorite, toggleFavorite, onHide, movies, similarMoviesByDirector, similarMoviesByGenre, onMovieClick }) => {
+export const MovieView = ({ movie, isFavorite, toggleFavorite, onHide, movies, similarMoviesByDirector, similarMoviesByGenre, onMovieClick }) => {
   
   if (!movie) return null;
   console.log({ toggleFavorite });

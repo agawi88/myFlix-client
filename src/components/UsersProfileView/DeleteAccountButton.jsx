@@ -1,13 +1,16 @@
 import React from "react";
 import { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
+import { Button, Modal } from "react-bootstrap";
 import PropTypes from "prop-types";
 
-export const DeleteAccountButton = ({user, token}) => {
-    const [showModal, setShowModal] = useState(false);
-    const handleDeleteClick = () => setShowModal(true);
-    const handleClose = () => setShowModal(false);
+export const DeleteAccountButton = ({ user, token }) => {
+    const [show, setShow] = useState(false);
+    // const handleShow = () => setShow(true);
+    const handleShow = () => {
+  console.log("Button clicked!");
+  setShow(true);
+};
+    const handleClose = () => setShow(false);
 
     const confirmDelete = () => {
         fetch(`https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}`, {
@@ -24,27 +27,38 @@ export const DeleteAccountButton = ({user, token}) => {
             })
             .then((message) => {
                 alert(message);
-                setShowModal(false);
+                setShow(false);
 
             })
             .catch((err) => {
                 console.error("Error deleting account:", err);
 
-                setShowModal(false);
+                setShow(false);
             });
     };
+    console.log('Modal is:', Modal);
     return (
         <>
-            <Button variant="danger" onClick={handleDeleteClick}>
+            <Button variant="danger" onClick={handleShow}>
                 Delete Account
             </Button>
 
-            <Modal show={showModal} onHide={handleClose}>
+            <Modal
+                show={show}
+                onHide={handleClose}
+                // show={() => setShow(true)}
+                // onHide={() => setShow(null)}
+                size="sm"
+                centered
+                scrollable
+                dialogClassName="modal-90w"
+                backdrop="static"
+                keyboard={false}>
                 <Modal.Header closeButton>
                     <Modal.Title>Confirm Delete</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <h4>Are you sure you want to delete your account/username? <br></br><b>This cannot be undone!</b></h4>
+                    <h5>Are you sure you want to delete your account/username? <br></br><b>This cannot be undone!</b></h5>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>Cancel</Button>
