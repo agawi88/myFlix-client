@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { CardGroup, Row, Col, Carousel } from "react-bootstrap";
-import ExampleCarouselImage from 'components/ExampleCarouselImage';
+// import ExampleCarouselImage from 'components/ExampleCarouselImage';
 import { MovieCard } from "../MovieCard/MovieCard";
 
 export const SimilarMoviesBySections = ({ movies, title, onMovieClick }) => {

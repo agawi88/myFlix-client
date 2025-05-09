@@ -1,10 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { useState } from "react";
 import { Button, Row, Col, Card } from "react-bootstrap";
 import "../SignupView/SignupView.scss";
 
 
-export const DeleteAccountView = ({ user, token, onBackClick, onAccountDeleted }) => {
+export const DeleteAccountView = ({ user, token, onBackClick, setShowProfile, setShowDeleteView, setShowSignup }) => {
     // const [username, setUsername] = useState(user.Username || "");
     // const [user, setUser] = useState(null);
     //   const [token, setToken] = useState(null);
@@ -17,10 +18,18 @@ export const DeleteAccountView = ({ user, token, onBackClick, onAccountDeleted }
                 },
             })
                 .then((response) => {
+                    if (response.ok)
+                    {
+                        localStorage.clear();
+                        setShowProfile(false);
+                        setShowDeleteView(false);
+                        setShowSignup(true);
+                    } 
                     if (!response.ok) {
                         throw new Error("Failed to delete account");
                     }
                     return response.text();
+   
                 })
                 .then((message) => {
                     console.log("Account deleted: ", message);
@@ -81,5 +90,7 @@ DeleteAccountView.propTypes = {
     token: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
     onBackClick: PropTypes.func.isRequired,
-    onAccountDeleted: PropTypes.func.isRequired,
+    setShowProfile: PropTypes.bool.isRequired,
+    setShowDeleteView: PropTypes.bool.isRequired,
+    setShowSignup: PropTypes.bool.isRequired,
 };
