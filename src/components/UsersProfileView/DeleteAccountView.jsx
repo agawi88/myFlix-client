@@ -4,7 +4,7 @@ import { Button, Row, Col, Card } from "react-bootstrap";
 import "../SignupView/SignupView.scss";
 
 
-export const DeleteAccountView = ({ user, token, onBackClick, setShowSignup, setShowProfile, setShowDeleteView }) => {
+export const DeleteAccountView = ({ user, setUser, token, setToken, onBackClick, setShowSignup, setShowProfile, setShowDeleteView }) => {
     
         const confirmDelete = () => {
             fetch(`https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}`, {
@@ -27,8 +27,15 @@ export const DeleteAccountView = ({ user, token, onBackClick, setShowSignup, set
                     return response.text();
    
                 })
-                .then(() => {
-                    console.log("Account deleted: ");               
+                .then((message) => {
+                    console.log("Account deleted: ", message);
+                    localStorage.clear();
+                    setUser(null);
+                    setToken(null);
+                    setShowProfile(false);
+                    setShowDeleteView(false);
+                    setShowSignup(true);
+
                 })
                 .catch((err) => {
                     console.error("Error deleting account:", err);
@@ -75,4 +82,6 @@ DeleteAccountView.propTypes = {
     setShowProfile: PropTypes.bool.isRequired,
     setShowDeleteView: PropTypes.bool.isRequired,
     setShowSignup: PropTypes.bool.isRequired,
+    setUser: PropTypes.func.isRequired,
+    setToken: PropTypes.func.isRequired,
 };

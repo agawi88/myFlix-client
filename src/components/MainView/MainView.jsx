@@ -197,6 +197,8 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
                 <DeleteAccountView
                   user={user}
                   token={token}
+                  setUser={setUser}
+                  setToken={setToken}
                   onBackClick={() => {
                   setShowDeleteView(false);
                   setShowProfile(true);
