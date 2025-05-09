@@ -1,13 +1,12 @@
 import React from "react";
 import { useState, useEffect } from "react";
-// import { DeleteAccountButton } from "./DeleteAccountButton";
 import { FavoritesView } from "./FavoritesView";
 import PropTypes from "prop-types";
 import { Button, Row, Col } from "react-bootstrap";
 // import { data } from "react-router";
 
 export const ProfileView = ({ user, movies, onMovieClick, onClick, onEditClick, onDeleteClick}) => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
+    // const storedUser = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token"); 
   
   const [profileUser, setProfileUser] = useState(null);
@@ -19,13 +18,10 @@ export const ProfileView = ({ user, movies, onMovieClick, onClick, onEditClick, 
         headers: { Authorization: `Bearer ${token}` },
     })
         .then((response) => {
-          if (!response.ok) {
-          throw new Error("Failed to fetch user data");
-          }
+          if (!response.ok) throw new Error("Failed to fetch user data");
           return response.json();
       })
         .then((data) => {
-
         const userFromApi = {
             id: data._id,
             username: data.Username,

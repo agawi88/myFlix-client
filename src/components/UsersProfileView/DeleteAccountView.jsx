@@ -6,7 +6,9 @@ import "../SignupView/SignupView.scss";
 
 export const DeleteAccountView = ({ user, token, onBackClick, onAccountDeleted }) => {
     // const [username, setUsername] = useState(user.Username || "");
-
+    // const [user, setUser] = useState(null);
+    //   const [token, setToken] = useState(null);
+    
         const confirmDelete = () => {
             fetch(`https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}`, {
                 method: "DELETE",
@@ -18,10 +20,13 @@ export const DeleteAccountView = ({ user, token, onBackClick, onAccountDeleted }
                     if (!response.ok) {
                         throw new Error("Failed to delete account");
                     }
-                    // return response.json();
-
+                    return response.text();
+                })
+                .then((message) => {
+                    console.log("Account deleted: ", message);
                     localStorage.clear();
-                    setUser();
+                    setUser(null);
+                    setToken(null);
                     setShowProfile(false);
                     setShowDeleteView();
                     setShowSignup(true);                
