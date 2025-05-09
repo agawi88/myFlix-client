@@ -32,6 +32,10 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
   const [showProfile, setShowProfile] = useState(() => {
     return JSON.parse(localStorage.getItem("showProfile")) || false; 
   });
+
+  let similarMoviesByGenre = [];
+  let similarMoviesByDirector = [];
+
   useEffect(() => {
         console.log(user, token);
     if (!user || !token) return;
@@ -87,33 +91,33 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
         movie.director.name === selectedMovie.director.name &&
         movie.id !== selectedMovie.id
     );
-  }
-  const isFavorite = selectedMovie && user?.FavoriteMovies?.includes(selectedMovie.id);
-
-    const toggleFavorite = (MovieId) => {
-    if (!user || !token) return;
-    
-    const isFav = user.FavoriteMovies.includes(MovieId);
-
-    const method = isFav ? "POST" : "PUT";
-
-    fetch(`https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}/movies/${MovieId}`, {
-      method: method,
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      }
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to update favorites");
-        return res.json();
-      })
-      .then((updatedUser) => {
-        setUser(updatedUser);
-        localStorage.setItem("user", JSON.stringify(updatedUser));
-      })
-      .catch((error) => console.error("Toggle favorite error:", error));
   };
+  // const isFavorite = selectedMovie && user?.FavoriteMovies?.includes(selectedMovie.id);
+
+  //   const toggleFavorite = (MovieId) => {
+  //   if (!user || !token) return;
+    
+  //   const isFav = user.FavoriteMovies.includes(MovieId);
+
+  //   const method = isFav ? "POST" : "PUT";
+
+  //   fetch(`https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}/movies/${MovieId}`, {
+  //     method: method,
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //       "Content-Type": "application/json",
+  //     }
+  //   })
+  //     .then((res) => {
+  //       if (!res.ok) throw new Error("Failed to update favorites");
+  //       return res.json();
+  //     })
+  //     .then((updatedUser) => {
+  //       setUser(updatedUser);
+  //       localStorage.setItem("user", JSON.stringify(updatedUser));
+  //     })
+  //     .catch((error) => console.error("Toggle favorite error:", error));
+  // };
 
   return (
     <Container>
@@ -227,8 +231,8 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
               show={!!selectedMovie}
               movie={selectedMovie}
               movies={movies}
-              isFavorite={isFavorite}
-              toggleFavorite={toggleFavorite}
+              // isFavorite={isFavorite}
+              // toggleFavorite={toggleFavorite}
               onHide={() => setSelectedMovie(null)}
               onBackClick={() => setSelectedMovie(null)}
               onMovieClick={(movie) => setSelectedMovie(movie)}
