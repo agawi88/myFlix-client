@@ -132,6 +132,7 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
             setToken(null);
             localStorage.removeItem("user");
             localStorage.removeItem("token");
+            setShowSignup(true);
           }}
           onShowProfile={() => {
             setShowProfile(true);
@@ -194,21 +195,16 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
           <Row>
             <Col>
                 <DeleteAccountView
-                  user={storedUser}
+                  user={user}
                   token={token}
-                onBackClick={() => {
+                  onBackClick={() => {
                   setShowDeleteView(false);
                   setShowProfile(true);
                 localStorage.setItem("showProfile", true);
                 }}
-                //   onClick={(storedUser) => {
-                //   setUser(null);
-                //     setToken(null);
-                //     localStorage.clear();
-                //     setShowProfile(false);
-                //   setShowDeleteView(false);
-                //   setShowSignup(true);
-                // }}
+                  setShowProfile={setShowProfile}
+                  setShowDeleteView={setShowDeleteView}
+                  setShowSignup={setShowSignup}
               />
               </Col>
           </Row>

@@ -1,14 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useState } from "react";
 import { Button, Row, Col, Card } from "react-bootstrap";
 import "../SignupView/SignupView.scss";
 
 
-export const DeleteAccountView = ({ user, token, onBackClick, setShowProfile, setShowDeleteView, setShowSignup }) => {
-    // const [username, setUsername] = useState(user.Username || "");
-    // const [user, setUser] = useState(null);
-    //   const [token, setToken] = useState(null);
+export const DeleteAccountView = ({ user, token, onBackClick, setShowSignup, setShowProfile, setShowDeleteView }) => {
     
         const confirmDelete = () => {
             fetch(`https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}`, {
@@ -25,29 +21,15 @@ export const DeleteAccountView = ({ user, token, onBackClick, setShowProfile, se
                         setShowDeleteView(false);
                         setShowSignup(true);
                     } 
-                    if (!response.ok) {
+                    else {
                         throw new Error("Failed to delete account");
                     }
                     return response.text();
    
                 })
-                .then((message) => {
-                    console.log("Account deleted: ", message);
-                    localStorage.clear();
-                    setUser(null);
-                    setToken(null);
-                    setShowProfile(false);
-                    setShowDeleteView();
-                    setShowSignup(true);                
+                .then(() => {
+                    console.log("Account deleted: ");               
                 })
-                // .then((storedUser) => {
-                //     onClick(storedUser);
-                //     alert("User deleted successfully.")
-                // })
-                // .then(() => {
-                //     alert("Your account has been successfully deleted.");
-                //     onAccountDeleted();
-                // })
                 .catch((err) => {
                     console.error("Error deleting account:", err);
                     alert("Something went wrong while deleting your account.")

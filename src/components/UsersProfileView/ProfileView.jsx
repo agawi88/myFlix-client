@@ -10,9 +10,10 @@ export const ProfileView = ({ user, movies, onMovieClick, onClick, onEditClick, 
   const token = localStorage.getItem("token"); 
   
   const [profileUser, setProfileUser] = useState(null);
+  
     
     useEffect(() => {
-     if (!user || !user.Username) return;
+     if (!user?.Username || !token ) return;
       fetch(`https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}`, {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
@@ -28,7 +29,7 @@ export const ProfileView = ({ user, movies, onMovieClick, onClick, onEditClick, 
             password: data.Password,
             email: data.Email,
             dateOfBirth: data.DateOfBirth,
-            favoriteMovies: data.FavoriteMovies || []
+            favoriteMovies: Array.isArray(data.FavoriteMovies) ? data.Favorites : []
         };
           setProfileUser(userFromApi);
           console.log("Fetched profile user:", userFromApi);
@@ -36,7 +37,7 @@ export const ProfileView = ({ user, movies, onMovieClick, onClick, onEditClick, 
             .catch((error) => {
              console.error("Error fetching user data:", error);
       });
-    }, [user]);
+    }, [user, token]);
   
     if (!user) return <div>User not found. Please log in again.</div>;
     if (!profileUser) return <div>Loading profile...</div>;
@@ -72,18 +73,24 @@ export const ProfileView = ({ user, movies, onMovieClick, onClick, onEditClick, 
         <Button variant="secondary" onClick={onEditClick} >
           Edit Data
             </Button>
-            </Col>
-          <hr />
+          </Col>
+          </Row>
+        <hr />
+        <h4 className="mt-3">Favorite Movies</h4>
+        {Array.isArray(movies) && Array.isArray(profileUser.favoriteMovies) && profileUser.favoriteMovies.length > 0 ? (
+        <Row>
           <Col>
-      <h4 className="mt-3">Favorite Movies</h4>
-      <FavoritesView
-        favoriteMoviesIds={profileUser.favoriteMovies || []}
-        movies={movies}
-        onMovieClick={onMovieClick}
+            <FavoritesView
+              favoriteMoviesIds={profileUser.favoriteMovies || []}
+              movies={movies}
+              onMovieClick={onMovieClick}
             />
-            </Col>
-      </Row>
-</div>
+          </Col>
+        </Row>
+        ) : (
+            <div> You have no favorite movies yet. </div>
+        )}
+      </div>
     </div>
   ); 
 };

@@ -9,7 +9,6 @@ import "./MovieView.scss";
 export const MovieView = ({ movie, isFavorite, toggleFavorite, onHide, movies, similarMoviesByDirector, similarMoviesByGenre, onMovieClick }) => {
   
   if (!movie) return null;
-  console.log({ toggleFavorite });
   return (
 
 <Modal
@@ -23,7 +22,7 @@ export const MovieView = ({ movie, isFavorite, toggleFavorite, onHide, movies, s
                 <Modal.Title>{movie.title}
                   <Button
                     variant="link"
-                    onClick={() => toggleFavorite(movie.id)}
+                    // onClick={() => toggleFavorite(movie.id)}
                     className="ms-3 p-0"
                     style={{ color: isFavorite ? "red" : "gray", fontSize: "1.5rem"}}
                   >
