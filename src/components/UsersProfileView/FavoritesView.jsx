@@ -3,8 +3,8 @@ import React from "react";
 import { Row, Col } from "react-bootstrap";
 import { MovieCard } from "../MovieCard/MovieCard";
 
-export const FavoritesView = ({ favoriteMoviesIds, movies, onMovieClick }) => {
-
+export const FavoritesView = ({user, movies, onMovieClick }) => {
+  const favoriteMoviesIds = user?.FavoriteMovies || [];
   const favoriteMovies = movies.filter((movie) =>
     movie._id && favoriteMoviesIds.includes(movie._id.toString())
   );
@@ -34,7 +34,7 @@ export const FavoritesView = ({ favoriteMoviesIds, movies, onMovieClick }) => {
 };
 
 MovieCard.propTypes = {
- favoriteMoviesIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  user: PropTypes.object.isRequired,
   movies: PropTypes.arrayOf(PropTypes.object).isRequired,
   onMovieClick: PropTypes.func.isRequired
 };
