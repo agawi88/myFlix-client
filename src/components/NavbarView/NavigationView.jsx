@@ -1,46 +1,59 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Navbar, Row, Col, Button, ButtonGroup, Container } from "react-bootstrap";
+import { Navbar, Form, Row, Col, Button, ButtonGroup } from "react-bootstrap";
 
-export const NavScrollExample = ({ user, onLogout, onShowProfile, onBackClick, onSearch }) => {
+export const NavbarView = ({ onLogout, onShowProfile, onBackClick, onSearch }) => {
     return (
-        <Navbar expand="lg" className="bg-body-tertiary">
-            <Container fluid>
-                <Navbar.Brand href="#">Navbar scroll</Navbar.Brand>
-                <Navbar.Toggle aria-controls="navbarScroll" />
-                <Navbar.Collapse id="navbarScroll">
-                    <Nav
-                        className="me-auto my-2 my-lg-0"
-                        style={{ maxHeight: '100px' }}
-                        navbarScroll
-                    >
-                        <Nav.Link href="#action1">Home</Nav.Link>
-                        <Nav.Link href="#action2">Link</Nav.Link>
-                        <NavDropdown title="Link" id="navbarScrollingDropdown">
-                            <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action4">
-                                Another action
-                            </NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action5">
-                                Something else here
-                            </NavDropdown.Item>
-                        </NavDropdown>
-                        <Nav.Link href="#" disabled>
-                            Link
-                        </Nav.Link>
-                    </Nav>
-                    <Form className="d-flex">
+        <Navbar sticky="top" className="Navbar justify-content-between">
+            <Form className="d-flex"
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    onSearch(searchTerm);
+            }}>
+                <Row>
+                    <Col xs="auto">
                         <Form.Control
-                            type="search"
+                            type="text"
                             placeholder="Search"
-                            className="me-2"
-                            aria-label="Search"
+                            className="mr-sm-2 SearchBar"
                         />
-                        <Button variant="outline-success">Search</Button>
-                    </Form>
-                </Navbar.Collapse>
-            </Container>
+                    </Col>
+                    <Col xs="auto">
+                        <Button type="submit" className="RegularButton">Submit</Button>
+                    </Col>
+                </Row>
+            </Form>
+            <Form className="d-flex justify-content-md-end">
+                <Row>
+                    <ButtonGroup>
+                        <Col xs="auto">
+                            <Button
+                                className="RegularButton mb-3"
+                                onClick={onShowProfile}>
+                                Profile
+                            </Button>
+                        </Col>
+                        {/* <Col xs="auto">
+                            <Button
+                                className="RegularButton mb-3"
+                                onClick={onShowFavorites}>
+                                Favorites
+                            </Button>
+                        </Col> */}
+                        <Col xs="auto">
+                            <Button onClick={onBackClick} className="mb-3">
+                                Back to Home
+                            </Button>
+                        </Col>
+                        <Col xs="auto">
+                            <Button className="btn RegularButton me-md-2"
+                                onClick={onLogout}>
+                                Logout
+                            </Button>
+                        </Col>
+                    </ButtonGroup>
+                </Row>
+            </Form>
         </Navbar>
     );
 };
