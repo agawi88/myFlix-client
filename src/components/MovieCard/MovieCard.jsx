@@ -1,17 +1,27 @@
 import PropTypes from "prop-types";
 import { Button, Card, Container, Row, Col } from "react-bootstrap";
-//import  { Link } from "react-router-dom";
+import  { Link } from "react-router-dom";
 import "./MovieCard.scss";
 
-export const MovieCard = ({ movie, onMovieClick }) => {
+export const MovieCard = ({ movie }) => {
   return (
     <div className="MovieCard">
        <Card className="h-100">
         <Card.Body className="d-flex flex-column justify-content-between">
-          <Card.Img variant="top" src={movie.image} style={{ height: "70%", objectFit: "cover" }}/>
-          <Card.Title className="text-center"><h4> {movie.title} </h4></Card.Title>
-          {/* <Link to={`/movies/${encodeURIComponent(movie.id)}`}></Link> */}
-          <Button onClick={() => onMovieClick(movie)} className="btn btn-primary" type="button"> Open </Button>
+          <Card.Img
+            variant="top"
+            src={movie.image}
+            style={{ height: "70%", objectFit: "cover" }} />
+          <Card.Title
+            className="text-center">
+            <h4> {movie.title} </h4>
+          </Card.Title>
+          <Link to={`/movies/${encodeURIComponent(movie.id)}`}>
+            <Button variant="link" /* onClick={() => onMovieClick(movie)}*/
+              className="btn btn-primary"
+              type="button" > Open
+            </Button>
+          </Link>
         </Card.Body>
       </Card>
     </div>
@@ -37,5 +47,5 @@ MovieCard.propTypes = {
     image: PropTypes.string.isRequired,
     featured: PropTypes.bool,
   }).isRequired,
-  onMovieClick: PropTypes.func.isRequired
+  // onMovieClick: PropTypes.func.isRequired
 };
