@@ -125,20 +125,18 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
 
   return (
     <BrowserRouter>
-          {user && (selectedMovie || movies.length > 0) && (
-  //  NVBAR
-        <NavbarView
+          {/* {user && (selectedMovie || movies.length > 0) && ( */}
+      {/*   //  NVBAR*/}
+      <NavbarView
+          user={user}
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
           onSearch={(term) => setSearchResults(filterMovies(movies, term))}
-          //   {console.log("Searching for: ", searchTerm)
-          // }}
           onLogout={() => {
             setUser(null);
             setToken(null);
-            localStorage.removeItem("user");
-            localStorage.removeItem("token");
-            setShowSignup(true);
+            localStorage.clear();
+            /*             setShowSignup(true);  */
           }}
           // onShowProfile={() => {
           //   setShowProfile(true);
@@ -158,7 +156,6 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
           //   localStorage.setItem("showProfile", false);
           // }}
         />    
-        )}
         {showUpdateForm && (
           <UpdateFormView
             user={user}
@@ -216,7 +213,7 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
           <Route path="/signup"
             element={
               user ? 
-                  <Navigate to="/" replace /> : (
+                  <Navigate to="/login" replace /> : (
                   <Col>
                     <SignupView />
                   </Col>
@@ -232,6 +229,7 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
                   <Col>
                     <ProfileView
                       user={user}
+                      token={token}
                       movies={movies}
                       onMovieClick={(movie) => setSelectedMovie(movie)}
                       onEditClick={() => setShowUpdateForm(true)}

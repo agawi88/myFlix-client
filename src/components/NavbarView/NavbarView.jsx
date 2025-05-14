@@ -3,12 +3,12 @@ import { Navbar, Nav, Form, Button, Container } from "react-bootstrap";
 import { propTypes } from "react-bootstrap/esm/Image";
 import { Link } from "react-router-dom";
 
-export const NavbarView = ({ user, onLogout, onShowProfile, onBackClick, onSearch, showSignup, searchTerm, setSearchTerm, setSearchResults }) => {
+export const NavbarView = ({ user, onLogout, onSearch, searchTerm, setSearchTerm, setSearchResults }) => {
 
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
             <Container fluid>
-                <Navbar.Brand as={Link} to="/">British Movies</Navbar.Brand>
+                <Navbar.Brand as={Link} to="/" /* href="/" */>British Movies</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav
@@ -18,20 +18,20 @@ export const NavbarView = ({ user, onLogout, onShowProfile, onBackClick, onSearc
                     >
             {!user && (
               <>
-                <Nav.Link className="RegularButton"  as={Link} to="/login" >
+                <Nav.Link className="RegularButton" as={Link} to="/login"  /* href="/login" */ >
                   Login
                 </Nav.Link>
-                <Nav.Link className="RegularButton" /* onClick={showSignup}*/  as={Link} to="/signup" >
+                <Nav.Link className="RegularButton" as={Link} to="/signup" /* onClick={showSignup} href="/signup" */   >
                   Signup
                 </Nav.Link>
               </>
             )}
-            {user && (
+            {user && /* (selectedMovie || movies.length > 0) && */  (
               <>
-                <Nav.Link className="RegularButton" as={Link} to="/profile" /* onClick={onShowProfile} */>
+                <Nav.Link className="RegularButton" as={Link} to="/profile"  /* href="/profile" onClick={onShowProfile} */>
                   Profile
                 </Nav.Link>
-                <Nav.Link className="RegularButton"  as={Link} to="/" /* onClick={onBackClick} */>
+                <Nav.Link className="RegularButton" as={Link} to="/"  /* href="/" onClick={onBackClick} */>
                   Home
                 </Nav.Link>
                 <Nav.Link className="RegularButton" onClick={onLogout} /* as={Link} to="/login"*/>
