@@ -1,39 +1,40 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Navbar, Nav, Form, Button, Container } from "react-bootstrap";
-// import { Link } from "react-router-dom";
+import { propTypes } from "react-bootstrap/esm/Image";
+import { Link } from "react-router-dom";
 
-export const NavbarView = ({ user, onLogout, onShowProfile, onBackClick, onSearch, showSignup }) => {
+export const NavbarView = ({ user, onLogout, onShowProfile, onBackClick, onSearch, showSignup, searchTerm, setSearchTerm, setSearchResults }) => {
+
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
             <Container fluid>
-                <Navbar.Brand href="#">British Movies</Navbar.Brand>
-                <Navbar.Toggle aria-controls="navbarScroll" />
-                <Navbar.Collapse id="navbarScroll">
+                <Navbar.Brand as={Link} to="/">British Movies</Navbar.Brand>
+                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Navbar.Collapse id="basic-navbar-nav">
                     <Nav
-                        className="me-auto my-2 my-lg-0"
-                        style={{ maxHeight: '100px' }}
+                        className="me-auto"
+                        // style={{ maxHeight: '100px' }}
                         navbarScroll
                     >
             {!user && (
               <>
-                <Nav.Link type="button" className="RegularButton mb-3" as={Link} to="/login">
+                <Nav.Link className="RegularButton"  as={Link} to="/login" >
                   Login
                 </Nav.Link>
-                <Nav.Link type="button" className="RegularButton mb-3" showSignup={true} as={Link} to="/signup">
+                <Nav.Link className="RegularButton" /* onClick={showSignup}*/  as={Link} to="/signup" >
                   Signup
                 </Nav.Link>
               </>
             )}
             {user && (
               <>
-                <Nav.Link type="button" className="RegularButton mb-3" onClick={onShowProfile} as={Link} to="/">
+                <Nav.Link className="RegularButton" as={Link} to="/profile" /* onClick={onShowProfile} */>
                   Profile
                 </Nav.Link>
-                <Nav.Link type="button" className="RegularButton mb-3" onClick={onBackClick} as={Link} to="/">
+                <Nav.Link className="RegularButton"  as={Link} to="/" /* onClick={onBackClick} */>
                   Home
                 </Nav.Link>
-                <Nav.Link type="button" className="RegularButton mb-3" onClick={onLogout}>
+                <Nav.Link className="RegularButton" onClick={onLogout} /* as={Link} to="/login"*/>
                   Logout
                 </Nav.Link>
               </>
@@ -45,9 +46,11 @@ export const NavbarView = ({ user, onLogout, onShowProfile, onBackClick, onSearc
             }}>
                         <Form.Control
                             type="search"
-                            placeholder="Search"
+                            placeholder="Search movies.."
                             className="me-2"
-                            aria-label="Search"
+                aria-label="Search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                         />
                         <Button type="submit" variant="outline-success" className="RegularButton">Search</Button>
                     </Form>
@@ -64,5 +67,8 @@ NavbarView.propTypes = {
     //   onShowFavorites: PropTypes.arrayOf(PropTypes.object).isRequired,
       onBackClick: PropTypes.func.isRequired,
     onSearch: PropTypes.func.isRequired,
-      showSignup: PropTypes.bool.isRequired
+  showSignup: PropTypes.bool.isRequired,
+  setSearchTerm: PropTypes.func.isRequired,
+  searchTerm: PropTypes.object.isRequired,
+  setSearchResults: PropTypes.arrayOf(propTypes.object).isRequired
   };
