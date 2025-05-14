@@ -5,13 +5,12 @@ import { LoginView } from "../LoginView/LoginView";
 import { SignupView } from "../SignupView/SignupView";
 import { ProfileView } from "../UsersProfileView/ProfileView";
 import { NavbarView } from "../NavbarView/NavbarView";
-// import { NavigationView } from "../NavbarView/NavbarView";
 import { UpdateFormView } from "../UsersProfileView/UpdateFormView";
 import { DeleteAccountView } from "../UsersProfileView/DeleteAccountView";
+import { filterMovies } from "../../UtilityFiles/filterMovies";
 
-
-import { Container, Row, Col} from "react-bootstrap";
-//import { BrowserRouter,Route, Routes, Navigate } from "react-router-dom";
+import { Row, Col} from "react-bootstrap";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 
 import PropTypes from "prop-types";
 
@@ -33,6 +32,10 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
   const [showProfile, setShowProfile] = useState(() => {
     return JSON.parse(localStorage.getItem("showProfile")) || false; 
   });
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const filteredMovies = filterMovies(movies, searchTerm);
+
 
   let similarMoviesByGenre = [];
   let similarMoviesByDirector = [];
@@ -121,13 +124,15 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
   // };
 
   return (
-    <Container>
-      {user && (selectedMovie || movies.length > 0) && (
+    <BrowserRouter>
+          {user && (selectedMovie || movies.length > 0) && (
   //  NVBAR
         <NavbarView
-          onSearch={() => {
-            
-          }}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          onSearch={(term) => setSearchResults(filterMovies(movies, term))}
+          //   {console.log("Searching for: ", searchTerm)
+          // }}
           onLogout={() => {
             setUser(null);
             setToken(null);
@@ -135,100 +140,134 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
             localStorage.removeItem("token");
             setShowSignup(true);
           }}
-          onShowProfile={() => {
-            setShowProfile(true);
-            setShowUpdateForm(false);
-            localStorage.setItem("showProfile", true);
-          }}
+          // onShowProfile={() => {
+          //   setShowProfile(true);
+          //   setShowUpdateForm(false);
+          //   localStorage.setItem("showProfile", true);
+          // }}
           // onShowFavorites={() => {
           //   setShowFavorites(true);
           //   localStorage.setItem("showFavorites", true);
           // }}
-          onBackClick={() => {
-            setShowProfile(false);
-            setShowUpdateForm(false);
-            setSelectedMovie(null);
-            localStorage.setItem("showProfile", false);
-          }}
+          // onBackClick={() => {
+          //   setShowProfile(false);
+          //   setShowUpdateForm(false);
+          //   setSelectedMovie(null);
+          //   setSearchTerm("");
+          //   setSearchResults([]);
+          //   localStorage.setItem("showProfile", false);
+          // }}
         />    
-      )}
-{/* // MAIN and OTHER VIEWs */}
-      {!user ? (
-        <div>
-        <Col md={5} className="mb-1 p-2" >
-  {/* LOGIN and SIGNUP view, for the moment put together */}
-          <Row>
-            <LoginView
-              onLoggedIn={(user, token) => {
-                setUser(user);
-                setToken(token);
-                localStorage.setItem("user", JSON.stringify(user));
-                localStorage.setItem("token", token);
-              }}
-            />
-          </Row>
-          <Row>
-            <SignupView />
-          </Row>
-          </Col>
-        </div>
-        ) : showUpdateForm ? (
-          <Row>
-            <Col>
-                <UpdateFormView
-                  user={user}
-                  token={token}
-                onBackClick={() => {
-                  setShowUpdateForm(false);
-                  setShowProfile(true);
-                localStorage.setItem("showProfile", true);
-                }}
-                onClick={(updatedUser) => {
-                  setUser(updatedUser);
-                  localStorage.setItem("user", JSON.stringify(updatedUser));
-                  setShowUpdateForm(false);
-                  setShowProfile(true);
-                }}
-              />
-              </Col>
-          </Row>
-                 ) : showDeleteView ? (
-          <Row>
-            <Col>
-                <DeleteAccountView
-                  user={user}
-                  token={token}
-                  setUser={setUser}
-                  setToken={setToken}
-                  onBackClick={() => {
-                  setShowDeleteView(false);
-                  setShowProfile(true);
-                localStorage.setItem("showProfile", true);
-                }}
-                  setShowProfile={setShowProfile}
-                  setShowDeleteView={setShowDeleteView}
-                  setShowSignup={setShowSignup}
-              />
-              </Col>
-          </Row>
-          ) : showProfile ? (
-          <Row>
-            <Col>
-            <ProfileView
-              user={user}
-              movies={movies}
-                onMovieClick={(movie) => setSelectedMovie(movie)}
-                  onEditClick={() => setShowUpdateForm(true)}
-                  onDeleteClick={() => setShowDeleteView(true)}
-              />
-              </Col>
-          </Row> 
-        ) : selectedMovie ? (
-// MovieView MODAL bzw. SELECTED MOVIE
-          <Row>
+        )}
+        {showUpdateForm && (
+          <UpdateFormView
+            user={user}
+            token={token}
+            onBackClick={() => {
+              setShowUpdateForm(false);
+              setShowProfile(true);
+              localStorage.setItem("showProfile", true);
+            }}
+            onClick={(updatedUser) => {
+              setUser(updatedUser);
+              localStorage.setItem("user", JSON.stringify(updatedUser));
+              setShowUpdateForm(false);
+              setShowProfile(true);
+            }}
+          />
+        )}
+        {showDeleteView && (
+          <DeleteAccountView
+            user={user}
+            token={token}
+            setUser={setUser}
+            setToken={setToken}
+            onBackClick={() => {
+              setShowDeleteView(false);
+              setShowProfile(true);
+              localStorage.setItem("showProfile", true);
+            }}
+            setShowProfile={setShowProfile}
+            setShowDeleteView={setShowDeleteView}
+            setShowSignup={setShowSignup}
+          />
+        )}
+        <Row className="justify-content.md-center">
+          {/* // MAIN and OTHER VIEWs */}
+        <Routes>
+          <Route path="/login"
+            element={
+            user ? 
+                  <Navigate to="/" replace /> : (
+                  <Col md={5} className="mb-1 p-2" >
+                    {/* LOGIN and SIGNUP view, for the moment put together */}
+                    <LoginView
+                      onLoggedIn={(user, token) => {
+                        setUser(user);
+                        setToken(token);
+                        localStorage.setItem("user", JSON.stringify(user));
+                        localStorage.setItem("token", token);
+                      }}
+                    />
+                  </Col>
+                )}
+          />
+
+          <Route path="/signup"
+            element={
+              user ? 
+                  <Navigate to="/" replace /> : (
+                  <Col>
+                    <SignupView />
+                  </Col>
+                )}
+          />
+
+          <Route
+            path="/profile"
+            element={
+                !user ? (
+                  <Navigate to="/login" replace />
+                ) : (
+                  <Col>
+                    <ProfileView
+                      user={user}
+                      movies={movies}
+                      onMovieClick={(movie) => setSelectedMovie(movie)}
+                      onEditClick={() => setShowUpdateForm(true)}
+                      onDeleteClick={() => setShowDeleteView(true)}
+                    />
+                  </Col>
+                )}
+          />
+
+          <Route
+            path="/"
+            element={
+              // EMPTY MOVIES LIST
+              !user ? (
+                  <Navigate to="/login" replace />
+                ) : movies.length === 0 ? (
+                  <Col>The list is empty!</Col>
+                ) : (
+// MOVIE CARDS IN MAIN VIEW bzw LIST OF MOVIES
+                    <Row className="g-4" xs={1} sm={2} md={3} lg={4}>
+                      {(searchResults.length > 0 ? searchResults : movies).map((movie) => (
+                        <Col key={movie.id} xs={12} sm={6} md={4} lg={3} >
+                          <MovieCard
+                            movie={movie}
+                            onMovieClick={() => setSelectedMovie(movie)}
+                          />
+                        </Col>
+                      ))}
+                    </Row>
+                )}
+          />
+           {/* MovieView MODAL bzw. SELECTED MOVIE */}
+          <Route
+            path="/movies/:movieId"
+            element={
               <MovieView
-              show={!!selectedMovie}
-              movie={selectedMovie}
               movies={movies}
               // isFavorite={isFavorite}
               // toggleFavorite={toggleFavorite}
@@ -238,24 +277,12 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
               similarMoviesByDirector={similarMoviesByDirector}
               similarMoviesByGenre={similarMoviesByGenre}
                 />
-          </Row>  
-// EMPTY MOVIES LIST
-      ) : movies.length === 0 ? (
-        <div>The list is empty!</div>
-      ) : (
-// MOVIE CARDS IN MAIN VIEW bzw LIST OF MOVIES
-        <Row className="g-4" xs={1} sm={2} md={3} lg={4} mb={3}>
-          {movies.map((movie) => (
-            <Col key={movie.id} xs={12} sm={6} md={4} lg={3} >
-              <MovieCard
-                movie={movie}
-                onMovieClick={() => setSelectedMovie(movie)}
-              />
-            </Col>
-          ))}
-        </Row>
-      )}       
-      </Container >
+            }
+          
+          />
+        </Routes>
+      </Row>
+    </BrowserRouter>
   );
 };
 
