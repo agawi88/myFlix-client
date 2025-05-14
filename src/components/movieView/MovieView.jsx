@@ -3,15 +3,20 @@ import PropTypes from "prop-types";
 import { Modal, Button } from "react-bootstrap";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { SimilarMoviesBySections } from "../SimilarMovies/SimilarMoviesBySections";
+import { useParams } from "react-router";
+import { Link } from "react-router-dom";
 
 import "./MovieView.scss";
 
-export const MovieView = ({ movie, isFavorite, toggleFavorite, onHide, movies, similarMoviesByDirector, similarMoviesByGenre, onMovieClick }) => {
-  
-  if (!movie) return null;
-  return (
+export const MovieView = ({ isFavorite, toggleFavorite, onHide, movies, similarMoviesByDirector, similarMoviesByGenre, onMovieClick }) => {
+  const { movieId } = useParams();
+  const movie = movies.find((m) => m.id === movieId);
 
-<Modal
+  if (!movie) return null;
+
+return (
+
+    <Modal
           show={!!movie}
           onHide={() => setMovie(null)}
           size="xl"
@@ -24,16 +29,21 @@ export const MovieView = ({ movie, isFavorite, toggleFavorite, onHide, movies, s
                     variant="link"
                     // onClick={() => toggleFavorite(movie.id)}
                     className="ms-3 p-0"
-                    style={{ color: isFavorite ? "red" : "gray", fontSize: "1.5rem"}}
-                  >
-                    {isFavorite ? <FaHeart /> : <FaRegHeart />} 
-                  </Button>
-              </Modal.Title>
-              <Button
+          style={{
+            color: isFavorite ? "red" : "gray",
+            fontSize: "1.5rem"
+          }}
+          >
+            {isFavorite ? <FaHeart /> : <FaRegHeart />} 
+          </Button>
+      </Modal.Title>
+      <Link to={`/`}>
+              <button
                 onClick={onHide}
-                className="backButton ms-auto" 
-                style={{cursor: "pointer"}}
-              >Back</Button>
+                className="backButton" 
+                // style={{cursor: "pointer"}}
+        >Back</button>
+        </Link>
           </Modal.Header>
       <Modal.Body>
             <div>
