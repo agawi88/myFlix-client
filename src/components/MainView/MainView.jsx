@@ -37,8 +37,8 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
   const filteredMovies = filterMovies(movies, searchTerm);
 
 
-  let similarMoviesByGenre = [];
-  let similarMoviesByDirector = [];
+  // let similarMoviesByGenre = [];
+  // let similarMoviesByDirector = [];
 
   useEffect(() => {
         console.log(user, token);
@@ -82,20 +82,20 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
       });
   }, [user, token]);
 
-  if (selectedMovie) {
+  // if (selectedMovie) {
     
-    similarMoviesByGenre = movies.filter(
-      (movie) =>
-        movie.genre.name === selectedMovie.genre.name &&
-        movie.id !== selectedMovie.id
-    );
+  //   similarMoviesByGenre = movies.filter(
+  //     (movie) =>
+  //       movie.genre.name === selectedMovie.genre.name &&
+  //       movie.id !== selectedMovie.id
+  //   );
     
-    similarMoviesByDirector = movies.filter(
-      (movie) =>
-        movie.director.name === selectedMovie.director.name &&
-        movie.id !== selectedMovie.id
-    );
-  };
+  //   similarMoviesByDirector = movies.filter(
+  //     (movie) =>
+  //       movie.director.name === selectedMovie.director.name &&
+  //       movie.id !== selectedMovie.id
+  //   );
+  // };
   // const isFavorite = selectedMovie && user?.FavoriteMovies?.includes(selectedMovie.id);
 
   //   const toggleFavorite = (MovieId) => {
@@ -132,7 +132,8 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
           onSearch={(term) => setSearchResults(filterMovies(movies, term))}
-          onLogout={() => {
+        onHomeClick={() => setSearchResults([])}  
+        onLogout={() => {
             setUser(null);
             setToken(null);
             localStorage.clear();
@@ -194,8 +195,11 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
         <Routes>
           <Route path="/login"
             element={
-            user ? 
-                  <Navigate to="/" replace /> : (
+            user ? (
+                <Navigate to="/" replace />
+              ) : showSignup ? (
+                <Navigate to="/signup" replace />
+              ) : (
                   <Col md={5} className="mb-1 p-2" >
                     {/* LOGIN and SIGNUP view, for the moment put together */}
                     <LoginView
@@ -205,17 +209,20 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
                         localStorage.setItem("user", JSON.stringify(user));
                         localStorage.setItem("token", token);
                       }}
+                      setShowSignup={setShowSignup}
                     />
                   </Col>
-                )}
+                )
+            }
           />
 
           <Route path="/signup"
             element={
-              user ? 
-                  <Navigate to="/login" replace /> : (
+              user ? (
+                <Navigate to="/login" replace />
+              ) : (
                   <Col>
-                    <SignupView />
+                    <SignupView setShowSignup={setShowSignup} />
                   </Col>
                 )}
           />
@@ -270,10 +277,11 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
               // isFavorite={isFavorite}
               // toggleFavorite={toggleFavorite}
               onHide={() => setSelectedMovie(null)}
-              onBackClick={() => setSelectedMovie(null)}
+                onBackClick={() => setSelectedMovie(null)}
+                // similarMoviesBySection={filteredMovies}
               onMovieClick={(movie) => setSelectedMovie(movie)}
-              similarMoviesByDirector={similarMoviesByDirector}
-              similarMoviesByGenre={similarMoviesByGenre}
+/*               moviesByDirector={moviesByDirector}
+              moviesByGenre={moviesByGenre} */
                 />
             }
           
@@ -308,5 +316,5 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
       onHide: PropTypes.func.isRequired,
       onShowProfile: PropTypes.func.isRequired,
       onLoggedIn: PropTypes.func.isRequired,
-      onLoggedOut: PropTypes.func.isRequired
+      onLogout: PropTypes.func.isRequired
   };

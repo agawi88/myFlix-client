@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 import "./MovieView.scss";
 
-export const MovieView = ({ isFavorite, toggleFavorite, onHide, movies, similarMoviesByDirector, similarMoviesByGenre, onMovieClick }) => {
+export const MovieView = ({ isFavorite, toggleFavorite, onHide, movies, moviesByDirector, moviesByGenre, onMovieClick }) => {
   const { movieId } = useParams();
   const movie = movies.find((m) => m.id === movieId);
 
@@ -88,14 +88,17 @@ return (
             <h2> Similar Movies </h2>
         <SimilarMoviesBySections
               title="By Genre"
-              movies={similarMoviesByGenre}
+        movies={movies}
+        selectedMovie={movie}
               onMovieClick={onMovieClick}
             />
             <hr />
         <SimilarMoviesBySections
-              title="By Director"
-              movies={similarMoviesByDirector}
-              onMovieClick={onMovieClick}
+          title="By Director"
+          movies={movies}
+          selectedMovie={movie}
+          onMovieClick={onMovieClick}
+              
             />
           </Modal.Body>
             </Modal>
@@ -109,25 +112,25 @@ MovieView.propTypes = {
   onHide: PropTypes.func.isRequired,
   movies: PropTypes.arrayOf(PropTypes.object).isRequired,  // Ensure movies prop is an array
   onMovieClick: PropTypes.func.isRequired,
-  similarMoviesByGenre: PropTypes.array.isRequired,
-  similarMoviesByDirector: PropTypes.array.isRequired,
-  movie: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    releaseYear: PropTypes.string.isRequired,
-    setting: PropTypes.string,
-    description: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    featured: PropTypes.bool.isRequired,
-    director: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      bio: PropTypes.string.isRequired,
-      dateOfBirth: PropTypes.string.isRequired,
-      deathYear: PropTypes.string,
-    }).isRequired,
-    genre: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      description: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
+  // moviesByGenre: PropTypes.array.isRequired,
+  // moviesByDirector: PropTypes.array.isRequired,
+  // movie: PropTypes.shape({
+  //   id: PropTypes.string.isRequired,
+  //   title: PropTypes.string.isRequired,
+  //   releaseYear: PropTypes.string.isRequired,
+  //   setting: PropTypes.string,
+  //   description: PropTypes.string.isRequired,
+  //   image: PropTypes.string.isRequired,
+  //   featured: PropTypes.bool.isRequired,
+  //   director: PropTypes.shape({
+  //     name: PropTypes.string.isRequired,
+  //     bio: PropTypes.string.isRequired,
+  //     dateOfBirth: PropTypes.string.isRequired,
+  //     deathYear: PropTypes.string,
+  //   }).isRequired,
+  //   genre: PropTypes.shape({
+  //     name: PropTypes.string.isRequired,
+  //     description: PropTypes.string.isRequired,
+  //   }).isRequired,
+  // }).isRequired,
 };

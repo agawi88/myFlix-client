@@ -3,38 +3,38 @@ import { Navbar, Nav, Form, Button, Container } from "react-bootstrap";
 import { propTypes } from "react-bootstrap/esm/Image";
 import { Link } from "react-router-dom";
 
-export const NavbarView = ({ user, onLogout, onSearch, searchTerm, setSearchTerm, setSearchResults }) => {
+export const NavbarView = ({ user, onLogout, onSearch, searchTerm, setSearchTerm, setSearchResults, onHomeClick }) => {
 
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
             <Container fluid>
-                <Navbar.Brand as={Link} to="/" /* href="/" */>British Movies</Navbar.Brand>
+                <Navbar.Brand as={Link} to="/" onClick={onHomeClick}>British Movies</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav
                         className="me-auto"
-                        // style={{ maxHeight: '100px' }}
+                        style={{ maxHeight: '100px' }}
                         navbarScroll
                     >
             {!user && (
               <>
-                <Nav.Link className="RegularButton" as={Link} to="/login"  /* href="/login" */ >
+                <Nav.Link className="RegularButton" as={Link} to="/login">
                   Login
                 </Nav.Link>
-                <Nav.Link className="RegularButton" as={Link} to="/signup" /* onClick={showSignup} href="/signup" */   >
+                <Nav.Link className="RegularButton" as={Link} to="/signup">
                   Signup
                 </Nav.Link>
               </>
             )}
             {user && /* (selectedMovie || movies.length > 0) && */  (
               <>
-                <Nav.Link className="RegularButton" as={Link} to="/profile"  /* href="/profile" onClick={onShowProfile} */>
+                <Nav.Link className="RegularButton" as={Link} to="/profile">
                   Profile
                 </Nav.Link>
-                <Nav.Link className="RegularButton" as={Link} to="/"  /* href="/" onClick={onBackClick} */>
+                <Nav.Link className="RegularButton" as={Link} to="/" onClick={onHomeClick}>
                   Home
                 </Nav.Link>
-                <Nav.Link className="RegularButton" onClick={onLogout} /* as={Link} to="/login"*/>
+                <Nav.Link className="RegularButton" onClick={onLogout}>
                   Logout
                 </Nav.Link>
               </>
@@ -44,7 +44,8 @@ export const NavbarView = ({ user, onLogout, onSearch, searchTerm, setSearchTerm
                     e.preventDefault();
                     onSearch(searchTerm);
             }}>
-                        <Form.Control
+              <Form.Control
+                id="search"
                             type="search"
                             placeholder="Search movies.."
                             className="me-2"
@@ -70,5 +71,6 @@ NavbarView.propTypes = {
   showSignup: PropTypes.bool.isRequired,
   setSearchTerm: PropTypes.func.isRequired,
   searchTerm: PropTypes.object.isRequired,
-  setSearchResults: PropTypes.arrayOf(propTypes.object).isRequired
+  setSearchResults: PropTypes.arrayOf(propTypes.object).isRequired,
+  onHomeClick: PropTypes.func.isRequired
   };
