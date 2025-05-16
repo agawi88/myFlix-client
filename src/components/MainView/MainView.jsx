@@ -80,31 +80,6 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
 
   // const isFavorite = selectedMovie && user?.FavoriteMovies?.includes(selectedMovie.id);
 
-  //   const toggleFavorite = (MovieId) => {
-  //   if (!user || !token) return;
-    
-  //   const isFav = user.FavoriteMovies.includes(MovieId);
-
-  //   const method = isFav ? "POST" : "PUT";
-
-  //   fetch(`https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}/movies/${MovieId}`, {
-  //     method: method,
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //       "Content-Type": "application/json",
-  //     }
-  //   })
-  //     .then((res) => {
-  //       if (!res.ok) throw new Error("Failed to update favorites");
-  //       return res.json();
-  //     })
-  //     .then((updatedUser) => {
-  //       setUser(updatedUser);
-  //       localStorage.setItem("user", JSON.stringify(updatedUser));
-  //     })
-  //     .catch((error) => console.error("Toggle favorite error:", error));
-  // };
-
   return (
     <BrowserRouter>
           {/* {user && (selectedMovie || movies.length > 0) && ( */}
@@ -225,7 +200,10 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
                         <Col key={movie.id} xs={12} sm={6} md={4} lg={3} >
                           <MovieCard
                             movie={movie}
+                            user={user}
+                            token={token}
                             onMovieClick={() => setSelectedMovie(movie)}
+                            
                           />
                         </Col>
                       ))}

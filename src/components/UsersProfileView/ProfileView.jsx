@@ -1,19 +1,18 @@
-import React from "react";
 import { useState, useEffect } from "react";
-import { FavoritesView } from "./FavoritesView";
+import { MovieCard } from "../MovieCard/MovieCard";
 import PropTypes from "prop-types";
 import { Button, Row, Col } from "react-bootstrap";
-// import { data } from "react-router";
+import { data } from "react-router";
 
-export const ProfileView = ({ user, movies, onMovieClick, onClick, onEditClick, onDeleteClick}) => {
+export const ProfileView = ({ user, movies, onMovieClick, onEditClick, onDeleteClick, onClick}) => {
     // const storedUser = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token"); 
-  
   const [profileUser, setProfileUser] = useState(null);
   
     
     useEffect(() => {
-     if (!user?.Username || !token ) return;
+      if (!user?.Username || !token) return;
+      
       fetch(`https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}`, {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
@@ -21,15 +20,16 @@ export const ProfileView = ({ user, movies, onMovieClick, onClick, onEditClick, 
         .then((response) => {
           if (!response.ok) throw new Error("Failed to fetch user data");
           return response.json();
-      })
+        })
+
         .then((data) => {
         const userFromApi = {
-            id: data._id,
+            id: data.id,
             username: data.Username,
             password: data.Password,
             email: data.Email,
             dateOfBirth: data.DateOfBirth,
-            favoriteMovies: Array.isArray(data.FavoriteMovies) ? data.Favorites : []
+          favoriteMovies: Array.isArray(data.FavoriteMovies) ? data.FavoriteMovies : [],
         };
           setProfileUser(userFromApi);
           console.log("Fetched profile user:", userFromApi);
@@ -39,9 +39,14 @@ export const ProfileView = ({ user, movies, onMovieClick, onClick, onEditClick, 
       });
     }, [user, token]);
   
-    if (!user) return <div>User not found. Please log in again.</div>;
-    if (!profileUser) return <div>Loading profile...</div>;
+  if (!user) return <div>User not found. Please log in again.</div>;
+  if (!profileUser) return <div>Loading profile...</div>;
+  if (!movies || movies.length === 0) return <div>Loading movies ...</div>
   
+  const uniqueFavoriteIds = [...new Set(profileUser.favoriteMovies)];
+  const favoriteMovies = movies.filter((m) => m.id && uniqueFavoriteIds.includes(m.id)
+  );
+
   return (
     <div>
       <h3>Your Profile</h3>
@@ -77,18 +82,21 @@ export const ProfileView = ({ user, movies, onMovieClick, onClick, onEditClick, 
           </Row>
         <hr />
         <h4 className="mt-3">Favorite Movies</h4>
-        {Array.isArray(movies) && Array.isArray(profileUser.favoriteMovies) && profileUser.favoriteMovies.length > 0 ? (
-        <Row>
-          <Col>
-            <FavoritesView
-              favoriteMoviesIds={profileUser.favoriteMovies || []}
-              movies={movies}
-              onMovieClick={onMovieClick}
-            />
-          </Col>
-        </Row>
+        {favoriteMovies.length > 0 ? (
+          <Row>
+            {favoriteMovies.map((movie) => (
+              <Col key={movie.id} xs={10} sm={8} md={6} lg={4}>
+                <MovieCard
+                  movie={movie}
+                  user={user}
+                  token={token}
+                  onMovieClick={onMovieClick}
+                />
+              </Col>
+            ))}
+          </Row>
         ) : (
-            <div> You have no favorite movies yet. </div>
+          <h5>You have no favorite movies yet: start adding some!</h5>
         )}
       </div>
     </div>

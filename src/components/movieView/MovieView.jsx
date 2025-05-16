@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Modal, Button } from "react-bootstrap";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
@@ -8,7 +7,7 @@ import { Link } from "react-router-dom";
 
 import "./MovieView.scss";
 
-export const MovieView = ({ isFavorite, toggleFavorite, onHide, movies, moviesByDirector, moviesByGenre, onMovieClick }) => {
+export const MovieView = ({ isFavorite, onHide, movies, moviesByDirector, moviesByGenre, onMovieClick }) => {
   const { movieId } = useParams();
   const movie = movies.find((m) => m.id === movieId);
 
