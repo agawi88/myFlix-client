@@ -13,7 +13,6 @@ export const MovieCard = ({ movie, user, token, onFavoritedMovie }) => {
   const [isFavorited, setIsFavorited] = useState(movie.favorite || false);
 
   const handleFavoritedChange = () => {
-    // setIsFavorited(isFavorited => !isFavorited)co
     const url = `https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}/movies/${movie.id}`;
       
     const options = {

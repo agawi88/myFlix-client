@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 import "./MovieView.scss";
 
-export const MovieView = ({ isFavorite, onHide, movies, moviesByDirector, moviesByGenre, onMovieClick }) => {
+export const MovieView = ({ isFavorite, onHide, movies, onMovieClick }) => {
   const { movieId } = useParams();
   const movie = movies.find((m) => m.id === movieId);
 
