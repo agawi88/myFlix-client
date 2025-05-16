@@ -47,7 +47,7 @@ export const LoginView = ({ onLoggedIn, setShowSignup }) => {
     <Form
       onSubmit={handleSubmit}
       className="d-flex justfy-content-center"
-      autocomplete="off">
+      autoComplete="off">
     <Card className="shadow-lg rounded-4 my-4">
       <Card.Header className="text-center bg-primary opacity: 2 text-white rounded-4 " column="lg">
           <h3><b>LOG IN</b></h3>
@@ -56,13 +56,13 @@ export const LoginView = ({ onLoggedIn, setShowSignup }) => {
         <Card.Title><h4>Please log in here to view the selecction of British movies:
         </h4></Card.Title>
       <Row>
-        <Form.Group controlId="loginUsername">
+        <Form.Group /* controlId="loginUsername" */>
           <Col lg="auto">
       <Form.Label htmlFor="username" column="lg">
             Username:
       </Form.Label>
         <Form.Control
-          autocomplete="off"
+          autoComplete="off"
           id="username"
           type="text"
           value={username}
@@ -77,7 +77,7 @@ export const LoginView = ({ onLoggedIn, setShowSignup }) => {
         </Form.Group>
       </Row>
       <Row className="align-items-center">
-      <Form.Group controlId="loginPassword">
+      <Form.Group /* controlId="loginPassword" */>
         <Col >
         <Form.Label htmlFor="password">
           Password (8 characters minimum):

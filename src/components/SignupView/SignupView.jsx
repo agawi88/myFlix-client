@@ -43,7 +43,7 @@ export const SignupView = () => {
     <Form
       onSubmit={handleSubmit}
       className="d-flex justfy-content-center"
-      autocomplete="off">
+      autoComplete="off">
       <Card className="shadow-lg rounded-4 my-4">
       <Card.Header className="text-center bg-primary opacity-8 text-white rounded-4" column="lg">
           <h3><b>REGISTER</b></h3>
@@ -52,13 +52,13 @@ export const SignupView = () => {
         <Card.Title><h4>Please log in here to view the selecction of British movies:
         </h4></Card.Title>
         <Row>
-          <Form.Group controlId="signupUsername">
+          <Form.Group /* controlId="signupUsername" */>
             <Col>
             <Form.Label htmlFor="username">
                   Username:
             </Form.Label>
                 <Form.Control
-                autocomplete="off"
+                autoComplete="off"
                 id="username"
                 type="text" 
                 value={username}
@@ -73,7 +73,7 @@ export const SignupView = () => {
             </Form.Group>
       </Row>
       <Row className="align-items-center">
-      <Form.Group controlId="signupPassword">
+      <Form.Group /* controlId="signupPassword" */>
         <Col>
         <Form.Label htmlFor="password">
           Password (8 characters minimum):
@@ -102,7 +102,7 @@ export const SignupView = () => {
         <Form.Label htmlFor="email"> 
                 Email: </Form.Label>
                 <Form.Control
-                autocomplete="off"
+                autoComplete="off"
                 id="email"
                 type="email"
                 value={email}
