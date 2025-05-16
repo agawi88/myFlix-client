@@ -11,7 +11,8 @@ export const PasswordInput = ({ value, onChange, onClick }) => {
     <Row>
     <Form.Group>
         <InputGroup>
-        <Form.Control
+          <Form.Control
+          id="password"
           type={showPassword ? "text" : "password"}
           value={value}
           onChange={onChange}
