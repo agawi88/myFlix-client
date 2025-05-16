@@ -1,4 +1,3 @@
-import React from "react";
 import { useState } from "react";
 import { Button, Form, Row, Col, Card } from "react-bootstrap";
 import { PasswordInput } from "../PasswordInput";
@@ -6,7 +5,7 @@ import PropTypes from "prop-types";
 import "./LoginView.scss"
 
 
-export const LoginView = ({ onLoggedIn }) => {
+export const LoginView = ({ onLoggedIn, setShowSignup }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -35,7 +34,8 @@ export const LoginView = ({ onLoggedIn }) => {
                 localStorage.setItem("token", data.token);
                 onLoggedIn(data.user, data.token);
               } else {
-                  alert("No such user");
+              alert("No such user. If you want to check out great British movies, please sign in.");
+              setShowSignup(true);
               }
           })
           .catch((error) => {
@@ -44,21 +44,26 @@ export const LoginView = ({ onLoggedIn }) => {
   };
 
   return (
-  <Form onSubmit={handleSubmit}>
-    <Card className="shadow-lg rounded-4 my-3">
-      <Card.Header className="text-center bg-primary opacity: 2 text-white rounded-4 my-0">
+    <Form
+      onSubmit={handleSubmit}
+      className="d-flex justfy-content-center"
+      autocomplete="off">
+    <Card className="shadow-lg rounded-4 my-4">
+      <Card.Header className="text-center bg-primary opacity: 2 text-white rounded-4 " column="lg">
           <h3><b>LOG IN</b></h3>
       </Card.Header>
       <Card.Body>
         <Card.Title><h4>Please log in here to view the selecction of British movies:
         </h4></Card.Title>
       <Row>
-      <Form.Group controlId="loginUsername">
-      <Form.Label column="lg">
+        <Form.Group controlId="loginUsername">
+          <Col lg="auto">
+      <Form.Label htmlFor="username" column="lg">
             Username:
       </Form.Label>
-        <Col lg="auto">
         <Form.Control
+          autocomplete="off"
+          id="username"
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -73,12 +78,12 @@ export const LoginView = ({ onLoggedIn }) => {
       </Row>
       <Row className="align-items-center">
       <Form.Group controlId="loginPassword">
-        <Col lg="auto">
-        <Form.Label>
+        <Col >
+        <Form.Label htmlFor="password">
           Password (8 characters minimum):
           </Form.Label>
           </Col>
-        <Col lg="auto">
+        <Col >
           <PasswordInput
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -107,5 +112,6 @@ export const LoginView = ({ onLoggedIn }) => {
 };
 
 LoginView.propTypes = {
-  onLoggedIn: PropTypes.func.isRequired
+  onLoggedIn: PropTypes.func.isRequired,
+  setShowSignup: PropTypes.func.isRequired
 };

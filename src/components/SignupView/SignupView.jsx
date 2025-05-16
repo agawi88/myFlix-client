@@ -1,7 +1,7 @@
-import React from "react";
 import { useState } from "react";
 import { Button, Form, Row, Col, Card } from "react-bootstrap";
 import { PasswordInput } from "../PasswordInput";
+// import PropTypes from "prop-types";
 import "./SignupView.scss";
 
 
@@ -40,9 +40,12 @@ export const SignupView = () => {
   };
 
   return (
-  <Form onSubmit={handleSubmit} className="align-items-center">
+    <Form
+      onSubmit={handleSubmit}
+      className="d-flex justfy-content-center"
+      autocomplete="off">
       <Card className="shadow-lg rounded-4 my-4">
-      <Card.Header className="text-center bg-primary opacity-8 text-white rounded-4 my-0" column="lg">
+      <Card.Header className="text-center bg-primary opacity-8 text-white rounded-4" column="lg">
           <h3><b>REGISTER</b></h3>
       </Card.Header>
       <Card.Body>
@@ -50,11 +53,13 @@ export const SignupView = () => {
         </h4></Card.Title>
         <Row>
           <Form.Group controlId="signupUsername">
-            <Col lg="auto">
-            <Form.Label>
+            <Col>
+            <Form.Label htmlFor="username">
                   Username:
             </Form.Label>
-            <Form.Control
+                <Form.Control
+                autocomplete="off"
+                id="username"
                 type="text" 
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -69,12 +74,12 @@ export const SignupView = () => {
       </Row>
       <Row className="align-items-center">
       <Form.Group controlId="signupPassword">
-        <Col lg="auto">
-        <Form.Label>
+        <Col>
+        <Form.Label htmlFor="password">
           Password (8 characters minimum):
           </Form.Label>
           </Col>
-        <Col lg="auto">
+        <Col>
           <PasswordInput
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -93,10 +98,12 @@ export const SignupView = () => {
         </Row>            
         <Row>
           <Form.Group>
-            <Col lg="auto">
-        <Form.Label> 
+            <Col>
+        <Form.Label htmlFor="email"> 
                 Email: </Form.Label>
-              <Form.Control
+                <Form.Control
+                autocomplete="off"
+                id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -110,10 +117,11 @@ export const SignupView = () => {
           </Row>
         <Row>
           <Form.Group>
-            <Col lg="auto">
-            <Form.Label>
+            <Col>
+            <Form.Label htmlFor="dateOfBirth">
                 Date of Birth: </Form.Label>
-              <Form.Control
+                <Form.Control
+                id="dateOfBirth"
                 type="date"
                 value={dateOfBirth}
                 onChange={(e) => setDateOfBirth(e.target.value)}
