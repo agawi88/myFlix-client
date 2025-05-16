@@ -36,10 +36,6 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
   const [searchResults, setSearchResults] = useState([]);
   const filteredMovies = filterMovies(movies, searchTerm);
 
-
-  // let similarMoviesByGenre = [];
-  // let similarMoviesByDirector = [];
-
   useEffect(() => {
         console.log(user, token);
     if (!user || !token) return;
@@ -82,20 +78,6 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
       });
   }, [user, token]);
 
-  // if (selectedMovie) {
-    
-  //   similarMoviesByGenre = movies.filter(
-  //     (movie) =>
-  //       movie.genre.name === selectedMovie.genre.name &&
-  //       movie.id !== selectedMovie.id
-  //   );
-    
-  //   similarMoviesByDirector = movies.filter(
-  //     (movie) =>
-  //       movie.director.name === selectedMovie.director.name &&
-  //       movie.id !== selectedMovie.id
-  //   );
-  // };
   // const isFavorite = selectedMovie && user?.FavoriteMovies?.includes(selectedMovie.id);
 
   //   const toggleFavorite = (MovieId) => {
@@ -137,25 +119,7 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
             setUser(null);
             setToken(null);
             localStorage.clear();
-            /*             setShowSignup(true);  */
           }}
-          // onShowProfile={() => {
-          //   setShowProfile(true);
-          //   setShowUpdateForm(false);
-          //   localStorage.setItem("showProfile", true);
-          // }}
-          // onShowFavorites={() => {
-          //   setShowFavorites(true);
-          //   localStorage.setItem("showFavorites", true);
-          // }}
-          // onBackClick={() => {
-          //   setShowProfile(false);
-          //   setShowUpdateForm(false);
-          //   setSelectedMovie(null);
-          //   setSearchTerm("");
-          //   setSearchResults([]);
-          //   localStorage.setItem("showProfile", false);
-          // }}
         />    
         {showUpdateForm && (
           <UpdateFormView
@@ -278,10 +242,7 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
               // toggleFavorite={toggleFavorite}
               onHide={() => setSelectedMovie(null)}
                 onBackClick={() => setSelectedMovie(null)}
-                // similarMoviesBySection={filteredMovies}
               onMovieClick={(movie) => setSelectedMovie(movie)}
-/*               moviesByDirector={moviesByDirector}
-              moviesByGenre={moviesByGenre} */
                 />
             }
           
