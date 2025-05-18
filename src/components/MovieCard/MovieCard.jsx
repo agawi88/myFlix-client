@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-// import { Favorites } from "../UsersProfileView/Favorites";
+// import { ToggleFavorites } from "../UsersProfileView/Favorites";
 import { useState } from "react";
 import { Button, Card, Container, Row, Col } from "react-bootstrap";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
@@ -8,7 +8,6 @@ import "./MovieCard.scss";
 
 export const MovieCard = ({ movie, user, token, onFavoritedMovie }) => {
   
-  const { id, title, releaseYear, setting, description, genre, director, image, featured, favorite } = movie;
 
   const [isFavorited, setIsFavorited] = useState(movie.favorite || false);
 
@@ -16,7 +15,7 @@ export const MovieCard = ({ movie, user, token, onFavoritedMovie }) => {
     const url = `https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}/movies/${movie.id}`;
       
     const options = {
-      method: isFavorited ? "POST" : "PUT",
+      method: isFavorited ? "PUT" : "POST",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
