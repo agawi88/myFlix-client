@@ -8,6 +8,7 @@ export const ProfileView = ({ user, movies, onMovieClick, onEditClick, onDeleteC
     // const storedUser = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token"); 
   const [profileUser, setProfileUser] = useState(null);
+  // let hashedPassword = profileUser.hashPassword(req.body.Password);
   
     
     useEffect(() => {
@@ -26,7 +27,7 @@ export const ProfileView = ({ user, movies, onMovieClick, onEditClick, onDeleteC
         const userFromApi = {
             id: data.id,
             username: data.Username,
-            password: data.Password,
+            password: data.hashedPassword,
             email: data.Email,
             dateOfBirth: data.DateOfBirth,
           favoriteMovies: Array.isArray(data.FavoriteMovies) ? data.FavoriteMovies : [],

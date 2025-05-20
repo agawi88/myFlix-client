@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
-// import { ToggleFavorites } from "../UsersProfileView/Favorites";
 import { useState } from "react";
-import { Button, Card, Container, Row, Col } from "react-bootstrap";
+import { Button, Card} from "react-bootstrap";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import  { Link } from "react-router-dom";
 import "./MovieCard.scss";
