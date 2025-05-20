@@ -3,7 +3,7 @@ import { Navbar, Nav, Form, Button, Container } from "react-bootstrap";
 import { propTypes } from "react-bootstrap/esm/Image";
 import { Link } from "react-router-dom";
 
-export const NavbarView = ({ user, onLogout, onSearch, searchTerm, setSearchTerm, setSearchResults, onHomeClick }) => {
+export const NavbarView = ({ user, onLogout, onSearch, searchTerm, setSearchTerm, onLoginClick, onHomeClick }) => {
 
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
@@ -21,7 +21,7 @@ export const NavbarView = ({ user, onLogout, onSearch, searchTerm, setSearchTerm
                 <Nav.Link className="RegularButton" as={Link} to="/login">
                   Login
                 </Nav.Link>
-                <Nav.Link className="RegularButton" as={Link} to="/signup">
+                <Nav.Link className="RegularButton" as={Link} to="/signup" onClick={onLoginClick}>
                   Signup
                 </Nav.Link>
               </>
@@ -65,12 +65,12 @@ NavbarView.propTypes = {
       user: PropTypes.object.isRequired,
       onLogout: PropTypes.func.isRequired,
       onShowProfile: PropTypes.func.isRequired,
-    //   onShowFavorites: PropTypes.arrayOf(PropTypes.object).isRequired,
       onBackClick: PropTypes.func.isRequired,
     onSearch: PropTypes.func.isRequired,
   showSignup: PropTypes.bool.isRequired,
   setSearchTerm: PropTypes.func.isRequired,
   searchTerm: PropTypes.object.isRequired,
   setSearchResults: PropTypes.arrayOf(propTypes.object).isRequired,
-  onHomeClick: PropTypes.func.isRequired
+  onHomeClick: PropTypes.func.isRequired,
+  onLoginClick: PropTypes.func.isRequired
   };

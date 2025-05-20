@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
-import { CardGroup, Row, Col, Carousel } from "react-bootstrap";
+import { CardGroup, Row, Col } from "react-bootstrap";
 // import ExampleCarouselImage from 'components/ExampleCarouselImage';
 import { MovieCard } from "../MovieCard/MovieCard";
 
-export const SimilarMoviesBySections = ({ movie, movies, title, onMovieClick, selectedMovie }) => {
+export const SimilarMoviesBySections = ({ movie, movies, title, onMovieClick, selectedMovie, size = "mini" }) => {
     if (!selectedMovie) return null;
     
   const similarMovies =
@@ -14,30 +14,24 @@ export const SimilarMoviesBySections = ({ movie, movies, title, onMovieClick, se
           movie.id !== selectedMovie.id
       )
       : title === "By Director"
-    
-        // const moviesByDirector =
-    
+        
         ? movies.filter(
           (movie) =>
             movie.director.name === selectedMovie.director.name &&
             movie.id !== selectedMovie.id
         )
         : [];
-
-/*     const filteredMovies = title.toLowerCase().includes("genre", "director")
-        ? moviesByGenre
-        : moviesByDirector; */
-  console.log("Similar movies for", title, similarMovies);
   
     return (
         <>
             <h3>{title}</h3>
             <CardGroup>
-          <Row className="g-3">
+          <Row className="g-2">
             {similarMovies.map((movie) =>
           movie ?  (
-                        <Col xs={12} sm={6} md={4} lg={3} key={movie.id}>
-                    <MovieCard
+                        <Col /* xs={2} sm={4} md={5} lg={6} */ key={movie.id} className="d-flex">
+                  <MovieCard
+                        size="mini"
                         movie={movie}   
                         onMovieClick={() => onMovieClick(movie)}  
                     />
@@ -73,5 +67,6 @@ SimilarMoviesBySections.propTypes = {
     movies: PropTypes.array.isRequired,
     title: PropTypes.string.isRequired,
     onMovieClick: PropTypes.func.isRequired,
-  selectedMovie: PropTypes.object.isRequired
+  selectedMovie: PropTypes.object.isRequired,
+  size: PropTypes.oneOf(["default", "small", "mini"]),
 };

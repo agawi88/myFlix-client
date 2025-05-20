@@ -3,9 +3,45 @@
             border-radius: 10px;
             margin-bottom: 10px;
             height: 100%;
+        
+            .card-img-top {
+                height: 150px;
+                object-fit: cover;
+            }
+
+            .card-body {
+                flex-grow: 1;
+            }
+
+    &.default{
+        width:100%;
+        font-size: 1rem;
+
+        img {
+            height: 300px;
+        }
+    }
+
+    &.small {
+        width: 160px;
+        font-size: 0.85rem;
+
+        img {
+            height: 120px;
+        }
+    }
+
+    &.mini {
+        width:120px;
+        font-size: 0.75rem;
+
+        img {
+            height: 100px;
+        }
+    }
 }
 
-.smallCard {
+/* .smallCard {
     .card {
         height: 50%;
         width: 50%;
@@ -16,4 +52,4 @@
             object-fit: cover;
         }
     }
-}
+} */

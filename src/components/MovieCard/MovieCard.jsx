@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { Button, Card} from "react-bootstrap";
+import { Button, Card, Col} from "react-bootstrap";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import  { Link } from "react-router-dom";
 import "./MovieCard.scss";
 
-export const MovieCard = ({ movie, user, token, onFavoritedMovie }) => {
+export const MovieCard = ({ movie, user, token, onFavoritedMovie, size = "default" }) => {
   
 
   const [isFavorited, setIsFavorited] = useState(movie.favorite || false);
@@ -38,8 +38,8 @@ export const MovieCard = ({ movie, user, token, onFavoritedMovie }) => {
   };
 
   return (
-    <div className="MovieCard">
-       <Card className="h-100">
+    < /* className="MovieCard" */>
+       <Card className={`MovieCard ${size} h-100`}>
         <Card.Body
           className="d-flex flex-column justify-content-between">
           <div className="FavoriteButton" onClick={handleFavoritedChange}>
@@ -57,14 +57,12 @@ export const MovieCard = ({ movie, user, token, onFavoritedMovie }) => {
             className="text-center">
             <h4> {movie.title} </h4>
           </Card.Title>
-          <Link to={`/movies/${encodeURIComponent(movie.id)}`}>
-            <Button variant="link" className="btn btn-primary" type="button" >
-              Open
-            </Button>
+          <Link to={`/movies/${encodeURIComponent(movie.id)}`} className="RegularButton" type="button" size="large" variant="link" >
+              <b>Open</b>
           </Link>
         </Card.Body>
       </Card>
-    </div>
+    </>
   );
 };
 
@@ -89,5 +87,6 @@ MovieCard.propTypes = {
   }).isRequired,
   user: PropTypes.object.isRequired,
   token: PropTypes.string.isRequired,
-  onFavoritedMovie: PropTypes.func,
+  onFavoritedMovie: PropTypes.func.isRequired,
+  size: PropTypes.oneOf(["default", "small", "mini"]),
 };

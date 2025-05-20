@@ -4,8 +4,7 @@ import PropTypes from "prop-types";
 import { Button, Row, Col } from "react-bootstrap";
 import { data } from "react-router";
 
-export const ProfileView = ({ user, movies, onMovieClick, onEditClick, onDeleteClick, onClick}) => {
-    // const storedUser = JSON.parse(localStorage.getItem("user"));
+export const ProfileView = ({ user, movies, onMovieClick, onEditClick, onDeleteClick, size="small"}) => {
   const token = localStorage.getItem("token"); 
   const [profileUser, setProfileUser] = useState(null);
   // let hashedPassword = profileUser.hashPassword(req.body.Password);
@@ -52,19 +51,19 @@ export const ProfileView = ({ user, movies, onMovieClick, onEditClick, onDeleteC
     <div>
       <h3>Your Profile</h3>
       <div>
-        <span>Username: </span>
+        <span><b>Username: </b></span>
         <span>{profileUser.username}</span>
       </div>
       <div>
-        <span>Password: </span>
+        <span><b>Password: </b> ********</span>
         <span>{profileUser.password}</span>
       </div>
       <div>
-        <span>Email: </span>
+        <span><b>Email: </b></span>
         <span>{profileUser.email}</span>
       </div>
       <div>
-        <span>Date of Birth: </span>
+        <span><b>Date of Birth: </b></span>
         <span>{profileUser.dateOfBirth}</span>
       </div>
       <hr />
@@ -84,10 +83,11 @@ export const ProfileView = ({ user, movies, onMovieClick, onEditClick, onDeleteC
         <hr />
         <h4 className="mt-3">Favorite Movies</h4>
         {favoriteMovies.length > 0 ? (
-          <Row>
+          <Row className="g-2">
             {favoriteMovies.map((movie) => (
-              <Col key={movie.id} xs={10} sm={8} md={6} lg={4}>
+              <Col key={movie.id} /* xs={2} sm={4} md={6} lg={6} */ className="d-flex" >
                 <MovieCard
+                  size="small"
                   movie={movie}
                   user={user}
                   token={token}
@@ -111,5 +111,6 @@ ProfileView.propTypes = {
   onClick: PropTypes.func.isRequired,
   onEditClick: PropTypes.func.isRequired,
   onDeleteClick: PropTypes.func.isRequired,
+  size: PropTypes.oneOf(["default", "small", "mini"]),
 };
 

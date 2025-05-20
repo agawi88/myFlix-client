@@ -5,8 +5,6 @@ import { SimilarMoviesBySections } from "../SimilarMovies/SimilarMoviesBySection
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 
-import "./MovieView.scss";
-
 export const MovieView = ({ isFavorite, onHide, movies, onMovieClick }) => {
   const { movieId } = useParams();
   const movie = movies.find((m) => m.id === movieId);
@@ -50,36 +48,39 @@ return (
         <img src={movie.image} alt={movie.title}  />
       </div>
       <div>
-        <span>Title: </span>
+        <span><b>Title: </b></span>
         <span>{movie.title}</span>
       </div>
       <div>
-        <span>Release Year: </span>
+        <span><b>Release Year: </b></span>
         <span>{movie.releaseYear}</span>
       </div>
       <div>
-        <span>Setting: </span>
+        <span><b>Setting: </b></span>
         <span>{movie.setting}</span>
       </div>
       <div>
-        <span>Description: </span>
+        <span><b>Description: </b></span>
         <span>{movie.description}</span>
       </div>
-      <div>
-        <span>Director: </span>
-        <span>{movie.director.name}</span>
-        <span>{movie.director.bio}</span>
-        <span>{movie.director.dateOfBirth}</span>
-        <span>{movie.director.deathYear}</span>
+        <div>
+          <ul>
+            <li><span><b>Director: </b></span>
+              <span><b>{movie.director.name}</b></span>
+        </li>
+        <li><span>{movie.director.bio}</span></li>
+        <li><span><b>Born: {movie.director.dateOfBirth}</b></span></li>
+        <li><span><b>Died: {movie.director.deathYear}</b></span></li>
+      </ul>
+      </div>
+        <div>
+          <ul>
+        <span><b>Genre: {movie.genre.name}</b></span>
+        <li><span>{movie.genre.description}</span></li>
+        </ul>
       </div>
       <div>
-        <span>Genre: </span>
-        <span>{movie.genre.name}</span>
-        <span>{movie.genre.description}</span>
-      </div>
-      <div>
-        <span>Featured: </span>
-        <span>{movie.featured ? "Yes" : "No"}</span>
+        <span><b>Featured: {movie.featured ? "Yes" : "No"}</b></span>
       </div>
     </div>
 {/* SIMILAR MOVIES BY: GENRE, DIRECTOR; later on also by ACTORS AND MY FAVOURITES           */}
@@ -109,27 +110,6 @@ MovieView.propTypes = {
   isFavorite: PropTypes.bool.isRequired,
   toggleFavorite: PropTypes.func.isRequired,
   onHide: PropTypes.func.isRequired,
-  movies: PropTypes.arrayOf(PropTypes.object).isRequired,  // Ensure movies prop is an array
+  movies: PropTypes.arrayOf(PropTypes.object).isRequired,
   onMovieClick: PropTypes.func.isRequired,
-  // moviesByGenre: PropTypes.array.isRequired,
-  // moviesByDirector: PropTypes.array.isRequired,
-  // movie: PropTypes.shape({
-  //   id: PropTypes.string.isRequired,
-  //   title: PropTypes.string.isRequired,
-  //   releaseYear: PropTypes.string.isRequired,
-  //   setting: PropTypes.string,
-  //   description: PropTypes.string.isRequired,
-  //   image: PropTypes.string.isRequired,
-  //   featured: PropTypes.bool.isRequired,
-  //   director: PropTypes.shape({
-  //     name: PropTypes.string.isRequired,
-  //     bio: PropTypes.string.isRequired,
-  //     dateOfBirth: PropTypes.string.isRequired,
-  //     deathYear: PropTypes.string,
-  //   }).isRequired,
-  //   genre: PropTypes.shape({
-  //     name: PropTypes.string.isRequired,
-  //     description: PropTypes.string.isRequired,
-  //   }).isRequired,
-  // }).isRequired,
 };

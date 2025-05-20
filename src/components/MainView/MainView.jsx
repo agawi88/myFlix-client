@@ -15,7 +15,7 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 
-export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLogout, onHide, onMovieClick }) => {
+export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLogout, onHide, onMovieClick, onLoginClick, size="default" }) => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const storedToken = localStorage.getItem("token");
 
@@ -78,8 +78,6 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
       });
   }, [user, token]);
 
-  // const isFavorite = selectedMovie && user?.FavoriteMovies?.includes(selectedMovie.id);
-
   return (
     <BrowserRouter>
           {/* {user && (selectedMovie || movies.length > 0) && ( */}
@@ -129,7 +127,7 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
             setShowSignup={setShowSignup}
           />
         )}
-        <Row className="justify-content.md-center">
+        <Row className="justify-content.md-center" style={{margin: "30px 0px 0px 0px"}} >
           {/* // MAIN and OTHER VIEWs */}
         <Routes>
           <Route path="/login"
@@ -137,11 +135,11 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
             user ? (
                 <Navigate to="/" replace />
               ) : showSignup ? (
-                <Navigate to="/signup" replace />
+                <Navigate to="/signup" onLoginClick={onLoginClick} replace />
               ) : (
-                  <Col md={5} className="mb-1 p-2" >
+                  <Col md={{ span: 6, offset: 3 }}> 
                     {/* LOGIN and SIGNUP view, for the moment put together */}
-                    <LoginView
+                    <LoginView 
                       onLoggedIn={(user, token) => {
                         setUser(user);
                         setToken(token);
@@ -160,7 +158,7 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
               user ? (
                 <Navigate to="/login" replace />
               ) : (
-                  <Col>
+                  <Col md={{ span: 6, offset: 3 }}>
                     <SignupView setShowSignup={setShowSignup} />
                   </Col>
                 )}
@@ -195,10 +193,11 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
                   <Col>The list is empty!</Col>
                 ) : (
 // MOVIE CARDS IN MAIN VIEW bzw LIST OF MOVIES
-                    <Row className="g-4" xs={1} sm={2} md={3} lg={4}>
+                    <Row className="g-2" /* xs={1} sm={2} md={3} lg={4} */>
                       {(searchResults.length > 0 ? searchResults : movies).map((movie) => (
-                        <Col key={movie.id} xs={12} sm={6} md={4} lg={3} >
+                        <Col key={movie.id} xs={7} md={6} lg={4} >
                           <MovieCard
+                            size="default"
                             movie={movie}
                             user={user}
                             token={token}
@@ -232,28 +231,13 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
 };
 
   MainView.propTypes = {
-    // movie: PropTypes.shape({
-    //   title: PropTypes.string.isRequired,
-    //   releaseYear: PropTypes.string.isRequired,
-    //   setting: PropTypes.string,
-    //   description: PropTypes.string.isRequired,
-    //   genre: PropTypes.shape({
-    //     name: PropTypes.string.isRequired,
-    //     description: PropTypes.string.isRequired,
-    //   }),
-    //   director: PropTypes.shape({
-    //     name: PropTypes.string.isRequired,
-    //     bio: PropTypes.string.isRequired,
-    //     dateOfBirth: PropTypes.string.isRequired,
-    //     deathYear: PropTypes.string,
-    //   }),
-    //   image: PropTypes.string.isRequired,
-    //   featured: PropTypes.bool.isRequired,
-    // }).isRequired,
+
       onBackClick: PropTypes.func.isRequired,
       onClick: PropTypes.func.isRequired,
       onHide: PropTypes.func.isRequired,
       onShowProfile: PropTypes.func.isRequired,
       onLoggedIn: PropTypes.func.isRequired,
-      onLogout: PropTypes.func.isRequired
+    onLogout: PropTypes.func.isRequired,
+    onLoginClick: PropTypes.func.isRequired,
+        size: PropTypes.oneOf(["default", "small", "mini"]),
   };
