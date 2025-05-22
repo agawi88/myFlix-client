@@ -5,9 +5,10 @@ import "../SignupView/SignupView.scss";
 
 
 export const DeleteAccountView = ({ user, setUser, token, setToken, onBackClick, setShowSignup, setShowProfile, setShowDeleteView }) => {
-    
+    const API_URL = import.meta.env.VITE_API_URL;
+
         const confirmDelete = () => {
-            fetch(`https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}`, {
+            fetch(`${API_URL}/users/${user.Username}`, {
                 method: "DELETE",
                 headers: {
                     Authorization: `Bearer ${token}`,

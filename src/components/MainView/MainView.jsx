@@ -36,11 +36,14 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
   const [searchResults, setSearchResults] = useState([]);
   const filteredMovies = filterMovies(movies, searchTerm);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
+
   useEffect(() => {
         console.log(user, token);
     if (!user || !token) return;
 
-    fetch("https://gb-movies-api-cab43a70da98.herokuapp.com/movies", {
+    fetch(`${API_URL}/movies`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     })

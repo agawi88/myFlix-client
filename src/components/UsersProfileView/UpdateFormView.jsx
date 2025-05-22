@@ -10,6 +10,7 @@ export const UpdateFormView = ({ user, token, onBackClick, onClick }) => {
     const [username, setUsername] = useState(user.Username || "");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
+    const API_URL = import.meta.env.VITE_API_URL;
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -25,7 +26,7 @@ export const UpdateFormView = ({ user, token, onBackClick, onClick }) => {
       }
       console.log("Sending update:", data);
 
-        fetch(`https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}`, {
+        fetch(`${API_URL}/users/${user.Username}`, {
           method: "PUT",
             headers: {
                 "Content-Type": "application/json",

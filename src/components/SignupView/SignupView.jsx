@@ -10,6 +10,7 @@ export const SignupView = () => {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [dateOfBirth, setDateOfBirth] = useState("");
+    const API_URL = import.meta.env.VITE_API_URL;
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -20,7 +21,7 @@ export const SignupView = () => {
             Email: email,
             DateOfBirth: dateOfBirth,
         };
-        fetch("https://gb-movies-api-cab43a70da98.herokuapp.com/users", {
+        fetch(`${API_URL}/users`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),

@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Button, Form, Row, Col, Card } from "react-bootstrap";
 import { PasswordInput } from "../PasswordInput";
 import PropTypes from "prop-types";
-import "./LoginView.scss"
-
+import "./LoginView.scss";
 
 export const LoginView = ({ onLoggedIn, setShowSignup }) => {
   const [username, setUsername] = useState("");
@@ -14,12 +13,14 @@ export const LoginView = ({ onLoggedIn, setShowSignup }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    const API_URL = import.meta.env.VITE_API_URL;
+
     const data = {
       Username: username,
       Password: password
     };
 
-      fetch("https://gb-movies-api-cab43a70da98.herokuapp.com/login", {
+      fetch(`${API_URL}/login`, {
           method: "POST",
           headers: {
               "Content-Type": "application/json"

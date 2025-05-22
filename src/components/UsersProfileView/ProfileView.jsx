@@ -7,13 +7,13 @@ import { data } from "react-router";
 export const ProfileView = ({ user, movies, onMovieClick, onEditClick, onDeleteClick, size="small"}) => {
   const token = localStorage.getItem("token"); 
   const [profileUser, setProfileUser] = useState(null);
-  // let hashedPassword = profileUser.hashPassword(req.body.Password);
-  
+  const API_URL = import.meta.env.VITE_API_URL;
+
     
     useEffect(() => {
       if (!user?.Username || !token) return;
       
-      fetch(`https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}`, {
+      fetch(`${API_URL}/users/${user.Username}`, {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
     })

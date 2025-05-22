@@ -2,12 +2,13 @@ import PropTypes from "prop-types";
 // import { useState } from "react";
 
 export const ToggleFavorites = ({ user, token, isFavorited }) => {
-  
+  const API_URL = import.meta.env.VITE_API_URL;
+
     if (!user || !user.Username || !movie || !movie._id)
         return;
 
     
-    const url = `https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}/movies/${movie.id}`;
+    const url = `${API_URL}/users/${user.Username}/movies/${movie.id}`;
       
     const options = {
       method: isFavorited ? "PUT" : "POST",

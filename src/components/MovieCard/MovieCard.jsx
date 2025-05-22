@@ -9,9 +9,11 @@ export const MovieCard = ({ movie, user, token, onFavoritedMovie, size = "defaul
   
 
   const [isFavorited, setIsFavorited] = useState(movie.favorite || false);
+  const API_URL = import.meta.env.VITE_API_URL;
+
 
   const handleFavoritedChange = () => {
-    const url = `https://gb-movies-api-cab43a70da98.herokuapp.com/users/${user.Username}/movies/${movie.id}`;
+    const url = `${API_URL}/users/${user.Username}/movies/${movie.id}`;
       
     const options = {
       method: isFavorited ? "PUT" : "POST",
