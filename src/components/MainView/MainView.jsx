@@ -216,7 +216,6 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
               <MovieView
               movies={movies}
               // isFavorite={isFavorite}
-              // toggleFavorite={toggleFavorite}
               onHide={() => setSelectedMovie(null)}
                 onBackClick={() => setSelectedMovie(null)}
               onMovieClick={(movie) => setSelectedMovie(movie)}
