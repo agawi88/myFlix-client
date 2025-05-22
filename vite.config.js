@@ -6,4 +6,5 @@ export default defineConfig({
   build: {
     outDir: 'dist', // same as Parcel by default
   },
+  base: '/',
 });
