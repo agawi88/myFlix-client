@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { Modal, Button } from "react-bootstrap";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { SimilarMoviesBySections } from "../SimilarMovies/SimilarMoviesBySections";
+import { SimilarMoviesBySections } from "./SimilarMovies/SimilarMoviesBySections";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 
