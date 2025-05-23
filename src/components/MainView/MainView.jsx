@@ -35,7 +35,6 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
 
   const API_URL = import.meta.env.VITE_API_URL;
 
-
   useEffect(() => {
         console.log(user, token);
     if (!user || !token) return;
@@ -80,14 +79,19 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
 
   return (
     <BrowserRouter>
-          {/* {user && (selectedMovie || movies.length > 0) && ( */}
-      {/*   //  NVBAR*/}
       <NavbarView
           user={user}
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
-          onSearch={(term) => setSearchResults(filterMovies(movies, term))}
-        onHomeClick={() => setSearchResults([])}  
+        onSearch={(searchTerm) => {
+          console.log("Search term from Navbar:", searchTerm);
+          const results = filterMovies(movies, searchTerm);
+          console.log("Filtered results:", results);
+          setSearchResults(results);
+        }}
+
+/*           (searchTerm) => setSearchResults(filterMovies(movies, searchTerm))}
+ */        onHomeClick={() => setSearchResults([])}  
         onLogout={() => {
             setUser(null);
             setToken(null);
@@ -128,7 +132,6 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
           />
         )}
         <Row className="justify-content.md-center" style={{margin: "30px 0px 0px 0px"}} >
-          {/* // MAIN and OTHER VIEWs */}
         <Routes>
           <Route path="/login"
             element={
@@ -138,7 +141,6 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
                 <Navigate to="/signup" onLoginClick={onLoginClick} replace />
               ) : (
                   <Col md={{ span: 6, offset: 3 }}> 
-                    {/* LOGIN and SIGNUP view, for the moment put together */}
                     <LoginView 
                       onLoggedIn={(user, token) => {
                         setUser(user);
@@ -192,9 +194,9 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
                 ) : movies.length === 0 ? (
                   <Col>The list is empty!</Col>
                 ) : (
-// MOVIE CARDS IN MAIN VIEW bzw LIST OF MOVIES
-                    <Row className="g-2" /* xs={1} sm={2} md={3} lg={4} */>
-                      {(searchResults.length > 0 ? searchResults : movies).map((movie) => (
+/* MOVIE CARDS IN MAIN VIEW bzw LIST OF MOVIES
+ */                    <Row className="g-2" /* xs={1} sm={2} md={3} lg={4} */>
+                      {(searchResults.length > 0 ? searchResults : searchTerm ? [] : movies).map((movie) => (
                         <Col key={movie.id} xs={7} md={6} lg={4} >
                           <MovieCard
                             size="default"
@@ -209,7 +211,6 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
                     </Row>
                 )}
           />
-           {/* MovieView MODAL bzw. SELECTED MOVIE */}
           <Route
             path="/movies/:movieId"
             element={

@@ -68,8 +68,8 @@ NavbarView.propTypes = {
       onBackClick: PropTypes.func.isRequired,
     onSearch: PropTypes.func.isRequired,
   showSignup: PropTypes.bool.isRequired,
-  setSearchTerm: PropTypes.func.isRequired,
-  searchTerm: PropTypes.object.isRequired,
+  setSearchTerm: PropTypes.arrayOf(propTypes.object).isRequired,
+  searchTerm: PropTypes.string.isRequired,
   setSearchResults: PropTypes.arrayOf(propTypes.object).isRequired,
   onHomeClick: PropTypes.func.isRequired,
   onLoginClick: PropTypes.func.isRequired

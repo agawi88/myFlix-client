@@ -1,8 +1,14 @@
 
-export function filterMovies( movies, term ) {
-    if (!term.trim()) return movies;
+export function filterMovies(movies, searchTerm) {
+    if (!searchTerm.trim()) return movies;
+
+    const lowerTerm = searchTerm.toLowerCase();
+
+    console.log("Filtering for:", lowerTerm);
 
     return movies.filter((movie) =>
-        movie.title.toLowerCase().includes(term.toLowerCase())
+           movie.title.toLowerCase().includes(lowerTerm) ||
+           movie.genre?.name.toLowerCase().includes(lowerTerm) ||
+           movie.director?.name.toLowerCase().includes(lowerTerm)
     );
 };

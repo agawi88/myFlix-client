@@ -62,6 +62,8 @@ export const MovieCard = ({ movie, user, token, onFavoritedMovie, size = "defaul
           <Link to={`/movies/${encodeURIComponent(movie.id)}`} className="RegularButton" type="button" size="large" variant="link" >
               <b>Open</b>
           </Link>
+{/*           <Card.Text>Genre: {movie.genre?.name}</Card.Text>
+<Card.Text>Director: {movie.director?.name}</Card.Text> */}
         </Card.Body>
       </Card>
     </>
