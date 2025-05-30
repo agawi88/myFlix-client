@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export const NavbarView = ({ user, onLogout, onSearch, searchTerm, setSearchTerm, onLoginClick, onHomeClick }) => {
 
-    return (
+  return (
         <Navbar expand="lg" className="bg-body-tertiary">
             <Container fluid>
                 <Navbar.Brand as={Link} to="/" onClick={onHomeClick}>British Movies</Navbar.Brand>
@@ -26,7 +26,7 @@ export const NavbarView = ({ user, onLogout, onSearch, searchTerm, setSearchTerm
                 </Nav.Link>
               </>
             )}
-            {user && /* (selectedMovie || movies.length > 0) && */  (
+            {user &&  (
               <>
                 <Nav.Link className="RegularButton" as={Link} to="/profile">
                   Profile

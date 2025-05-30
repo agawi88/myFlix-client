@@ -29,7 +29,6 @@ export const DeleteAccountView = ({ user, setUser, token, setToken, onBackClick,
    
                 })
                 .then((message) => {
-                    console.log("Account deleted: ", message);
                     localStorage.clear();
                     setUser(null);
                     setToken(null);

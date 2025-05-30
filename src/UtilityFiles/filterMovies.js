@@ -4,8 +4,6 @@ export function filterMovies(movies, searchTerm) {
 
     const lowerTerm = searchTerm.toLowerCase();
 
-    console.log("Filtering for:", lowerTerm);
-
     return movies.filter((movie) =>
            movie.title.toLowerCase().includes(lowerTerm) ||
            movie.genre?.name.toLowerCase().includes(lowerTerm) ||

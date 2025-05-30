@@ -36,7 +36,6 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
   const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
-        console.log(user, token);
     if (!user || !token) return;
 
     fetch(`${API_URL}/movies`, {
@@ -69,11 +68,11 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
             image: doc.ImageURL,
           };
         });
-        console.log(moviesFromApi);
         setMovies(moviesFromApi);
       })
       .catch((error) => {
         console.error("Error loading movies:", error);
+
       });
   }, [user, token]);
 
@@ -83,15 +82,15 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
           user={user}
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
-        onSearch={(searchTerm) => {
-          console.log("Search term from Navbar:", searchTerm);
+          onSearch={(searchTerm) => {
           const results = filterMovies(movies, searchTerm);
-          console.log("Filtered results:", results);
           setSearchResults(results);
         }}
-
-/*           (searchTerm) => setSearchResults(filterMovies(movies, searchTerm))}
- */        onHomeClick={() => setSearchResults([])}  
+        onHomeClick={() => {
+          setSearchTerm(null);
+          setSearchResults(null);
+          localStorage.clear();
+        }}  
         onLogout={() => {
             setUser(null);
             setToken(null);

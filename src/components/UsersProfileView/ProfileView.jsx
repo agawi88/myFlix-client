@@ -32,8 +32,7 @@ export const ProfileView = ({ user, movies, onMovieClick, onEditClick, onDeleteC
           favoriteMovies: Array.isArray(data.FavoriteMovies) ? data.FavoriteMovies : [],
         };
           setProfileUser(userFromApi);
-          console.log("Fetched profile user:", userFromApi);
-           })
+        })
             .catch((error) => {
              console.error("Error fetching user data:", error);
       });

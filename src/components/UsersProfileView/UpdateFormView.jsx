@@ -24,7 +24,6 @@ export const UpdateFormView = ({ user, token, onBackClick, onClick }) => {
         alert("Please fill in at least one filed to update.");
         return;
       }
-      console.log("Sending update:", data);
 
         fetch(`${API_URL}/users/${user.Username}`, {
           method: "PUT",

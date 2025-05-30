@@ -28,7 +28,6 @@ export const SignupView = () => {
       })
           .then((response) => response.json())
             .then((data) => {
-                console.log("Signup response: ", data);
                 if (data.message === "User already exists") {
                     alert("Username already exists! Choose a different username OR log in.");
                 } else {
