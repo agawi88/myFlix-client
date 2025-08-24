@@ -1,3 +1,4 @@
+import React from "react";
 import PropTypes from "prop-types";
 import { Modal, Button } from "react-bootstrap";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
