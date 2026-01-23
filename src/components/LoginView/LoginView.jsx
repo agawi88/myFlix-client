@@ -1,14 +1,49 @@
+/**
+ * @file LoginView.jsx
+ * @description
+ * Login form component for the myFlix client application.
+ *
+ * Handles user authentication by submitting credentials
+ * to the backend API and storing the returned user data
+ * and token on successful login.
+ */
+
 import { useState } from "react";
 import { Button, Form, Row, Col, Card } from "react-bootstrap";
 import { PasswordInput } from "../PasswordInput";
 import PropTypes from "prop-types";
 import "./LoginView.scss";
 
+/**
+ * LoginView component.
+ *
+ * Renders a login form and authenticates the user against
+ * the backend API. On successful login, user data and
+ * authentication token are stored in localStorage and
+ * passed back to the parent component.
+ *
+ * @param {Object} props Component props
+ * @param {Function} props.onLoggedIn Callback invoked after successful login
+ * @param {Function} props.setShowSignup Toggles display of the signup view
+ *
+ * @returns {JSX.Element} Login form UI
+ */
+
 export const LoginView = ({ onLoggedIn, setShowSignup }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   
+    /**
+   * Handles form submission and authenticates the user.
+   *
+   * Sends the entered credentials to the backend login endpoint.
+   * On success, stores user data and token in localStorage and
+   * triggers the onLoggedIn callback.
+   *
+   * @param {Event} event Form submission event
+   * @returns {void}
+   */
     
   const handleSubmit = (event) => {
     event.preventDefault();

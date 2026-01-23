@@ -1,11 +1,51 @@
+/**
+ * @file DeleteAccountView.jsx
+ * @description
+ * Account deletion confirmation view for the myFlix client application.
+ *
+ * Allows an authenticated user to permanently delete their account
+ * by sending a DELETE request to the backend API.
+ */
+
+
 import React from "react";
 import PropTypes from "prop-types";
 import { Button, Row, Col, Card } from "react-bootstrap";
 import "../SignupView/SignupView.scss";
 
+/**
+ * DeleteAccountView component.
+ *
+ * Displays a confirmation dialog that allows the user to
+ * permanently delete their account. On successful deletion,
+ * local authentication data is cleared and the user is
+ * redirected to the signup flow.
+ *
+ * @param {Object} props Component props
+ * @param {Object} props.user Authenticated user object
+ * @param {Function} props.setUser Clears the current user state
+ * @param {string} props.token Authentication token
+ * @param {Function} props.setToken Clears the authentication token
+ * @param {Function} props.onBackClick Cancels account deletion
+ * @param {Function} props.setShowSignup Shows the signup view
+ * @param {Function} props.setShowProfile Toggles profile visibility
+ * @param {Function} props.setShowDeleteView Toggles delete view visibility
+ *
+ * @returns {JSX.Element} Account deletion confirmation UI
+ */
 
 export const DeleteAccountView = ({ user, setUser, token, setToken, onBackClick, setShowSignup, setShowProfile, setShowDeleteView }) => {
     const API_URL = import.meta.env.VITE_API_URL;
+
+    /**
+     * Sends a DELETE request to the backend API to remove
+     * the user's account permanently.
+     *
+     * On success, clears localStorage, resets authentication
+     * state, and redirects the user to the signup flow.
+     *
+     * @returns {void}
+     */
 
         const confirmDelete = () => {
             fetch(`${API_URL}/users/${user.Username}`, {
@@ -77,11 +117,10 @@ export const DeleteAccountView = ({ user, setUser, token, setToken, onBackClick,
 DeleteAccountView.propTypes = {
     user: PropTypes.object.isRequired,
     token: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired,
     onBackClick: PropTypes.func.isRequired,
-    setShowProfile: PropTypes.bool.isRequired,
-    setShowDeleteView: PropTypes.bool.isRequired,
-    setShowSignup: PropTypes.bool.isRequired,
+    setShowProfile: PropTypes.func.isRequired,
+    setShowDeleteView: PropTypes.func.isRequired,
+    setShowSignup: PropTypes.func.isRequired,
     setUser: PropTypes.func.isRequired,
     setToken: PropTypes.func.isRequired,
 };

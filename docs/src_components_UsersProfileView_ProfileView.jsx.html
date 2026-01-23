@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: src/components/UsersProfileView/ProfileView.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: src/components/UsersProfileView/ProfileView.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file ProfileView.jsx
+ * @description
+ * User profile view for the myFlix client application.
+ *
+ * Displays user account information and a list of the user's
+ * favorite movies. Allows editing user data and deleting
+ * the account.
+ */
+
+import { useState, useEffect } from "react";
+import { MovieCard } from "../MovieCard/MovieCard";
+import PropTypes from "prop-types";
+import { Button, Row, Col } from "react-bootstrap";
+import { data } from "react-router";
+
+/**
+ * ProfileView component.
+ *
+ * Fetches and displays detailed user information from the backend
+ * and renders the user's favorite movies. Provides actions to
+ * edit profile data and delete the user account.
+ *
+ * @param {Object} props Component props
+ * @param {Object} props.user Authenticated user object
+ * @param {Array&lt;Object>} props.movies Full list of movies
+ * @param {Function} props.onMovieClick Handles movie selection
+ * @param {Function} props.onEditClick Opens the profile edit form
+ * @param {Function} props.onDeleteClick Opens the delete account view
+ * @param {string} [props.size="small"] Size variant for movie cards
+ *
+ * @returns {JSX.Element} User profile view
+ */
+
+export const ProfileView = ({ user, movies, onMovieClick, onEditClick, onDeleteClick, size="small"}) => {
+  const token = localStorage.getItem("token"); 
+  const [profileUser, setProfileUser] = useState(null);
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  /**
+   * Fetches the latest user data from the backend API
+   * and normalizes it for use in the profile view.
+   */
+    
+    useEffect(() => {
+      if (!user?.Username || !token) return;
+      
+      fetch(`${API_URL}/users/${user.Username}`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+    })
+        .then((response) => {
+          if (!response.ok) throw new Error("Failed to fetch user data");
+          return response.json();
+        })
+
+        .then((data) => {
+        const userFromApi = {
+            id: data.id,
+            username: data.Username,
+            password: data.hashedPassword,
+            email: data.Email,
+            dateOfBirth: data.DateOfBirth,
+          favoriteMovies: Array.isArray(data.FavoriteMovies) ? data.FavoriteMovies : [],
+        };
+          setProfileUser(userFromApi);
+        })
+            .catch((error) => {
+             console.error("Error fetching user data:", error);
+      });
+    }, [user, token]);
+  
+  if (!user) return &lt;div>User not found. Please log in again.&lt;/div>;
+  if (!profileUser) return &lt;div>Loading profile...&lt;/div>;
+  if (!movies || movies.length === 0) return &lt;div>Loading movies ...&lt;/div>
+  
+  const uniqueFavoriteIds = [...new Set(profileUser.favoriteMovies)];
+  const favoriteMovies = movies.filter((m) => m.id &amp;&amp; uniqueFavoriteIds.includes(m.id)
+  );
+
+  return (
+    &lt;div>
+      &lt;h3>Your Profile&lt;/h3>
+      &lt;div>
+        &lt;span>&lt;b>Username: &lt;/b>&lt;/span>
+        &lt;span>{profileUser.username}&lt;/span>
+      &lt;/div>
+      &lt;div>
+        &lt;span>&lt;b>Password: &lt;/b> ********&lt;/span>
+        &lt;span>{profileUser.password}&lt;/span>
+      &lt;/div>
+      &lt;div>
+        &lt;span>&lt;b>Email: &lt;/b>&lt;/span>
+        &lt;span>{profileUser.email}&lt;/span>
+      &lt;/div>
+      &lt;div>
+        &lt;span>&lt;b>Date of Birth: &lt;/b>&lt;/span>
+        &lt;span>{profileUser.dateOfBirth}&lt;/span>
+      &lt;/div>
+      &lt;hr />
+      &lt;div>
+        &lt;Row>
+          &lt;Col>
+            &lt;Button variant="danger" onClick={onDeleteClick} user={profileUser} token={token} >
+              Delete Account
+            &lt;/Button>
+          &lt;/Col>
+          &lt;Col>
+        &lt;Button variant="secondary" onClick={onEditClick} >
+          Edit Data
+            &lt;/Button>
+          &lt;/Col>
+          &lt;/Row>
+        &lt;hr />
+        &lt;h4 className="mt-3">Favorite Movies&lt;/h4>
+        {favoriteMovies.length > 0 ? (
+          &lt;Row className="g-2">
+            {favoriteMovies.map((movie) => (
+              &lt;Col key={movie.id} /* xs={2} sm={4} md={6} lg={6} */ className="d-flex" >
+                &lt;MovieCard
+                  size="small"
+                  movie={movie}
+                  user={user}
+                  token={token}
+                  onMovieClick={onMovieClick}
+                />
+              &lt;/Col>
+            ))}
+          &lt;/Row>
+        ) : (
+          &lt;h5>You have no favorite movies yet: start adding some!&lt;/h5>
+        )}
+      &lt;/div>
+    &lt;/div>
+  ); 
+};
+
+ProfileView.propTypes = {
+  user: PropTypes.object.isRequired,
+  movies: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onMovieClick: PropTypes.func.isRequired,
+  onEditClick: PropTypes.func.isRequired,
+  onDeleteClick: PropTypes.func.isRequired,
+  size: PropTypes.oneOf(["default", "small", "mini"]),
+};
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#Ag">Ag</a></li><li><a href="global.html#Cg">Cg</a></li><li><a href="global.html#DeleteAccountView">DeleteAccountView</a></li><li><a href="global.html#Dg">Dg</a></li><li><a href="global.html#LoginView">LoginView</a></li><li><a href="global.html#MainView">MainView</a></li><li><a href="global.html#MovieCard">MovieCard</a></li><li><a href="global.html#MovieView">MovieView</a></li><li><a href="global.html#MyFlixApplication">MyFlixApplication</a></li><li><a href="global.html#NavbarView">NavbarView</a></li><li><a href="global.html#PasswordInput">PasswordInput</a></li><li><a href="global.html#ProfileView">ProfileView</a></li><li><a href="global.html#Rg">Rg</a></li><li><a href="global.html#SignupView">SignupView</a></li><li><a href="global.html#SimilarMoviesBySections">SimilarMoviesBySections</a></li><li><a href="global.html#ToggleFavorites">ToggleFavorites</a></li><li><a href="global.html#UpdateFormView">UpdateFormView</a></li><li><a href="global.html#filterMovies">filterMovies</a></li><li><a href="global.html#jg">jg</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Fri Jan 23 2026 13:57:29 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: src/components/SimilarMovies/SimilarMoviesBySections.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: src/components/SimilarMovies/SimilarMoviesBySections.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file SimilarMoviesBySections.jsx
+ * @description
+ * Displays a list of movies similar to the currently selected movie.
+ *
+ * Similarity is determined either by shared genre or shared director,
+ * depending on the provided section title.
+ */
+
+import PropTypes from "prop-types";
+import { CardGroup, Row, Col } from "react-bootstrap";
+// import ExampleCarouselImage from 'components/ExampleCarouselImage';
+import { MovieCard } from "../MovieCard/MovieCard";
+
+/**
+ * SimilarMoviesBySections component.
+ *
+ * Filters the provided movies list to display movies related
+ * to the currently selected movie. The filtering logic depends
+ * on the section title:
+ * - "By Genre": movies with the same genre
+ * - "By Director": movies by the same director
+ *
+ * The selected movie itself is excluded from the results.
+ *
+ * @param {Object} props Component props
+ * @param {Object} props.movie Base movie reference (not used for filtering)
+ * @param {Array&lt;Object>} props.movies Full list of movies
+ * @param {string} props.title Section title determining filter logic
+ * @param {Function} props.onMovieClick Callback invoked when a movie is selected
+ * @param {Object} props.selectedMovie Currently selected movie
+ * @param {string} [props.size="mini"] Size variant for movie cards
+ *
+ * @returns {JSX.Element|null} Similar movies section or null if no movie is selected
+ */
+
+export const SimilarMoviesBySections = ({ movie, movies, title, onMovieClick, selectedMovie, size = "mini" }) => {
+    if (!selectedMovie) return null;
+
+  /**
+   * Determines similar movies based on section title
+   * ("By Genre" or "By Director") while excluding
+   * the currently selected movie.
+   */
+    
+  const similarMovies =
+    title === "By Genre"
+      ? movies.filter(
+        (movie) =>
+          movie.genre.name === selectedMovie.genre.name &amp;&amp;
+          movie.id !== selectedMovie.id
+      )
+      : title === "By Director"
+        
+        ? movies.filter(
+          (movie) =>
+            movie.director.name === selectedMovie.director.name &amp;&amp;
+            movie.id !== selectedMovie.id
+        )
+        : [];
+  
+    return (
+        &lt;>
+            &lt;h3>{title}&lt;/h3>
+            &lt;CardGroup>
+          &lt;Row className="g-2">
+            {similarMovies.map((movie) =>
+          movie ?  (
+                        &lt;Col /* xs={2} sm={4} md={5} lg={6} */ key={movie.id} className="d-flex">
+                  &lt;MovieCard
+                        size="mini"
+                        movie={movie}   
+                        onMovieClick={() => onMovieClick(movie)}  
+                    />
+            &lt;/Col>
+          ) : null
+                )}
+                &lt;/Row>
+            &lt;/CardGroup>
+        &lt;/>
+    );
+};
+
+SimilarMoviesBySections.propTypes = {
+    movie: PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          title: PropTypes.string.isRequired,
+          releaseYear: PropTypes.string.isRequired,
+          setting: PropTypes.string,
+          description: PropTypes.string.isRequired,
+          image: PropTypes.string.isRequired,
+          featured: PropTypes.bool.isRequired,
+          director: PropTypes.shape({
+            name: PropTypes.string.isRequired,
+            bio: PropTypes.string.isRequired,
+            dateOfBirth: PropTypes.string.isRequired,
+            deathYear: PropTypes.string,
+          }).isRequired,
+          genre: PropTypes.shape({
+            name: PropTypes.string.isRequired,
+            description: PropTypes.string.isRequired,
+          }).isRequired,
+        }).isRequired,
+    movies: PropTypes.array.isRequired,
+    title: PropTypes.string.isRequired,
+    onMovieClick: PropTypes.func.isRequired,
+  selectedMovie: PropTypes.object.isRequired,
+  size: PropTypes.oneOf(["default", "small", "mini"]),
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#Ag">Ag</a></li><li><a href="global.html#Cg">Cg</a></li><li><a href="global.html#DeleteAccountView">DeleteAccountView</a></li><li><a href="global.html#Dg">Dg</a></li><li><a href="global.html#LoginView">LoginView</a></li><li><a href="global.html#MainView">MainView</a></li><li><a href="global.html#MovieCard">MovieCard</a></li><li><a href="global.html#MovieView">MovieView</a></li><li><a href="global.html#MyFlixApplication">MyFlixApplication</a></li><li><a href="global.html#NavbarView">NavbarView</a></li><li><a href="global.html#PasswordInput">PasswordInput</a></li><li><a href="global.html#ProfileView">ProfileView</a></li><li><a href="global.html#Rg">Rg</a></li><li><a href="global.html#SignupView">SignupView</a></li><li><a href="global.html#SimilarMoviesBySections">SimilarMoviesBySections</a></li><li><a href="global.html#ToggleFavorites">ToggleFavorites</a></li><li><a href="global.html#UpdateFormView">UpdateFormView</a></li><li><a href="global.html#filterMovies">filterMovies</a></li><li><a href="global.html#jg">jg</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Fri Jan 23 2026 13:57:29 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

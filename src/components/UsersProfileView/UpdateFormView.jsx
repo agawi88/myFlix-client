@@ -1,3 +1,13 @@
+/**
+ * @file UpdateFormView.jsx
+ * @description
+ * User profile update form for the myFlix client application.
+ *
+ * Allows an authenticated user to update their username,
+ * password, and/or email address via the backend API.
+ */
+
+
 import React from "react";
 import { useState } from "react";
 import PropTypes from "prop-types";
@@ -5,12 +15,38 @@ import { Button, Form, Row, Col, Card } from "react-bootstrap";
 import { PasswordInput } from "../PasswordInput";
 import "../SignupView/SignupView.scss";
 
+/**
+ * UpdateFormView component.
+ *
+ * Renders a form that allows users to update their account
+ * information. Only the fields that are filled in are sent
+ * to the backend API for updating.
+ *
+ * @param {Object} props Component props
+ * @param {Object} props.user Current authenticated user object
+ * @param {string} props.token Authentication token
+ * @param {Function} props.onBackClick Cancels editing and returns to profile view
+ * @param {Function} props.onClick Callback invoked after successful update
+ *
+ * @returns {JSX.Element} User data update form
+ */
 
 export const UpdateFormView = ({ user, token, onBackClick, onClick }) => {
     const [username, setUsername] = useState(user.Username || "");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const API_URL = import.meta.env.VITE_API_URL;
+
+    /**
+     * Handles submission of updated user data.
+     *
+     * Sends a PUT request to the backend API with only
+     * the fields that were modified. On success, updates
+     * the user state in the parent component.
+     *
+     * @param {Event} event Form submission event
+     * @returns {void}
+     */
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -136,11 +172,6 @@ export const UpdateFormView = ({ user, token, onBackClick, onClick }) => {
     );
 };
 UpdateFormView.propTypes = {
-    // user: PropTypes.shape({
-    //     Username: PropTypes.string.isRequired,
-    //     Password: PropTypes.string.isRequired,
-    //     Email: PropTypes.string.isRequired,
-    // }).isRequired,
     user: PropTypes.object.isRequired,
     token: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,

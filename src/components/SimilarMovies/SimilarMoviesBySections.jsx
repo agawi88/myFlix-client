@@ -1,10 +1,47 @@
+/**
+ * @file SimilarMoviesBySections.jsx
+ * @description
+ * Displays a list of movies similar to the currently selected movie.
+ *
+ * Similarity is determined either by shared genre or shared director,
+ * depending on the provided section title.
+ */
+
 import PropTypes from "prop-types";
 import { CardGroup, Row, Col } from "react-bootstrap";
 // import ExampleCarouselImage from 'components/ExampleCarouselImage';
 import { MovieCard } from "../MovieCard/MovieCard";
 
+/**
+ * SimilarMoviesBySections component.
+ *
+ * Filters the provided movies list to display movies related
+ * to the currently selected movie. The filtering logic depends
+ * on the section title:
+ * - "By Genre": movies with the same genre
+ * - "By Director": movies by the same director
+ *
+ * The selected movie itself is excluded from the results.
+ *
+ * @param {Object} props Component props
+ * @param {Object} props.movie Base movie reference (not used for filtering)
+ * @param {Array<Object>} props.movies Full list of movies
+ * @param {string} props.title Section title determining filter logic
+ * @param {Function} props.onMovieClick Callback invoked when a movie is selected
+ * @param {Object} props.selectedMovie Currently selected movie
+ * @param {string} [props.size="mini"] Size variant for movie cards
+ *
+ * @returns {JSX.Element|null} Similar movies section or null if no movie is selected
+ */
+
 export const SimilarMoviesBySections = ({ movie, movies, title, onMovieClick, selectedMovie, size = "mini" }) => {
     if (!selectedMovie) return null;
+
+  /**
+   * Determines similar movies based on section title
+   * ("By Genre" or "By Director") while excluding
+   * the currently selected movie.
+   */
     
   const similarMovies =
     title === "By Genre"

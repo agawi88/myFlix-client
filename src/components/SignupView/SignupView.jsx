@@ -1,9 +1,27 @@
+/**
+ * @file SignupView.jsx
+ * @description
+ * Signup form component for the myFlix client application.
+ *
+ * Allows new users to register by submitting their credentials
+ * and profile information to the backend API.
+ */
+
 import { useState } from "react";
 import { Button, Form, Row, Col, Card } from "react-bootstrap";
 import { PasswordInput } from "../PasswordInput";
 // import PropTypes from "prop-types";
 import "./SignupView.scss";
 
+/**
+ * SignupView component.
+ *
+ * Renders a registration form that allows users to create
+ * a new account. On successful registration, the user is
+ * prompted to log in.
+ *
+ * @returns {JSX.Element} Signup form UI
+ */
 
 export const SignupView = () => {
     const [username, setUsername] = useState("");
@@ -11,6 +29,17 @@ export const SignupView = () => {
     const [email, setEmail] = useState("");
     const [dateOfBirth, setDateOfBirth] = useState("");
     const API_URL = import.meta.env.VITE_API_URL;
+
+  /**
+   * Handles signup form submission.
+   *
+   * Sends the entered user data to the backend API to
+   * create a new user account and displays feedback
+   * based on the server response.
+   *
+   * @param {Event} event Form submission event
+   * @returns {void}
+   */
 
     const handleSubmit = (event) => {
         event.preventDefault();

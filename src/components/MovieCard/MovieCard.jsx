@@ -1,3 +1,13 @@
+/**
+ * @file MovieCard.jsx
+ * @description
+ * Displays a single movie as a card with poster, title,
+ * and a favorite toggle button.
+ *
+ * Allows authenticated users to add or remove a movie
+ * from their list of favorites via the backend API.
+ */
+
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { Button, Card, Col} from "react-bootstrap";
@@ -5,13 +15,39 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import  { Link } from "react-router-dom";
 import "./MovieCard.scss";
 
+/**
+ * MovieCard component.
+ *
+ * Renders a movie preview card with an image, title,
+ * and controls for opening the movie details view
+ * and toggling favorite status.
+ *
+ * @param {Object} props Component props
+ * @param {Object} props.movie Movie data object
+ * @param {Object} props.user Authenticated user object
+ * @param {string} props.token Authentication token
+ * @param {Function} props.onFavoritedMovie Callback after favorite status changes
+ * @param {string} [props.size="default"] Size variant of the card
+ *
+ * @returns {JSX.Element} Movie card UI
+ */
+
 export const MovieCard = ({ movie, user, token, onFavoritedMovie, size = "default" }) => {
   
 
   const [isFavorited, setIsFavorited] = useState(movie.favorite || false);
   const API_URL = import.meta.env.VITE_API_URL;
 
-
+  /**
+   * Toggles the favorite status of the movie for the current user.
+   *
+   * Sends a request to the backend API to add or remove the movie
+   * from the user's list of favorites and updates local state
+   * accordingly.
+   *
+   * @returns {void}
+   */
+  
   const handleFavoritedChange = () => {
     const url = `${API_URL}/users/${user.Username}/movies/${movie.id}`;
       

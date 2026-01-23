@@ -1,3 +1,13 @@
+/**
+ * @file index.jsx
+ * @description
+ * Application entry point for the myFlix client.
+ *
+ * Initializes the React root and renders the main application
+ * view into the DOM.
+ */
+
+
 import { createRoot } from "react-dom/client";
 import { MainView } from "./components/MainView/MainView";
 
@@ -6,6 +16,15 @@ import "bootstrap";
 import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.scss";
+
+/**
+ * Root application component.
+ *
+ * Wraps the main application view with global layout
+ * components such as the Bootstrap container.
+ *
+ * @returns {JSX.Element} Root application layout
+ */
 
 const MyFlixApplication = () => {
     return (

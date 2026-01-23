@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: src/components/MovieView.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: src/components/MovieView.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file MovieView.jsx
+ * @description
+ * Detailed movie view displayed in a modal.
+ *
+ * Shows full information about a selected movie, including
+ * director and genre details, and displays similar movies
+ * based on genre and director.
+ */
+
+import React from "react";
+import PropTypes from "prop-types";
+import { Modal, Button } from "react-bootstrap";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { SimilarMoviesBySections } from "./SimilarMovies/SimilarMoviesBySections";
+import { useParams } from "react-router";
+import { Link } from "react-router-dom";
+
+/**
+ * MovieView component.
+ *
+ * Retrieves the selected movie based on the URL parameter
+ * and displays detailed information in a modal dialog.
+ * Also renders lists of similar movies grouped by genre
+ * and director.
+ *
+ * @param {Object} props Component props
+ * @param {boolean} props.isFavorite Indicates whether the movie is favorited
+ * @param {Function} props.onHide Closes the movie view modal
+ * @param {Array&lt;Object>} props.movies List of all movies
+ * @param {Function} props.onMovieClick Handles selection of a similar movie
+ *
+ * @returns {JSX.Element|null} Movie detail modal or null if movie is not found
+ */
+
+export const MovieView = ({ isFavorite, onHide, movies, onMovieClick }) => {
+  
+    /**
+   * Determines the current movie based on the route parameter.
+   */
+  
+  const { movieId } = useParams();
+  const movie = movies.find((m) => m.id === movieId);
+
+  if (!movie) return null;
+
+return (
+
+    &lt;Modal
+          show={!!movie}
+          onHide={() => setMovie(null)}
+          size="xl"
+          centered
+          scrollable
+          dialogClassName="modal-90w">
+          &lt;Modal.Header>
+                &lt;Modal.Title>{movie.title}
+                  &lt;Button
+                    variant="link"
+                    // onClick={() => toggleFavorite(movie.id)}
+                    className="ms-3 p-0"
+          style={{
+            color: isFavorite ? "red" : "gray",
+            fontSize: "1.5rem"
+          }}
+          >
+            {isFavorite ? &lt;FaHeart /> : &lt;FaRegHeart />} 
+          &lt;/Button>
+      &lt;/Modal.Title>
+      &lt;Link to={`/`}>
+              &lt;button
+                onClick={onHide}
+                className="backButton" 
+                // style={{cursor: "pointer"}}
+        >Back&lt;/button>
+        &lt;/Link>
+          &lt;/Modal.Header>
+      &lt;Modal.Body>
+            &lt;div>
+      &lt;div>
+        &lt;img src={movie.image} alt={movie.title}  />
+      &lt;/div>
+      &lt;div>
+        &lt;span>&lt;b>Title: &lt;/b>&lt;/span>
+        &lt;span>{movie.title}&lt;/span>
+      &lt;/div>
+      &lt;div>
+        &lt;span>&lt;b>Release Year: &lt;/b>&lt;/span>
+        &lt;span>{movie.releaseYear}&lt;/span>
+      &lt;/div>
+      &lt;div>
+        &lt;span>&lt;b>Setting: &lt;/b>&lt;/span>
+        &lt;span>{movie.setting}&lt;/span>
+      &lt;/div>
+      &lt;div>
+        &lt;span>&lt;b>Description: &lt;/b>&lt;/span>
+        &lt;span>{movie.description}&lt;/span>
+      &lt;/div>
+        &lt;div>
+          &lt;ul>
+            &lt;li>&lt;span>&lt;b>Director: &lt;/b>&lt;/span>
+              &lt;span>&lt;b>{movie.director.name}&lt;/b>&lt;/span>
+        &lt;/li>
+        &lt;li>&lt;span>{movie.director.bio}&lt;/span>&lt;/li>
+        &lt;li>&lt;span>&lt;b>Born: {movie.director.dateOfBirth}&lt;/b>&lt;/span>&lt;/li>
+        &lt;li>&lt;span>&lt;b>Died: {movie.director.deathYear}&lt;/b>&lt;/span>&lt;/li>
+      &lt;/ul>
+      &lt;/div>
+        &lt;div>
+          &lt;ul>
+        &lt;span>&lt;b>Genre: {movie.genre.name}&lt;/b>&lt;/span>
+        &lt;li>&lt;span>{movie.genre.description}&lt;/span>&lt;/li>
+        &lt;/ul>
+      &lt;/div>
+      &lt;div>
+        &lt;span>&lt;b>Featured: {movie.featured ? "Yes" : "No"}&lt;/b>&lt;/span>
+      &lt;/div>
+    &lt;/div>
+{/* SIMILAR MOVIES BY: GENRE, DIRECTOR; later on also by ACTORS AND MY FAVOURITES           */}
+            &lt;hr />
+            &lt;h2> Similar Movies &lt;/h2>
+        &lt;SimilarMoviesBySections
+              title="By Genre"
+        movies={movies}
+        selectedMovie={movie}
+              onMovieClick={onMovieClick}
+            />
+            &lt;hr />
+        &lt;SimilarMoviesBySections
+          title="By Director"
+          movies={movies}
+          selectedMovie={movie}
+          onMovieClick={onMovieClick}
+              
+            />
+          &lt;/Modal.Body>
+            &lt;/Modal>
+  ); 
+};
+
+MovieView.propTypes = {
+  isFavorite: PropTypes.bool.isRequired,
+  onHide: PropTypes.func.isRequired,
+  movies: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onMovieClick: PropTypes.func.isRequired,
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#Ag">Ag</a></li><li><a href="global.html#Cg">Cg</a></li><li><a href="global.html#DeleteAccountView">DeleteAccountView</a></li><li><a href="global.html#Dg">Dg</a></li><li><a href="global.html#LoginView">LoginView</a></li><li><a href="global.html#MainView">MainView</a></li><li><a href="global.html#MovieCard">MovieCard</a></li><li><a href="global.html#MovieView">MovieView</a></li><li><a href="global.html#MyFlixApplication">MyFlixApplication</a></li><li><a href="global.html#NavbarView">NavbarView</a></li><li><a href="global.html#PasswordInput">PasswordInput</a></li><li><a href="global.html#ProfileView">ProfileView</a></li><li><a href="global.html#Rg">Rg</a></li><li><a href="global.html#SignupView">SignupView</a></li><li><a href="global.html#SimilarMoviesBySections">SimilarMoviesBySections</a></li><li><a href="global.html#ToggleFavorites">ToggleFavorites</a></li><li><a href="global.html#UpdateFormView">UpdateFormView</a></li><li><a href="global.html#filterMovies">filterMovies</a></li><li><a href="global.html#jg">jg</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Fri Jan 23 2026 13:57:29 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

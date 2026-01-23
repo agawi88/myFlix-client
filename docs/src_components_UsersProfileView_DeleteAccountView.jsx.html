@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: src/components/UsersProfileView/DeleteAccountView.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: src/components/UsersProfileView/DeleteAccountView.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file DeleteAccountView.jsx
+ * @description
+ * Account deletion confirmation view for the myFlix client application.
+ *
+ * Allows an authenticated user to permanently delete their account
+ * by sending a DELETE request to the backend API.
+ */
+
+
+import React from "react";
+import PropTypes from "prop-types";
+import { Button, Row, Col, Card } from "react-bootstrap";
+import "../SignupView/SignupView.scss";
+
+/**
+ * DeleteAccountView component.
+ *
+ * Displays a confirmation dialog that allows the user to
+ * permanently delete their account. On successful deletion,
+ * local authentication data is cleared and the user is
+ * redirected to the signup flow.
+ *
+ * @param {Object} props Component props
+ * @param {Object} props.user Authenticated user object
+ * @param {Function} props.setUser Clears the current user state
+ * @param {string} props.token Authentication token
+ * @param {Function} props.setToken Clears the authentication token
+ * @param {Function} props.onBackClick Cancels account deletion
+ * @param {Function} props.setShowSignup Shows the signup view
+ * @param {Function} props.setShowProfile Toggles profile visibility
+ * @param {Function} props.setShowDeleteView Toggles delete view visibility
+ *
+ * @returns {JSX.Element} Account deletion confirmation UI
+ */
+
+export const DeleteAccountView = ({ user, setUser, token, setToken, onBackClick, setShowSignup, setShowProfile, setShowDeleteView }) => {
+    const API_URL = import.meta.env.VITE_API_URL;
+
+    /**
+     * Sends a DELETE request to the backend API to remove
+     * the user's account permanently.
+     *
+     * On success, clears localStorage, resets authentication
+     * state, and redirects the user to the signup flow.
+     *
+     * @returns {void}
+     */
+
+        const confirmDelete = () => {
+            fetch(`${API_URL}/users/${user.Username}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+                .then((response) => {
+                    if (response.ok)
+                    {
+                        localStorage.clear();
+                        setShowProfile(false);
+                        setShowDeleteView(false);
+                        setShowSignup(true);
+                    } 
+                    else {
+                        throw new Error("Failed to delete account");
+                    }
+                    return response.text();
+   
+                })
+                .then((message) => {
+                    localStorage.clear();
+                    setUser(null);
+                    setToken(null);
+                    setShowProfile(false);
+                    setShowDeleteView(false);
+                    setShowSignup(true);
+
+                })
+                .catch((err) => {
+                    console.error("Error deleting account:", err);
+                    alert("Something went wrong while deleting your account.")
+                });
+    };
+    
+
+    return (
+    &lt;>
+      &lt;Card className="align-items-center shadow-lg rounded-4 my-4">
+      &lt;Card.Header className="text-center bg-primary opacity-8 text-white rounded-4 my-0" column="lg">
+            &lt;h3>&lt;b>Delete Account {user.Username} &lt;/b>&lt;/h3>
+      &lt;/Card.Header>
+      &lt;Card.Body>
+        &lt;Card.Title>&lt;h5>Are you sure you want to delete your account/username? &lt;br>&lt;/br>&lt;strong>Warning:&lt;/strong> This action is permanent and cannot be undone.&lt;/h5>
+        &lt;/Card.Title>
+      &lt;/Card.Body>
+      &lt;Card.Footer>
+        &lt;Row>
+            &lt;Col>
+                &lt;Button variant="secondary"
+                  onClick={onBackClick} 
+                > Cancel &lt;/Button>
+            &lt;/Col>
+            &lt;Col>     
+                &lt;Button onClick={confirmDelete}
+                variant="danger"
+                className="mb-2"
+                    lg="auto"
+                    > DELETE &lt;/Button>
+            &lt;/Col>
+        &lt;/Row>
+       &lt;/Card.Footer>
+      &lt;/Card>
+    &lt;/>        
+    );
+};
+DeleteAccountView.propTypes = {
+    user: PropTypes.object.isRequired,
+    token: PropTypes.string.isRequired,
+    onBackClick: PropTypes.func.isRequired,
+    setShowProfile: PropTypes.func.isRequired,
+    setShowDeleteView: PropTypes.func.isRequired,
+    setShowSignup: PropTypes.func.isRequired,
+    setUser: PropTypes.func.isRequired,
+    setToken: PropTypes.func.isRequired,
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#Ag">Ag</a></li><li><a href="global.html#Cg">Cg</a></li><li><a href="global.html#DeleteAccountView">DeleteAccountView</a></li><li><a href="global.html#Dg">Dg</a></li><li><a href="global.html#LoginView">LoginView</a></li><li><a href="global.html#MainView">MainView</a></li><li><a href="global.html#MovieCard">MovieCard</a></li><li><a href="global.html#MovieView">MovieView</a></li><li><a href="global.html#MyFlixApplication">MyFlixApplication</a></li><li><a href="global.html#NavbarView">NavbarView</a></li><li><a href="global.html#PasswordInput">PasswordInput</a></li><li><a href="global.html#ProfileView">ProfileView</a></li><li><a href="global.html#Rg">Rg</a></li><li><a href="global.html#SignupView">SignupView</a></li><li><a href="global.html#SimilarMoviesBySections">SimilarMoviesBySections</a></li><li><a href="global.html#ToggleFavorites">ToggleFavorites</a></li><li><a href="global.html#UpdateFormView">UpdateFormView</a></li><li><a href="global.html#filterMovies">filterMovies</a></li><li><a href="global.html#jg">jg</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Fri Jan 23 2026 13:57:29 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

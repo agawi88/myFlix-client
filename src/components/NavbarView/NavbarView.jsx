@@ -1,7 +1,35 @@
+/**
+ * @file NavbarView.jsx
+ * @description
+ * Navigation bar component for the myFlix client application.
+ *
+ * Displays navigation links based on authentication state
+ * and provides a search form for filtering movies.
+ */
+
 import PropTypes from "prop-types";
 import { Navbar, Nav, Form, Button, Container } from "react-bootstrap";
-import { propTypes } from "react-bootstrap/esm/Image";
 import { Link } from "react-router-dom";
+
+/**
+ * NavbarView component.
+ *
+ * Renders the main navigation bar of the application.
+ * Shows different navigation options depending on whether
+ * a user is authenticated and allows searching movies
+ * via a controlled input.
+ *
+ * @param {Object} props Component props
+ * @param {Object|null} props.user Authenticated user object or null
+ * @param {Function} props.onLogout Logs the user out
+ * @param {Function} props.onSearch Executes a movie search
+ * @param {string} props.searchTerm Current search input value
+ * @param {Function} props.setSearchTerm Updates the search input value
+ * @param {Function} props.onLoginClick Handles login navigation
+ * @param {Function} props.onHomeClick Navigates to the home view
+ *
+ * @returns {JSX.Element} Navigation bar UI
+ */
 
 export const NavbarView = ({ user, onLogout, onSearch, searchTerm, setSearchTerm, onLoginClick, onHomeClick }) => {
 
@@ -62,15 +90,11 @@ export const NavbarView = ({ user, onLogout, onSearch, searchTerm, setSearchTerm
 };
 
 NavbarView.propTypes = {
-      user: PropTypes.object.isRequired,
-      onLogout: PropTypes.func.isRequired,
-      onShowProfile: PropTypes.func.isRequired,
-      onBackClick: PropTypes.func.isRequired,
-    onSearch: PropTypes.func.isRequired,
-  showSignup: PropTypes.bool.isRequired,
-  setSearchTerm: PropTypes.arrayOf(propTypes.object).isRequired,
+  user: PropTypes.object,
+  onLogout: PropTypes.func.isRequired,
+  onSearch: PropTypes.func.isRequired,
   searchTerm: PropTypes.string.isRequired,
-  setSearchResults: PropTypes.arrayOf(propTypes.object).isRequired,
+  setSearchTerm: PropTypes.func.isRequired,
   onHomeClick: PropTypes.func.isRequired,
   onLoginClick: PropTypes.func.isRequired
-  };
+};

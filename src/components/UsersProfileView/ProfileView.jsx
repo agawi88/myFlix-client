@@ -1,14 +1,46 @@
+/**
+ * @file ProfileView.jsx
+ * @description
+ * User profile view for the myFlix client application.
+ *
+ * Displays user account information and a list of the user's
+ * favorite movies. Allows editing user data and deleting
+ * the account.
+ */
+
 import { useState, useEffect } from "react";
 import { MovieCard } from "../MovieCard/MovieCard";
 import PropTypes from "prop-types";
 import { Button, Row, Col } from "react-bootstrap";
 import { data } from "react-router";
 
+/**
+ * ProfileView component.
+ *
+ * Fetches and displays detailed user information from the backend
+ * and renders the user's favorite movies. Provides actions to
+ * edit profile data and delete the user account.
+ *
+ * @param {Object} props Component props
+ * @param {Object} props.user Authenticated user object
+ * @param {Array<Object>} props.movies Full list of movies
+ * @param {Function} props.onMovieClick Handles movie selection
+ * @param {Function} props.onEditClick Opens the profile edit form
+ * @param {Function} props.onDeleteClick Opens the delete account view
+ * @param {string} [props.size="small"] Size variant for movie cards
+ *
+ * @returns {JSX.Element} User profile view
+ */
+
 export const ProfileView = ({ user, movies, onMovieClick, onEditClick, onDeleteClick, size="small"}) => {
   const token = localStorage.getItem("token"); 
   const [profileUser, setProfileUser] = useState(null);
   const API_URL = import.meta.env.VITE_API_URL;
 
+  /**
+   * Fetches the latest user data from the backend API
+   * and normalizes it for use in the profile view.
+   */
     
     useEffect(() => {
       if (!user?.Username || !token) return;
@@ -107,7 +139,6 @@ ProfileView.propTypes = {
   user: PropTypes.object.isRequired,
   movies: PropTypes.arrayOf(PropTypes.object).isRequired,
   onMovieClick: PropTypes.func.isRequired,
-  onClick: PropTypes.func.isRequired,
   onEditClick: PropTypes.func.isRequired,
   onDeleteClick: PropTypes.func.isRequired,
   size: PropTypes.oneOf(["default", "small", "mini"]),

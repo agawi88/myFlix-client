@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: src/components/MainView/MainView.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: src/components/MainView/MainView.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file MainView.jsx
+ * @description
+ * Main container component of the myFlix client application.
+ *
+ * Handles:
+ * - Authentication state (user &amp; token)
+ * - Fetching and transforming movie data from the API
+ * - Client-side routing (React Router)
+ * - Conditional rendering of views (Login, Signup, Profile, Movies)
+ * - Global navigation and search
+ */
+
+import { useState, useEffect } from "react";
+import { MovieCard } from "../MovieCard/MovieCard";
+import { MovieView } from "../MovieView";
+import { LoginView } from "../LoginView/LoginView";
+import { SignupView } from "../SignupView/SignupView";
+import { ProfileView } from "../UsersProfileView/ProfileView";
+import { NavbarView } from "../NavbarView/NavbarView";
+import { UpdateFormView } from "../UsersProfileView/UpdateFormView";
+import { DeleteAccountView } from "../UsersProfileView/DeleteAccountView";
+import { filterMovies } from "../../UtilityFiles/filterMovies";
+
+import { Row, Col} from "react-bootstrap";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+
+import PropTypes from "prop-types";
+
+/**
+ * MainView component.
+ *
+ * Serves as the central controller of the application.
+ * Manages global state such as authentication, movies,
+ * selected movie, and profile-related UI views.
+ *
+ * @param {Object} props Component props
+ * @param {Function} props.onBackClick Callback for navigating back
+ * @param {Function} props.onClick Generic click handler
+ * @param {Function} props.onShowProfile Shows the user profile
+ * @param {Function} props.onLoggedIn Handles successful login
+ * @param {Function} props.onLogout Handles user logout
+ * @param {Function} props.onHide Hides the current view
+ * @param {Function} props.onMovieClick Handles movie selection
+ * @param {Function} props.onLoginClick Handles login navigation
+ * @param {string} [props.size="default"] Size variant for movie cards
+ *
+ * @returns {JSX.Element} Main application view with routing
+ */
+
+export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLogout, onHide, onMovieClick, onLoginClick, size="default" }) => {
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const storedToken = localStorage.getItem("token");
+
+  const [user, setUser] = useState(storedUser ? storedUser : null);
+  const [token, setToken] = useState(storedToken ? storedToken : null);
+  const [movies, setMovies] = useState([]);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [showSignup, setShowSignup] = useState(false);
+  const [showDeleteView, setShowDeleteView] = useState(false);
+  const [showUpdateForm, setShowUpdateForm] = useState(false); 
+  const [showProfile, setShowProfile] = useState(() => {
+    return JSON.parse(localStorage.getItem("showProfile")) || false; 
+  });
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const filteredMovies = filterMovies(movies, searchTerm);
+
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  /**
+   * Fetches movies from the backend API and transforms
+   * the response into a client-friendly movie object shape.
+   *
+   * The transformation normalizes naming and nests
+   * genre and director data for easier consumption
+   * throughout the app.
+   */
+
+  useEffect(() => {
+    if (!user || !token) return;
+
+    fetch(`${API_URL}/movies`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => response.json())
+      .then((movies) => {
+        setMovies(movies);
+
+        const moviesFromApi = movies.map((doc) => {
+          return {
+            id: doc._id,
+            title: doc.Title,
+            releaseYear: doc.ReleaseYear,
+            setting: doc.Setting,
+            description: doc.Description,
+            genre: {
+              name: doc.Genre.Name,
+              description: doc.Genre.Description,
+            },
+            director: {
+              name: doc.Director.Name,
+              bio: doc.Director.Bio,
+              dateOfBirth: doc.Director.DateOfBirth,
+              deathYear: doc.Director.DeathYear
+            },
+            //actors: [],
+            featured: doc.Featured,
+            image: doc.ImageURL,
+          };
+        });
+        setMovies(moviesFromApi);
+      })
+      .catch((error) => {
+        console.error("Error loading movies:", error);
+
+      });
+  }, [user, token]);
+
+  return (
+    &lt;BrowserRouter>
+      &lt;NavbarView
+          user={user}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          onSearch={(searchTerm) => {
+          const results = filterMovies(movies, searchTerm);
+          setSearchResults(results);
+        }}
+        onHomeClick={() => {
+          setSearchTerm(null);
+          setSearchResults(null);
+          localStorage.clear();
+        }}  
+        onLogout={() => {
+            setUser(null);
+            setToken(null);
+            localStorage.clear();
+          }}
+        />    
+        {showUpdateForm &amp;&amp; (
+          &lt;UpdateFormView
+            user={user}
+            token={token}
+            onBackClick={() => {
+              setShowUpdateForm(false);
+              setShowProfile(true);
+              localStorage.setItem("showProfile", true);
+            }}
+            onClick={(updatedUser) => {
+              setUser(updatedUser);
+              localStorage.setItem("user", JSON.stringify(updatedUser));
+              setShowUpdateForm(false);
+              setShowProfile(true);
+            }}
+          />
+        )}
+        {showDeleteView &amp;&amp; (
+          &lt;DeleteAccountView
+            user={user}
+            token={token}
+            setUser={setUser}
+            setToken={setToken}
+            onBackClick={() => {
+              setShowDeleteView(false);
+              setShowProfile(true);
+              localStorage.setItem("showProfile", true);
+            }}
+            setShowProfile={setShowProfile}
+            setShowDeleteView={setShowDeleteView}
+            setShowSignup={setShowSignup}
+          />
+        )}
+        &lt;Row className="justify-content.md-center" style={{margin: "30px 0px 0px 0px"}} >
+        &lt;Routes>
+          &lt;Route path="/login"
+            element={
+            user ? (
+                &lt;Navigate to="/" replace />
+              ) : showSignup ? (
+                &lt;Navigate to="/signup" onLoginClick={onLoginClick} replace />
+              ) : (
+                  &lt;Col md={{ span: 6, offset: 3 }}> 
+                    &lt;LoginView 
+                      onLoggedIn={(user, token) => {
+                        setUser(user);
+                        setToken(token);
+                        localStorage.setItem("user", JSON.stringify(user));
+                        localStorage.setItem("token", token);
+                      }}
+                      setShowSignup={setShowSignup}
+                    />
+                  &lt;/Col>
+                )
+            }
+          />
+
+          &lt;Route path="/signup"
+            element={
+              user ? (
+                &lt;Navigate to="/login" replace />
+              ) : (
+                  &lt;Col md={{ span: 6, offset: 3 }}>
+                    &lt;SignupView setShowSignup={setShowSignup} />
+                  &lt;/Col>
+                )}
+          />
+
+          &lt;Route
+            path="/profile"
+            element={
+                !user ? (
+                  &lt;Navigate to="/login" replace />
+                ) : (
+                  &lt;Col>
+                    &lt;ProfileView
+                      user={user}
+                      token={token}
+                      movies={movies}
+                      onMovieClick={(movie) => setSelectedMovie(movie)}
+                      onEditClick={() => setShowUpdateForm(true)}
+                      onDeleteClick={() => setShowDeleteView(true)}
+                    />
+                  &lt;/Col>
+                )}
+          />
+
+          &lt;Route
+            path="/"
+            element={
+              // EMPTY MOVIES LIST
+              !user ? (
+                  &lt;Navigate to="/login" replace />
+                ) : movies.length === 0 ? (
+                  &lt;Col>The list is empty!&lt;/Col>
+                ) : (
+/* MOVIE CARDS IN MAIN VIEW bzw LIST OF MOVIES
+ */                    &lt;Row className="g-2" /* xs={1} sm={2} md={3} lg={4} */>
+                      {(searchResults.length > 0 ? searchResults : searchTerm ? [] : movies).map((movie) => (
+                        &lt;Col key={movie.id} xs={7} md={6} lg={4} >
+                          &lt;MovieCard
+                            size="default"
+                            movie={movie}
+                            user={user}
+                            token={token}
+                            onMovieClick={() => setSelectedMovie(movie)}
+                            
+                          />
+                        &lt;/Col>
+                      ))}
+                    &lt;/Row>
+                )}
+          />
+          &lt;Route
+            path="/movies/:movieId"
+            element={
+              &lt;MovieView
+              movies={movies}
+              // isFavorite={isFavorite}
+              onHide={() => setSelectedMovie(null)}
+                onBackClick={() => setSelectedMovie(null)}
+              onMovieClick={(movie) => setSelectedMovie(movie)}
+                />
+            }
+          
+          />
+        &lt;/Routes>
+      &lt;/Row>
+    &lt;/BrowserRouter>
+  );
+};
+
+  MainView.propTypes = {
+
+      onBackClick: PropTypes.func.isRequired,
+      onClick: PropTypes.func.isRequired,
+      onHide: PropTypes.func.isRequired,
+      onShowProfile: PropTypes.func.isRequired,
+      onLoggedIn: PropTypes.func.isRequired,
+    onLogout: PropTypes.func.isRequired,
+    onLoginClick: PropTypes.func.isRequired,
+      size: PropTypes.oneOf(["default", "small", "mini"]),
+  };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#Ag">Ag</a></li><li><a href="global.html#Cg">Cg</a></li><li><a href="global.html#DeleteAccountView">DeleteAccountView</a></li><li><a href="global.html#Dg">Dg</a></li><li><a href="global.html#LoginView">LoginView</a></li><li><a href="global.html#MainView">MainView</a></li><li><a href="global.html#MovieCard">MovieCard</a></li><li><a href="global.html#MovieView">MovieView</a></li><li><a href="global.html#MyFlixApplication">MyFlixApplication</a></li><li><a href="global.html#NavbarView">NavbarView</a></li><li><a href="global.html#PasswordInput">PasswordInput</a></li><li><a href="global.html#ProfileView">ProfileView</a></li><li><a href="global.html#Rg">Rg</a></li><li><a href="global.html#SignupView">SignupView</a></li><li><a href="global.html#SimilarMoviesBySections">SimilarMoviesBySections</a></li><li><a href="global.html#ToggleFavorites">ToggleFavorites</a></li><li><a href="global.html#UpdateFormView">UpdateFormView</a></li><li><a href="global.html#filterMovies">filterMovies</a></li><li><a href="global.html#jg">jg</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Fri Jan 23 2026 13:57:29 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

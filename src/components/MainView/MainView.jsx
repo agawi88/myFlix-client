@@ -1,3 +1,16 @@
+/**
+ * @file MainView.jsx
+ * @description
+ * Main container component of the myFlix client application.
+ *
+ * Handles:
+ * - Authentication state (user & token)
+ * - Fetching and transforming movie data from the API
+ * - Client-side routing (React Router)
+ * - Conditional rendering of views (Login, Signup, Profile, Movies)
+ * - Global navigation and search
+ */
+
 import { useState, useEffect } from "react";
 import { MovieCard } from "../MovieCard/MovieCard";
 import { MovieView } from "../MovieView";
@@ -14,6 +27,26 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 
 import PropTypes from "prop-types";
 
+/**
+ * MainView component.
+ *
+ * Serves as the central controller of the application.
+ * Manages global state such as authentication, movies,
+ * selected movie, and profile-related UI views.
+ *
+ * @param {Object} props Component props
+ * @param {Function} props.onBackClick Callback for navigating back
+ * @param {Function} props.onClick Generic click handler
+ * @param {Function} props.onShowProfile Shows the user profile
+ * @param {Function} props.onLoggedIn Handles successful login
+ * @param {Function} props.onLogout Handles user logout
+ * @param {Function} props.onHide Hides the current view
+ * @param {Function} props.onMovieClick Handles movie selection
+ * @param {Function} props.onLoginClick Handles login navigation
+ * @param {string} [props.size="default"] Size variant for movie cards
+ *
+ * @returns {JSX.Element} Main application view with routing
+ */
 
 export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLogout, onHide, onMovieClick, onLoginClick, size="default" }) => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -34,6 +67,15 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
   const filteredMovies = filterMovies(movies, searchTerm);
 
   const API_URL = import.meta.env.VITE_API_URL;
+
+  /**
+   * Fetches movies from the backend API and transforms
+   * the response into a client-friendly movie object shape.
+   *
+   * The transformation normalizes naming and nests
+   * genre and director data for easier consumption
+   * throughout the app.
+   */
 
   useEffect(() => {
     if (!user || !token) return;
@@ -238,5 +280,5 @@ export const MainView = ({ onBackClick, onClick, onShowProfile, onLoggedIn, onLo
       onLoggedIn: PropTypes.func.isRequired,
     onLogout: PropTypes.func.isRequired,
     onLoginClick: PropTypes.func.isRequired,
-        size: PropTypes.oneOf(["default", "small", "mini"]),
+      size: PropTypes.oneOf(["default", "small", "mini"]),
   };

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: src/components/NavbarView/NavbarView.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: src/components/NavbarView/NavbarView.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file NavbarView.jsx
+ * @description
+ * Navigation bar component for the myFlix client application.
+ *
+ * Displays navigation links based on authentication state
+ * and provides a search form for filtering movies.
+ */
+
+import PropTypes from "prop-types";
+import { Navbar, Nav, Form, Button, Container } from "react-bootstrap";
+import { Link } from "react-router-dom";
+
+/**
+ * NavbarView component.
+ *
+ * Renders the main navigation bar of the application.
+ * Shows different navigation options depending on whether
+ * a user is authenticated and allows searching movies
+ * via a controlled input.
+ *
+ * @param {Object} props Component props
+ * @param {Object|null} props.user Authenticated user object or null
+ * @param {Function} props.onLogout Logs the user out
+ * @param {Function} props.onSearch Executes a movie search
+ * @param {string} props.searchTerm Current search input value
+ * @param {Function} props.setSearchTerm Updates the search input value
+ * @param {Function} props.onLoginClick Handles login navigation
+ * @param {Function} props.onHomeClick Navigates to the home view
+ *
+ * @returns {JSX.Element} Navigation bar UI
+ */
+
+export const NavbarView = ({ user, onLogout, onSearch, searchTerm, setSearchTerm, onLoginClick, onHomeClick }) => {
+
+  return (
+        &lt;Navbar expand="lg" className="bg-body-tertiary">
+            &lt;Container fluid>
+                &lt;Navbar.Brand as={Link} to="/" onClick={onHomeClick}>British Movies&lt;/Navbar.Brand>
+                &lt;Navbar.Toggle aria-controls="basic-navbar-nav" />
+                &lt;Navbar.Collapse id="basic-navbar-nav">
+                    &lt;Nav
+                        className="me-auto"
+                        style={{ maxHeight: '100px' }}
+                        navbarScroll
+                    >
+            {!user &amp;&amp; (
+              &lt;>
+                &lt;Nav.Link className="RegularButton" as={Link} to="/login">
+                  Login
+                &lt;/Nav.Link>
+                &lt;Nav.Link className="RegularButton" as={Link} to="/signup" onClick={onLoginClick}>
+                  Signup
+                &lt;/Nav.Link>
+              &lt;/>
+            )}
+            {user &amp;&amp;  (
+              &lt;>
+                &lt;Nav.Link className="RegularButton" as={Link} to="/profile">
+                  Profile
+                &lt;/Nav.Link>
+                &lt;Nav.Link className="RegularButton" as={Link} to="/" onClick={onHomeClick}>
+                  Home
+                &lt;/Nav.Link>
+                &lt;Nav.Link className="RegularButton" onClick={onLogout}>
+                  Logout
+                &lt;/Nav.Link>
+              &lt;/>
+            )}
+                    &lt;/Nav>
+                    &lt;Form className="d-flex" onSubmit={(e) => {
+                    e.preventDefault();
+                    onSearch(searchTerm);
+            }}>
+              &lt;Form.Control
+                id="search"
+                            type="search"
+                            placeholder="Search movies.."
+                            className="me-2"
+                aria-label="Search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                        &lt;Button type="submit" variant="outline-success" className="RegularButton">Search&lt;/Button>
+                    &lt;/Form>
+                &lt;/Navbar.Collapse>
+            &lt;/Container>
+        &lt;/Navbar>
+    );
+};
+
+NavbarView.propTypes = {
+  user: PropTypes.object,
+  onLogout: PropTypes.func.isRequired,
+  onSearch: PropTypes.func.isRequired,
+  searchTerm: PropTypes.string.isRequired,
+  setSearchTerm: PropTypes.func.isRequired,
+  onHomeClick: PropTypes.func.isRequired,
+  onLoginClick: PropTypes.func.isRequired
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#Ag">Ag</a></li><li><a href="global.html#Cg">Cg</a></li><li><a href="global.html#DeleteAccountView">DeleteAccountView</a></li><li><a href="global.html#Dg">Dg</a></li><li><a href="global.html#LoginView">LoginView</a></li><li><a href="global.html#MainView">MainView</a></li><li><a href="global.html#MovieCard">MovieCard</a></li><li><a href="global.html#MovieView">MovieView</a></li><li><a href="global.html#MyFlixApplication">MyFlixApplication</a></li><li><a href="global.html#NavbarView">NavbarView</a></li><li><a href="global.html#PasswordInput">PasswordInput</a></li><li><a href="global.html#ProfileView">ProfileView</a></li><li><a href="global.html#Rg">Rg</a></li><li><a href="global.html#SignupView">SignupView</a></li><li><a href="global.html#SimilarMoviesBySections">SimilarMoviesBySections</a></li><li><a href="global.html#ToggleFavorites">ToggleFavorites</a></li><li><a href="global.html#UpdateFormView">UpdateFormView</a></li><li><a href="global.html#filterMovies">filterMovies</a></li><li><a href="global.html#jg">jg</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Fri Jan 23 2026 13:57:29 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

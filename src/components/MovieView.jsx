@@ -1,3 +1,13 @@
+/**
+ * @file MovieView.jsx
+ * @description
+ * Detailed movie view displayed in a modal.
+ *
+ * Shows full information about a selected movie, including
+ * director and genre details, and displays similar movies
+ * based on genre and director.
+ */
+
 import React from "react";
 import PropTypes from "prop-types";
 import { Modal, Button } from "react-bootstrap";
@@ -6,7 +16,29 @@ import { SimilarMoviesBySections } from "./SimilarMovies/SimilarMoviesBySections
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 
+/**
+ * MovieView component.
+ *
+ * Retrieves the selected movie based on the URL parameter
+ * and displays detailed information in a modal dialog.
+ * Also renders lists of similar movies grouped by genre
+ * and director.
+ *
+ * @param {Object} props Component props
+ * @param {boolean} props.isFavorite Indicates whether the movie is favorited
+ * @param {Function} props.onHide Closes the movie view modal
+ * @param {Array<Object>} props.movies List of all movies
+ * @param {Function} props.onMovieClick Handles selection of a similar movie
+ *
+ * @returns {JSX.Element|null} Movie detail modal or null if movie is not found
+ */
+
 export const MovieView = ({ isFavorite, onHide, movies, onMovieClick }) => {
+  
+    /**
+   * Determines the current movie based on the route parameter.
+   */
+  
   const { movieId } = useParams();
   const movie = movies.find((m) => m.id === movieId);
 
@@ -107,9 +139,7 @@ return (
 };
 
 MovieView.propTypes = {
-  show: PropTypes.bool.isRequired,
   isFavorite: PropTypes.bool.isRequired,
-  toggleFavorite: PropTypes.func.isRequired,
   onHide: PropTypes.func.isRequired,
   movies: PropTypes.arrayOf(PropTypes.object).isRequired,
   onMovieClick: PropTypes.func.isRequired,

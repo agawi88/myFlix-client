@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: src/components/LoginView/LoginView.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: src/components/LoginView/LoginView.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file LoginView.jsx
+ * @description
+ * Login form component for the myFlix client application.
+ *
+ * Handles user authentication by submitting credentials
+ * to the backend API and storing the returned user data
+ * and token on successful login.
+ */
+
+import { useState } from "react";
+import { Button, Form, Row, Col, Card } from "react-bootstrap";
+import { PasswordInput } from "../PasswordInput";
+import PropTypes from "prop-types";
+import "./LoginView.scss";
+
+/**
+ * LoginView component.
+ *
+ * Renders a login form and authenticates the user against
+ * the backend API. On successful login, user data and
+ * authentication token are stored in localStorage and
+ * passed back to the parent component.
+ *
+ * @param {Object} props Component props
+ * @param {Function} props.onLoggedIn Callback invoked after successful login
+ * @param {Function} props.setShowSignup Toggles display of the signup view
+ *
+ * @returns {JSX.Element} Login form UI
+ */
+
+export const LoginView = ({ onLoggedIn, setShowSignup }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  
+    /**
+   * Handles form submission and authenticates the user.
+   *
+   * Sends the entered credentials to the backend login endpoint.
+   * On success, stores user data and token in localStorage and
+   * triggers the onLoggedIn callback.
+   *
+   * @param {Event} event Form submission event
+   * @returns {void}
+   */
+    
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const API_URL = import.meta.env.VITE_API_URL;
+
+    const data = {
+      Username: username,
+      Password: password
+    };
+
+      fetch(`${API_URL}/login`, {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data),
+      })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.user) {
+                localStorage.setItem("user", JSON.stringify(data.user));
+                localStorage.setItem("token", data.token);
+                onLoggedIn(data.user, data.token);
+              } else {
+              alert("No such user. If you want to check out great British movies, please sign in.");
+              setShowSignup(true);
+              }
+          })
+          .catch((error) => {
+              setError("Something went wrong");
+          });
+  };
+
+  return (
+    &lt;Form
+      onSubmit={handleSubmit}
+      className="d-flex justfy-content-center"
+      autoComplete="off">
+    &lt;Card className="shadow-lg rounded-4 my-4">
+      &lt;Card.Header className="text-center bg-primary opacity: 2 text-white rounded-4 " column="lg">
+          &lt;h3>&lt;b>LOG IN&lt;/b>&lt;/h3>
+      &lt;/Card.Header>
+      &lt;Card.Body>
+        &lt;Card.Title>&lt;h4>Please log in here to view the selecction of British movies:
+        &lt;/h4>&lt;/Card.Title>
+      &lt;Row>
+        &lt;Form.Group /* controlId="loginUsername" */>
+          &lt;Col lg="auto">
+      &lt;Form.Label htmlFor="username" column="lg">
+            Username:
+      &lt;/Form.Label>
+        &lt;Form.Control
+          autoComplete="off"
+          id="username"
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+          minLength="5"
+          maxLength="12"
+          className="mb-2 bg-light text-dark"
+          placeholder="Enter your name"        
+            />
+          &lt;/Col>
+        &lt;/Form.Group>
+      &lt;/Row>
+      &lt;Row className="align-items-center">
+      &lt;Form.Group /* controlId="loginPassword" */>
+        &lt;Col >
+        &lt;Form.Label htmlFor="password">
+          Password (8 characters minimum):
+          &lt;/Form.Label>
+          &lt;/Col>
+        &lt;Col >
+          &lt;PasswordInput
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="mb-2 bg-light text-dark"
+            />
+          &lt;/Col>
+          &lt;Col>
+                    &lt;Form.Check
+            type="checkbox"
+            id="rememberMeLogin"
+            className="mb-2"
+            label="Remember me"
+        />
+        &lt;/Col>
+        &lt;/Form.Group>
+        &lt;/Row>
+      &lt;/Card.Body>
+              &lt;Card.Footer>
+              &lt;Row>
+          &lt;Button type="submit" className="mb-2" lg="auto">Log in&lt;/Button>
+          &lt;/Row>
+          &lt;/Card.Footer>
+    &lt;/Card>
+  &lt;/Form>
+  );
+};
+
+LoginView.propTypes = {
+  onLoggedIn: PropTypes.func.isRequired,
+  setShowSignup: PropTypes.func.isRequired
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#Ag">Ag</a></li><li><a href="global.html#Cg">Cg</a></li><li><a href="global.html#DeleteAccountView">DeleteAccountView</a></li><li><a href="global.html#Dg">Dg</a></li><li><a href="global.html#LoginView">LoginView</a></li><li><a href="global.html#MainView">MainView</a></li><li><a href="global.html#MovieCard">MovieCard</a></li><li><a href="global.html#MovieView">MovieView</a></li><li><a href="global.html#MyFlixApplication">MyFlixApplication</a></li><li><a href="global.html#NavbarView">NavbarView</a></li><li><a href="global.html#PasswordInput">PasswordInput</a></li><li><a href="global.html#ProfileView">ProfileView</a></li><li><a href="global.html#Rg">Rg</a></li><li><a href="global.html#SignupView">SignupView</a></li><li><a href="global.html#SimilarMoviesBySections">SimilarMoviesBySections</a></li><li><a href="global.html#ToggleFavorites">ToggleFavorites</a></li><li><a href="global.html#UpdateFormView">UpdateFormView</a></li><li><a href="global.html#filterMovies">filterMovies</a></li><li><a href="global.html#jg">jg</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Fri Jan 23 2026 13:57:29 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
